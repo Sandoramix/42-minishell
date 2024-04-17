@@ -1,0 +1,72 @@
+{
+	//--------------------------------------------------------------------------
+	// USEFUL VSCODE CONFIGURATIONS
+	//--------------------------------------------------------------------------
+	/** EXTENSION NAMES FOR C:
+			- jbenden.c-cpp-flylint
+			- ms-vscode.cpptools
+	*/
+	//--------------------------------------------------------------------------
+	// C LINTER
+	"c-cpp-flylint.debug": true,
+	"c-cpp-flylint.language": "c",
+	"c-cpp-flylint.ignoreParseErrors": true,
+	"c-cpp-flylint.clang.severityLevels": {
+		"fatal": "Error",
+		"error": "Error",
+		"warning": "Error",
+		"note": "Information"
+	},
+	"c-cpp-flylint.clang.standard": [
+		"c11"
+	],
+	"c-cpp-flylint.flexelint.enable": false,
+	"c-cpp-flylint.flawfinder.enable": false,
+	"c-cpp-flylint.lizard.enable": false,
+	"c-cpp-flylint.cppcheck.enable": false,
+	"c-cpp-flylint.includePaths": [
+		"${workspaceFolder}",
+		"${workspaceFolder}/src/includes",
+		"${workspaceFolder}/src/libftx/includes"
+	],
+	//--------------------------------------------------------------------------
+	// C INTELLISENSE
+	"C_Cpp.doxygen.generatedStyle": "/**",
+	"C_Cpp.intelliSenseCacheSize": 5120,
+	"C_Cpp.default.compilerPath": "/usr/bin/clang",
+	"C_Cpp.default.includePath": [
+		"${workspaceFolder}",
+		"${workspaceFolder}/src/includes",
+		"${workspaceFolder}/src/libftx/includes"
+	],
+	"C_Cpp.default.intelliSenseMode": "linux-clang-x64",
+	//--------------------------------------------------------------------------
+	// VERTICAL LINE ON COLUMN 80
+	"editor.rulers": [
+		80
+	],
+	//--------------------------------------------------------------------------
+	// FONTS
+	"editor.fontFamily": "'Fira Code', Monaco, Menlo, Consolas, 'Droid Sans Mono', 'Courier New', monospace",
+	"editor.fontLigatures": true,
+	//--------------------------------------------------------------------------
+	// AUTOSAVE
+	"files.autoSave": "onFocusChange",
+	//--------------------------------------------------------------------------
+	// PREVENT WHITESPACE
+	"editor.renderWhitespace": "all",
+	"editor.insertSpaces": false,
+	"editor.comments.insertSpace": false,
+	"editor.detectIndentation": false,
+	//--------------------------------------------------------------------------
+	// GIT SETTINGS
+	"git.autofetch": true,
+	"git.branchRandomName.enable": true,
+	"git.branchSortOrder": "alphabetically",
+	"git.detectSubmodulesLimit": 20,
+	"git.inputValidationLength": 120,
+	"git.inputValidationSubjectLength": 80,
+	"git.repositoryScanMaxDepth": 4,
+	"git.statusLimit": 5000,
+	"git.untrackedChanges": "separate",
+}
