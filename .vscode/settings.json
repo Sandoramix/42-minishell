@@ -69,4 +69,13 @@
 	"git.repositoryScanMaxDepth": 4,
 	"git.statusLimit": 5000,
 	"git.untrackedChanges": "separate",
+	"files.exclude": {
+		"**/.git": true,
+		"**/.svn": true,
+		"**/.hg": true,
+		"**/CVS": true,
+		"**/.DS_Store": true,
+		"**/Thumbs.db": true
+	},
+	"hide-files.files": [],
 }
