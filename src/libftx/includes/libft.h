@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 14:33:51 by odudniak          #+#    #+#             */
-/*   Updated: 2024/04/17 16:12:32 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/04/19 14:09:33 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,11 @@
 # include <ft_math.h>
 # include <ft_mem.h>
 # include <ft_printf.h>
-# include <ft_phtread.h>
 # include <ft_str.h>
 # include <ft_structs.h>
 # include <ft_unistd.h>
 # include <ft_system.h>
+# include <ft_phtread.h>
 
 # define BASE10 "0123456789"
 # define BASE16 "0123456789abcdef"
@@ -68,7 +68,7 @@
 */
 typedef struct s_var
 {
-}	t_var;
+}			t_var;
 
 /**
  * @brief General purpose Cleanup funcion

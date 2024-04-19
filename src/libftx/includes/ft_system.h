@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 15:46:10 by odudniak          #+#    #+#             */
-/*   Updated: 2024/04/17 16:17:43 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/04/19 14:07:14 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ typedef enum e_timeunit
 
 typedef struct timeval	t_time;
 typedef struct timeval	t_timeval;
-typedef pthread_mutex_t	t_mutex;
 
 /**
  * @brief Parse the string of a command.

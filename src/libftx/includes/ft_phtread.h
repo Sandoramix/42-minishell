@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 15:57:12 by odudniak          #+#    #+#             */
-/*   Updated: 2024/04/17 16:13:30 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/04/19 14:09:28 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 # define FT_PHTREAD_H
 
 # include <libft.h>
+
+typedef pthread_mutex_t	t_mutex;
+typedef struct s_var	t_var;
 
 typedef enum e_mutex_handle
 {
