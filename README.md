@@ -4,7 +4,7 @@
 
 ## Team
 
-* [**odudniak**]([me](https://github.com/Sandoramix))
+* [**odudniak**](https://github.com/Sandoramix)
 * [**marboccu**](https://github.com/Martybb01)
 
 ## UTILS
