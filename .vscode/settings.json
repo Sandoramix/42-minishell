@@ -78,4 +78,17 @@
 		"**/Thumbs.db": true
 	},
 	"hide-files.files": [],
+	"files.associations": {
+		"libft.h": "c",
+		"types.h": "c",
+		"stddef.h": "c",
+		"ft_gnl.h": "c",
+		"ft_int.h": "c",
+		"stdlib.h": "c",
+		"ft_structs.h": "c",
+		"unistd.h": "c",
+		"minishell.h": "c",
+		"ft_system.h": "c",
+		"pthread.h": "c"
+	},
 }
