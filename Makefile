@@ -13,8 +13,8 @@ SRC= main.c
 all: $(NAME)
 
 $(NAME): $(SRC)
-	$(CC) $(CFLAGS) $(SRC) -pthread -o $(NAME)
-
+	$(MAKE) -C src/libftx
+	$(CC) $(CFLAGS) $(SRC) -pthread -o $(NAME) -Lsrc/libftx -lft
 	@echo "$(GREEN)[$(PNAME)]:\tPROGRAM CREATED$(R)"
 	[ -z "$(strip $(DEBUGFLAGS))" ] || echo "$(RED)[$(PNAME)]:\tDEBUG MODE ENABLED$(R)"
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 14:33:51 by odudniak          #+#    #+#             */
-/*   Updated: 2024/04/19 14:09:33 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/04/20 12:07:00 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,21 +61,11 @@
 # endif
 
 /**
- * @brief "GLOBAL" VARIABLE FOR THE CURRENT PROJECT.
- * USEFUL FOR WRAPPER FUNCTIONS: IF ANY ERROR HAPPENS,
- * THIS STRUCTURE WILL BE FREED (with `cleanup`).
- * ANY FUNCTION THAT HAS THIS *t_var will probably call cleanup on errors.
-*/
-typedef struct s_var
-{
-}			t_var;
-
-/**
  * @brief General purpose Cleanup funcion
  * @param var gobal variable
  * @param doexit if the function should use `exit` or not
  * @param statuscode status code of the `exit` call.
  */
-void		cleanup(t_var *var, bool doexit, int statuscode);
+int	cleanup(t_var *var, bool doexit, int statuscode);
 
 #endif
