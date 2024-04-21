@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/04/21 16:05:57 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/04/21 16:47:31 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,8 @@ void ms_init(t_var *mshell);
 void ms_prompt(t_var *mshell);
 
 int	cleanup(t_var *g, bool shouldexit, int status);
+
+void	ms_unset(t_var *mshell, char **args);
+
+void ms_exit(t_var *mshell, char **args);
 #endif

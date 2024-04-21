@@ -11,6 +11,7 @@ SRC= main.c \
 	./src/builtin/ms_exit.c \
 	./src/ms_init.c \
 	./src/ms_prompt.c \
+	./src/builtin/ms_unset.c \
 	./src/ms_cleanup.c 
 # ----RULES-----
 all: $(NAME)
