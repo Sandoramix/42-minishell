@@ -7,14 +7,15 @@ CFLAGS = -Wall -Wextra -Werror $(INCLUDES) $(DEBUGFLAGS)
 
 RM = rm -rf
 
-SRC= main.c
-
+SRC= main.c \
+	./src/ms_init.c \
+	./src/ms_prompt.c
 # ----RULES-----
 all: $(NAME)
 
 $(NAME): $(SRC)
 	$(MAKE) -C src/libftx
-	$(CC) $(CFLAGS) $(SRC) -pthread -o $(NAME) -Lsrc/libftx -lft
+	$(CC) $(CFLAGS) $(SRC) -pthread -o $(NAME) -Lsrc/libftx -lft -lreadline
 	@echo "$(GREEN)[$(PNAME)]:\tPROGRAM CREATED$(R)"
 	[ -z "$(strip $(DEBUGFLAGS))" ] || echo "$(RED)[$(PNAME)]:\tDEBUG MODE ENABLED$(R)"
 
