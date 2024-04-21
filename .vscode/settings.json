@@ -51,7 +51,7 @@
 	"editor.fontLigatures": true,
 	//--------------------------------------------------------------------------
 	// AUTOSAVE
-	"files.autoSave": "onFocusChange",
+	//"files.autoSave": "onFocusChange",
 	//--------------------------------------------------------------------------
 	// PREVENT WHITESPACE
 	"editor.renderWhitespace": "all",
@@ -89,6 +89,7 @@
 		"unistd.h": "c",
 		"minishell.h": "c",
 		"ft_system.h": "c",
-		"pthread.h": "c"
+		"pthread.h": "c",
+		"readline.h": "c"
 	},
 }
