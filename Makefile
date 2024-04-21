@@ -9,7 +9,9 @@ RM = rm -rf
 
 SRC= main.c \
 	./src/ms_init.c \
-	./src/ms_prompt.c
+	./src/ms_prompt.c \
+	./src/builtin/ms_unset.c
+
 # ----RULES-----
 all: $(NAME)
 
