@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:47:35 by odudniak          #+#    #+#             */
-/*   Updated: 2024/04/19 14:07:24 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/04/21 14:51:07 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,16 @@ void		*lst_printint(t_list *head);
  * @return `NULL`
  */
 void		*lst_printstr(t_list *head);
+
+/**
+ * @brief Delete all nodes of the given list by a given `key`.
+ * @param lst pointer to the list's head.
+ * @param key key to lookup
+ * @param equal function that returns `true` when given two keys are equal
+ * @param valfree_fn function to free the node's content.
+*/
+t_list		*lst_delbykey(t_list **lst, void *key,
+				bool (*equal)(void *a, void *b), void (*valfree_fn)(void *));
 
 //-----------------------------------------------------------------------------
 
