@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/04/20 11:13:33 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/04/21 12:48:04 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define MINISHELL_H
 
 # include <libft.h>
+#include <readline/readline.h>
+# define PROMPT "minishell>"
 
 typedef struct s_main
 {
@@ -34,4 +36,7 @@ typedef struct s_var
 	int		*status_code;
 }			t_var;
 
+int	ms_loadenv(t_var *mshell);
+void ms_init(t_var *mshell);
+void ms_prompt(t_var *mshell);
 #endif
