@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:21:48 by marboccu          #+#    #+#             */
-/*   Updated: 2024/04/21 16:36:54 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/04/22 11:42:00 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void ms_exit(t_var *mshell, char **args)
 		code = (unsigned char)ft_atoi(args[0]);	
 	if (mtx_len > 1)
 	{
-		printf("exit: too many arguments\n");
+		ft_fprintf(2, "exit: too many arguments\n");
 		*mshell->status_code = code;
 		return ;
 	}
@@ -38,16 +38,17 @@ void ms_exit(t_var *mshell, char **args)
 //{
 //	t_var			mshell;
 
-//	(void)av;
+	
 //	(void)ac;
 //	mshell = (t_var){0};
-//	if (ac != 1)
-//		return (pf_errcode(ERR_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
-//	mshell._main.envp = envp;
-//	ms_init(&mshell);
+	//if (ac != 1)
+	//	return (pf_errcode(ERR_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
+	//mshell._main.envp = envp;
+	//ms_init(&mshell);
+	//ms_prompt(&mshell);
+	//pause();
 //	ms_exit(&mshell, av + 1);
-//	//pause();
-//	//printf("status code: %d\n", *mshell.status_code);
+//	printf("status code: %d\n", *mshell.status_code);
 //	return (cleanup(&mshell, true, 0));
 //}
 
