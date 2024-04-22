@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:21:48 by marboccu          #+#    #+#             */
-/*   Updated: 2024/04/22 11:42:00 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/04/22 11:47:04 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void ms_exit(t_var *mshell, char **args)
 	int mtx_len;
 	mtx_len = ft_memmtxlen(args);
 	
-	printf("exit\n");
+	ft_fprintf(2, "exit\n");
 	if (mtx_len > 0)
 		code = (unsigned char)ft_atoi(args[0]);	
 	if (mtx_len > 1)
