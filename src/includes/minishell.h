@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/04/21 16:47:31 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/04/23 13:06:16 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <libft.h>
 #include <readline/readline.h>
 # define PROMPT "minishell>"
+# define PATH_MAX 4096
 
 typedef struct s_main
 {
@@ -33,6 +34,7 @@ typedef struct s_var
 	t_list	*env;
 	t_main	_main;
 	char	**cmds_paths;
+	char *curr_path;
 	unsigned char 		*status_code;
 }			t_var;
 
