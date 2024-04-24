@@ -6,12 +6,11 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:25:21 by odudniak          #+#    #+#             */
-/*   Updated: 2024/04/21 15:11:59 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/04/24 15:37:17 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
 
 static void	ms_unset_debug(t_var *mshell, char **args, char *stage)
 {

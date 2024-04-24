@@ -3,22 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   ms_prompt.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 12:40:27 by marboccu          #+#    #+#             */
-/*   Updated: 2024/04/21 12:46:29 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/04/24 15:36:32 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void ms_prompt(t_var *mshell)
+void	ms_prompt(t_var *mshell)
 {
-	char *line;
+	char	*line;
+
 	(void)mshell;
-
 	line = readline(PROMPT" ");
-
 	while (line)
 	{
 		if (DEBUG)
@@ -26,5 +25,4 @@ void ms_prompt(t_var *mshell)
 		free(line);
 		line = readline(PROMPT" ");
 	}
-
 }
