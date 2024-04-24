@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/04/24 11:41:42 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/04/24 11:53:57 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define MINISHELL_H
 
 # include <libft.h>
-#include <readline/readline.h>
 # define PROMPT "minishell>"
 # define PATH_MAX 4096
 
@@ -31,23 +30,24 @@ typedef struct s_main
  */
 typedef struct s_var
 {
-	t_list	*env;
-	t_main	_main;
-	char	**cmds_paths;
-	char *curr_path;
-	uint64_t	curpath_len;
-	unsigned char 		*status_code;
+	t_list				*env;
+	t_main				_main;
+	char				**cmds_paths;
+	char				*curr_path;
+	uint64_t			curpath_len;
+	t_uchar				*status_code;
 }			t_var;
 
-int	ms_loadenv(t_var *mshell);
-void ms_init(t_var *mshell);
-void ms_prompt(t_var *mshell);
+int		ms_loadenv(t_var *mshell);
+void	ms_init(t_var *mshell);
+void	ms_prompt(t_var *mshell);
 
-int	cleanup(t_var *g, bool shouldexit, int status);
+int		cleanup(t_var *g, bool shouldexit, int status);
 
 void	ms_unset(t_var *mshell, char **args);
 
-void ms_exit(t_var *mshell, char **args);
+void	ms_exit(t_var *mshell, char **args);
 
 void	*ms_pwd(t_var *mshell);
+int		ms_export(t_var *mshell, char **args);
 #endif

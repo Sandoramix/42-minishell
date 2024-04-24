@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 13:16:03 by odudniak          #+#    #+#             */
-/*   Updated: 2024/03/15 16:41:35 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/04/24 13:06:08 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static char	**checklast(t_cmdparse info, char *raw, char **res)
 	free(raw);
 	return (res);
 }
-
+// TODO: FIXME
 char	**cmd_parse(char *raw)
 {
 	t_cmdparse			info;
