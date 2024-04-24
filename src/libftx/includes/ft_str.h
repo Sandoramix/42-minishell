@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:36:51 by odudniak          #+#    #+#             */
-/*   Updated: 2024/03/10 09:47:27 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/04/24 15:30:24 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -314,6 +314,14 @@ char		**str_split_first(char const *s, char c);
  * @return `true` if `s` ends with `end`, `false` otherwise
  */
 bool		str_endswith(const char *s, char *end);
+
+/**
+ * @brief Check if the given `s` string starts with `start` string
+ * @param s string to check
+ * @param start expected start of the string
+ * @return `true` if `s` starts with `start`, `false` otherwise
+ */
+bool		str_startswith(const char *s, const char *start);
 /**
  * @brief Applies the function 'f' to each character of the
  * string 's', and passing its index as first argument
@@ -345,5 +353,14 @@ void		str_iteri(char *s, void (*f)(unsigned int, char*));
  * @return `true` if every characters pass the function test, `false` otherwise
  */
 bool		str_every(char *str, bool(*check_fn)(char));
+/**
+ * @brief Check if the string `s` contains any character is `set` string.
+ *
+ * @param s string to check
+ * @param set set of chars to find.
+ * @return `true` if there's at least one char of `set` in `s`,
+ * `false` otherwise
+ */
+bool		str_includesset(char *s, char *set);
 
 #endif

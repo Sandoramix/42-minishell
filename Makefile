@@ -14,7 +14,9 @@ SRC= main.c \
 	./src/builtin/ms_unset.c \
 	./src/builtin/ms_env.c \
 	./src/builtin/ms_pwd.c \
-	./src/ms_cleanup.c 
+	./src/ms_cleanup.c \
+	./src/builtin/ms_export.c
+
 # ----RULES-----
 all: $(NAME)
 
@@ -25,8 +27,10 @@ $(NAME): $(SRC)
 	[ -z "$(strip $(DEBUGFLAGS))" ] || echo "$(RED)[$(PNAME)]:\tDEBUG MODE ENABLED$(R)"
 
 clean:
+	$(MAKE) -C src/libftx clean
 
 fclean: clean
+	$(MAKE) -C src/libftx fclean
 	@$(RM) $(NAME)
 	@echo "$(BLUE)[$(PNAME)]:\tPROGRAM DELETED$(R)"
 

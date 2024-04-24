@@ -3,24 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   ms_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:21:48 by marboccu          #+#    #+#             */
-/*   Updated: 2024/04/24 11:33:56 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/04/24 15:37:28 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void ms_exit(t_var *mshell, char **args)
+void	ms_exit(t_var *mshell, char **args)
 {
-	unsigned char code;
-	int mtx_len;
-	mtx_len = ft_memmtxlen(args);
-	
+	t_uchar		code;
+	const int	mtx_len = ft_memmtxlen(args);
+
 	ft_fprintf(2, "exit\n");
 	if (mtx_len > 1)
-		code = (unsigned char)ft_atoi(args[1]);	
+		code = (t_uchar)ft_atoi(args[1]);
 	if (mtx_len > 2)
 	{
 		ft_fprintf(2, "exit: too many arguments\n");
@@ -30,15 +29,12 @@ void ms_exit(t_var *mshell, char **args)
 	if (mtx_len == 1)
 		cleanup(mshell, true, *mshell->status_code);
 	cleanup(mshell, true, code);
-	
 }
-
 
 //int	main(int ac, char **av, char **envp)
 //{
 //	t_var			mshell;
 
-	
 //	(void)ac;
 //	mshell = (t_var){0};
 	//if (ac != 1)
@@ -51,4 +47,3 @@ void ms_exit(t_var *mshell, char **args)
 //	printf("status code: %d\n", *mshell.status_code);
 //	return (cleanup(&mshell, true, 0));
 //}
-

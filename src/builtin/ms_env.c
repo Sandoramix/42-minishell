@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ms_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:44:22 by marboccu          #+#    #+#             */
-/*   Updated: 2024/04/22 12:07:32 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/04/24 15:37:04 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void ms_env(t_var *mshell)
+void	ms_env(t_var *mshell)
 {
-	int i;
-	t_list *env;
+	int		i;
+	t_list	*env;
 
 	i = 0;
 	env = mshell->env;

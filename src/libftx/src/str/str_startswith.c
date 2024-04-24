@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_cleanup.c                                       :+:      :+:    :+:   */
+/*   str_startswith.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/21 16:38:19 by marboccu          #+#    #+#             */
-/*   Updated: 2024/04/24 15:36:39 by odudniak         ###   ########.fr       */
+/*   Created: 2024/04/24 15:07:10 by odudniak          #+#    #+#             */
+/*   Updated: 2024/04/24 15:10:22 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
+#include <libft.h>
 
-// TODO: Implement cleanup
-int	cleanup(t_var *g, bool shouldexit, int status)
+bool	str_startswith(const char *s, const char *check)
 {
-	(void)g;
-	str_freemtx(g->cmds_paths);
-	lst_free(&g->env, free);
-	free(g->status_code);
-	free(g->curr_path);
-	if (shouldexit)
-		exit(status);
-	return (status);
+	int			i;
+
+	if (!s || !check)
+		return (false);
+	i = -1;
+	while (check && check[++i])
+	{
+		if (!s || check[i] != s[i])
+			return (false);
+	}
+	return (true);
 }
