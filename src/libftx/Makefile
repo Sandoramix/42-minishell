@@ -88,6 +88,7 @@ SRC = ./src/char/chr_isquote.c \
 	./src/str/str_idxofchar.c \
 	./src/str/str_idxofstr.c \
 	./src/str/str_ilen.c \
+	./src/str/str_includesset.c \
 	./src/str/str_isblank.c \
 	./src/str/str_iteri.c \
 	./src/str/str_join.c \
@@ -102,6 +103,7 @@ SRC = ./src/char/chr_isquote.c \
 	./src/str/str_replace.c \
 	./src/str/str_replace_first.c \
 	./src/str/str_split.c \
+	./src/str/str_startswith.c \
 	./src/str/str_substr.c \
 	./src/str/str_tolower.c \
 	./src/str/str_toupper.c \
