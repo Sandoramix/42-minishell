@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:21:48 by marboccu          #+#    #+#             */
-/*   Updated: 2024/04/22 11:47:04 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/04/24 11:33:56 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,15 @@ void ms_exit(t_var *mshell, char **args)
 	mtx_len = ft_memmtxlen(args);
 	
 	ft_fprintf(2, "exit\n");
-	if (mtx_len > 0)
-		code = (unsigned char)ft_atoi(args[0]);	
 	if (mtx_len > 1)
+		code = (unsigned char)ft_atoi(args[1]);	
+	if (mtx_len > 2)
 	{
 		ft_fprintf(2, "exit: too many arguments\n");
 		*mshell->status_code = code;
 		return ;
 	}
-	if (mtx_len == 0)
+	if (mtx_len == 1)
 		cleanup(mshell, true, *mshell->status_code);
 	cleanup(mshell, true, code);
 	
