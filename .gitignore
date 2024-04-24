@@ -1,4 +1,5 @@
-
+.vscode/launch.json
+.vcsode/setting.json
 minishell
 makefile.srcs
 # Prerequisites
