@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 14:00:18 by odudniak          #+#    #+#             */
-/*   Updated: 2024/02/28 18:18:53 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/04/25 19:18:01 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,11 @@ t_pfflag	pf_getflag(char *str, int start, int end)
 {
 	t_pfflag	flag;
 
+	flag = (t_pfflag){0};
 	flag.simple = end - 1 == start;
 	flag._str = str;
 	flag._start = start;
 	flag._end = end;
-	flag.type = PF_UNKNOWN;
 	if (str_chr("di", str[end]))
 		flag.type = PF_INT;
 	else if (str[end] == 'p')

@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 17:51:11 by odudniak          #+#    #+#             */
-/*   Updated: 2024/02/28 18:18:53 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/04/25 19:15:34 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ void	pf_parseargs(int fd, const char *s, va_list list, size_t *len)
 				;
 			write(fd, s + print_idx, start - print_idx);
 			print_idx = i + 1;
-			*len = (*len - (i - start + 1))
-				+ pf_getres(fd, list, pf_getflag((char *)s, start, i));
+			*len = *len - (i - start + 1);
+			*len = *len + pf_getres(fd, list, pf_getflag((char *)s, start, i));
 		}
 	}
 	write(fd, s + print_idx, str_ulen(s) - print_idx);
