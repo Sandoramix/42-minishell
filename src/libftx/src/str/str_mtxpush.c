@@ -1,40 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_readfile.c                                      :+:      :+:    :+:   */
+/*   str_mtxpush.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/23 20:09:44 by odudniak          #+#    #+#             */
-/*   Updated: 2024/04/25 18:13:53 by odudniak         ###   ########.fr       */
+/*   Created: 2024/04/25 17:59:31 by odudniak          #+#    #+#             */
+/*   Updated: 2024/04/25 18:16:47 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_gnl.h"
-#include "libft.h"
+#include <libft.h>
 
-char	**ft_readfile(int fd, bool keep_nl)
+char	**str_mtxpush(char ***mtxp, char *s)
 {
+	int		mtxlen;
 	char	**res;
-	char	**tmp;
-	char	*line;
-	int		linecount;
 
-	if (fd < 0)
+	if (!mtxp)
 		return (NULL);
-	linecount = 0;
-	res = NULL;
-	while (true)
-	{
-		line = get_next_line(fd, keep_nl);
-		if (line == NULL && linecount != 0)
-			break ;
-		tmp = ft_calloc(++linecount + 1, sizeof(char *));
-		tmp[linecount] = NULL;
-		tmp[linecount - 1] = line;
-		str_mtxcpy(tmp, res, linecount - 1);
-		free(res);
-		res = tmp;
-	}
+	mtxlen = str_mtxlen(*mtxp);
+	res = ft_calloc(mtxlen + 2, sizeof(char *));
+	if (!res)
+		return (NULL);
+	str_mtxcpy(res, *mtxp, mtxlen);
+	res[mtxlen] = s;
+	free(*mtxp);
+	*mtxp = res;
 	return (res);
 }

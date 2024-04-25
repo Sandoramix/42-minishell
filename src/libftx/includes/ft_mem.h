@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:35:26 by odudniak          #+#    #+#             */
-/*   Updated: 2024/02/09 15:44:26 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/04/25 18:09:36 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,22 +75,6 @@ void		*ft_memrev(void *mem, size_t len);
  * @attention Uses: free
  */
 void		*ft_freemtx(void *mtx, size_t len);
-/**
- * @brief Get the length of the given matrix
- *
- * @param s matrix
- * @return Length of the matrix as integer
- */
-int			ft_memmtxlen(void *mem);
-/**
- * @brief This function copies `n` elements from memory area (a matrix) `src`
- * to memory area (matrix) `dest`.
- * @param dest memory area
- * @param src memory area
- * @param n number of bytes
- * @return a pointer to `dest`
- */
-void		**ft_memmtxcpy(void **dest, void **src, size_t n);
 /**
  * @brief This function copies `n` bytes from memory area
  * `src` to memory area `dest`.

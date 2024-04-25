@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:36:51 by odudniak          #+#    #+#             */
-/*   Updated: 2024/04/24 15:30:24 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/04/25 18:20:27 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -362,5 +362,29 @@ bool		str_every(char *str, bool(*check_fn)(char));
  * `false` otherwise
  */
 bool		str_includesset(char *s, char *set);
-
+/**
+ * @brief Get the length of the given matrix of chars/ array of strings
+ *
+ * @param mtx matrix
+ * @return Length of the matrix as `int`. If `NULL` is passed, the return is `0`
+ */
+int			str_mtxlen(char **mtx);
+/**
+ * @brief This function copies `n` elements from `src` to `dest`.
+ * @param dest mtx
+ * @param src mtx
+ * @param n number of elements to copy
+ * @return a pointer to `dest`
+ */
+char		**str_mtxcpy(char **dest, char **src, size_t n);
+/**
+ * @brief add a new string to the matrix of chars/array of strings.
+ * Original matrix may be mutated.
+ * @attention If everyting goes fine, the original `*mtxp` is replaced
+ * by the newly allocated matrix, and the old one is freed with `free`.
+ * @param mtxp pointer to the matrix.
+ * @param s string to push
+ * @return pointer to the newly allocated matrix, or `NULL` if any error happened.
+ */
+char		**str_mtxpush(char ***mtxp, char *s);
 #endif
