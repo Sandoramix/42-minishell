@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 17:04:19 by odudniak          #+#    #+#             */
-/*   Updated: 2024/02/29 08:37:04 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/04/25 19:37:41 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,5 +113,13 @@ size_t		pf_handle_flag_start(int fd, t_pfflag flag);
  * @return Total printed chars.
  */
 int			pf_errcode(t_errorcode code);
-
+/**
+ * @brief Printf only if `DEBUG` macro is set to `true`
+ * Works well with: `-`-`-`-`+`-`#`-`.`
+ * @attention It can use `malloc` if you use formatting
+ * @param str Format
+ * @param ... All necessary args
+ * @return Total printed chars.
+ */
+int	dbg_printf(const char *str, ...);
 #endif
