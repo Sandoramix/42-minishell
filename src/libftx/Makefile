@@ -6,6 +6,7 @@ CFLAGS = -Wall -Wextra -Werror $(DEBUGFLAGS)
 COMPILE = $(CC) $(CFLAGS)
 ARCHIVE = ar rc $(NAME)
 RM = rm -f
+
 SRC = ./src/char/chr_isquote.c \
 	./src/char/ft_charequals.c \
 	./src/char/ft_ctolower.c \
@@ -63,8 +64,6 @@ SRC = ./src/char/chr_isquote.c \
 	./src/memory/ft_memcmp.c \
 	./src/memory/ft_memcpy.c \
 	./src/memory/ft_memmove.c \
-	./src/memory/ft_memmtxcpy.c \
-	./src/memory/ft_memmtxlen.c \
 	./src/memory/ft_memrev.c \
 	./src/memory/ft_memset.c \
 	./src/printf/ft_pfflag.c \
@@ -95,7 +94,10 @@ SRC = ./src/char/chr_isquote.c \
 	./src/str/str_lcat.c \
 	./src/str/str_lcpy.c \
 	./src/str/str_mapi.c \
+	./src/str/str_mtxcpy.c \
 	./src/str/str_mtxdup.c \
+	./src/str/str_mtxlen.c \
+	./src/str/str_mtxpush.c \
 	./src/str/str_nstr.c \
 	./src/str/str_pad.c \
 	./src/str/str_pushchar.c \

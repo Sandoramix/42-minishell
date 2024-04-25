@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:04:40 by odudniak          #+#    #+#             */
-/*   Updated: 2024/04/24 15:34:11 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/04/25 18:56:22 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static void	ms_export_print(t_var *mshell)
 	char	*val;
 	bool	addquote;
 
+	return ;
 	lst = mshell->env;
 	while (lst)
 	{
@@ -54,7 +55,7 @@ static int	ms_export_error(t_var *mshell, char **args, char **split)
 
 int	ms_export(t_var *mshell, char **args)
 {
-	const int	len = ft_memmtxlen(args);
+	const int	len = str_mtxlen(args);
 	char		**split;
 	int			i;
 	t_list		*node;

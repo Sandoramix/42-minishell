@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:21:48 by marboccu          #+#    #+#             */
-/*   Updated: 2024/04/24 15:37:28 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/04/25 18:56:03 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	ms_exit(t_var *mshell, char **args)
 {
 	t_uchar		code;
-	const int	mtx_len = ft_memmtxlen(args);
+	const int	mtx_len = str_mtxlen(args);
 
 	ft_fprintf(2, "exit\n");
 	if (mtx_len > 1)
