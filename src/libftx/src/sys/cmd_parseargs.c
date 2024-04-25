@@ -6,119 +6,81 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 13:16:03 by odudniak          #+#    #+#             */
-/*   Updated: 2024/04/24 15:34:26 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/04/25 19:53:16 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 
-static bool	casecheck(const char *raw, t_cmdparse *info, int ifcase)
+int	quote_closure_idx(char *s, char quote_opener, int start)
 {
-	const char		raw_at_i = raw[info->i];
-	const char		outer = info->outside_quote;
-	const char		inner = info->inside_quote;
-	const bool		escaped = info->escaped;
-
-	if (ifcase == 1)
-		return (ft_isspace(raw_at_i) && !outer && !escaped && !inner);
-	if (ifcase == 2)
-		return (chr_isquote(raw_at_i) && !escaped && !outer);
-	if (ifcase == 3)
-		return (raw_at_i == '\\' && !escaped
-			&& chr_isquote(outer) && chr_isquote(raw[info->i + 1]));
-	if (ifcase == 4)
-		return (raw_at_i == '\\' && !escaped && chr_isquote(outer));
-	return (false);
+	while (s && s[++start])
+		if (s[start] == quote_opener)
+			return (start);
+	return (-1);
 }
 
-static void	*update_info(const char *raw, t_cmdparse *info)
+void print_fromto(char *s, int start, int end)
 {
-	if (casecheck(raw, info, 1) && info->i > 0 && raw[info->i - 1] != ' ')
-		return (info->args_count++, NULL);
-	if (casecheck(raw, info, 2))
-	{
-		if (!info->inside_quote)
-		{
-			info->outside_quote = raw[info->i];
-			info->inside_quote = true;
-		}
-		else if (raw[info->i] == info->outside_quote)
-		{
-			info->inside_quote = false;
-			info->outside_quote = 0;
-		}
-	}
-	else if (casecheck(raw, info, 3))
-	{
-		info->escaped = true;
-		info->i++;
-	}
-	else
-		info->escaped = casecheck(raw, info, 4);
-	return (NULL);
+	if (end < start)
+		return ;
+	write(1, "[", 1);
+	write(1, s + start, end - start + 1);
+	write(1, "]", 1);
 }
 
-static bool	cmdparse_init(t_cmdparse *data, char **raw, char ***res)
-{
-	if (!raw)
-		return (false);
-	*data = (t_cmdparse){0};
-	*raw = str_trim(*raw, " \n\t\n\v\f\r");
-	if (!*raw)
-		return (false);
-	data->i = -1;
-	while (*raw && (*raw)[++data->i])
-		update_info(*raw, data);
-	if (*raw && *raw[0] != '\0')
-		(data->args_count)++;
-	*res = ft_calloc(data->args_count + 1, sizeof(char *));
-	if (!*res)
-		return (free(*raw), false);
-	*data = (t_cmdparse){data->args_count, 0, 0, 0, 0, -1, 0};
-	return (true);
-}
-
-static char	**checklast(t_cmdparse info, char *raw, char **res)
-{
-	info.i--;
-	if (raw[info.start])
-	{
-		res[info.res_idx] = my_substr(raw, info.start
-				+ chr_isquote(raw[info.start]),
-				info.i - chr_isquote(raw[info.i]));
-		if (!res[info.res_idx])
-			return (free(raw), str_freemtx(res), NULL);
-		info.res_idx++;
-	}
-	free(raw);
-	return (res);
-}
-
-// TODO: FIXME
+// TODO: NORMINETTE ME PLEASE
 char	**cmd_parse(char *raw)
 {
-	t_cmdparse			info;
-	char				**res;
+	int			residx;
+	char		**res;
+	char		*tmp;
+	int			edgeidx;
+	int			i;
 
-	if (!cmdparse_init(&info, &raw, &res))
-		return (NULL);
-	while (raw[++info.i])
+	res = NULL;
+	i = -1;
+	edgeidx = 0;
+	residx = -1;
+	while (raw && raw[++i])
 	{
-		if (casecheck(raw, &info, 1))
+		if (chr_isquote(raw[i]))
 		{
-			if (info.i > 0 && !ft_isspace(raw[info.i - 1])
-				&& (info.i == 1 || (info.i > 1 && raw[info.i - 2] != '\\')))
+			edgeidx = quote_closure_idx(raw, raw[i], i);
+			dbg_printf("Found a quote {%c} at:\t[%3d] - [%3d]:\t", raw[i], i, edgeidx);
+			print_fromto(raw, i, edgeidx);
+			dbg_printf("\n");
+			if (edgeidx - 1 == i && ++i && ++edgeidx)
 			{
-				res[info.res_idx++] = my_substr(raw, info.start
-						+ chr_isquote(raw[info.start]), \
-					info.i - 1 - (info.i > 1 && chr_isquote(raw[info.i - 2])));
-				if (!res[info.res_idx - 1])
-					return (str_freemtx(res), free(raw), NULL);
+				dbg_printf("\tIt's an empty string. Skipping...\n");
+				continue ;
 			}
-			info.start = info.i + 1;
+			if (edgeidx == -1)
+				edgeidx = str_ilen(raw);
+			tmp = my_substr(raw, i + 1, edgeidx - 1);
+			if (!tmp)
+				return (str_freemtx(res), NULL);
+			if (i != 0 && !ft_isspace(raw[i - 1]))
+			{
+				dbg_printf("\tIt's near the char %c\n", raw[i - 1]);
+				res[residx] = str_freejoin(res[residx], tmp);
+				free(tmp);
+			}
+			else if (!str_mtxpush(&res, tmp) || ++residx < -1)
+				return (str_freemtx(res), free(tmp), NULL);
+			i = edgeidx;
 		}
-		else
-			update_info(raw, &info);
+		else if (ft_isspace(raw[i]) && !ft_isspace(raw[i + 1]))
+			edgeidx = i + 1;
+		else if (!ft_isspace(raw[i]) && (ft_isspace(raw[i + 1]) || !raw[i + 1] || chr_isquote(raw[i + 1])))
+		{
+			dbg_printf("Found unquoted word at:\t[%3d] - [%3d]:\t", edgeidx, i);
+			print_fromto(raw, edgeidx, i);
+			dbg_printf("\n");
+			tmp = my_substr(raw, edgeidx, i);
+			if (!tmp || !str_mtxpush(&res, tmp) || ++residx < -1)
+				return (str_freemtx(res), free(tmp), NULL);
+		}
 	}
-	return (checklast(info, raw, res));
+	return (res);
 }
