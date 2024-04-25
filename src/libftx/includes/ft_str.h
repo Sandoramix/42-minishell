@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:36:51 by odudniak          #+#    #+#             */
-/*   Updated: 2024/04/25 18:20:27 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/04/25 18:23:30 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -384,7 +384,8 @@ char		**str_mtxcpy(char **dest, char **src, size_t n);
  * by the newly allocated matrix, and the old one is freed with `free`.
  * @param mtxp pointer to the matrix.
  * @param s string to push
- * @return pointer to the newly allocated matrix, or `NULL` if any error happened.
+ * @return pointer to the newly allocated matrix,
+ * or `NULL` if any error happened.
  */
 char		**str_mtxpush(char ***mtxp, char *s);
 #endif
