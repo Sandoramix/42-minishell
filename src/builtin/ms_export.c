@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:04:40 by odudniak          #+#    #+#             */
-/*   Updated: 2024/04/25 18:56:22 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/04/25 20:00:05 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,12 @@ static void	ms_export_print(t_var *mshell)
 	char	*val;
 	bool	addquote;
 
-	return ;
 	lst = mshell->env;
 	while (lst)
 	{
 		printf("declare -x %s", (char *)lst->key);
 		val = (char *)lst->val;
-		addquote = !val || !val[0] || str_includesset(val, "\"'*;$@");
+		addquote = !val || !val[0] || str_includesset(val, "\" '\t\n\v\r*;$@");
 		if (!lst->_hidden && addquote)
 			printf("='%s'", val);
 		else if (!lst->_hidden && !addquote)
@@ -85,8 +84,8 @@ int	ms_export(t_var *mshell, char **args)
 int	main(int ac, char **av, char **envp)
 {
 	t_var		mshell;
-	const char	*args[] = {"export", "a1", "a2=t2", "a3=t3", "a4=\"t4\"",
-		"a5='t5'", "a6='t 6'", NULL};
+	const char	*input = "''exp\"ort\" a=   b'='   c='  ' d='\"' 'e' 'f= '";
+	char		**args;
 	const char	*arg_1[]= {"export", NULL};
 
 	(void)av;
@@ -95,10 +94,10 @@ int	main(int ac, char **av, char **envp)
 		return (pf_errcode(ERR_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
 	mshell._main.envp = envp;
 	ms_init(&mshell);
-
-	ms_export(&mshell, (char **)args);
+	ft_printf(COLOR_MAGENTA"Initial input:\t%s\n"CR, input);
+	args = cmd_parse((char *)input);
+	ms_export(&mshell, args);
 	ms_export(&mshell, (char **)arg_1);
-	(void)arg_1;
 	return (cleanup(&mshell, true, 0));
 }
 */
