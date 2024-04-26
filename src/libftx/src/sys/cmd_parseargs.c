@@ -6,12 +6,12 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 13:16:03 by odudniak          #+#    #+#             */
-/*   Updated: 2024/04/25 19:53:16 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/04/26 10:34:19 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
-
+// TODO: add me to libftx
 int	quote_closure_idx(char *s, char quote_opener, int start)
 {
 	while (s && s[++start])
@@ -20,7 +20,7 @@ int	quote_closure_idx(char *s, char quote_opener, int start)
 	return (-1);
 }
 
-void print_fromto(char *s, int start, int end)
+static void	print_fromto(char *s, int start, int end)
 {
 	if (end < start)
 		return ;
@@ -50,14 +50,12 @@ char	**cmd_parse(char *raw)
 			dbg_printf("Found a quote {%c} at:\t[%3d] - [%3d]:\t", raw[i], i, edgeidx);
 			print_fromto(raw, i, edgeidx);
 			dbg_printf("\n");
-			if (edgeidx - 1 == i && ++i && ++edgeidx)
-			{
-				dbg_printf("\tIt's an empty string. Skipping...\n");
-				continue ;
-			}
 			if (edgeidx == -1)
 				edgeidx = str_ilen(raw);
-			tmp = my_substr(raw, i + 1, edgeidx - 1);
+			if (i + 1 > edgeidx - 1)
+				tmp = ft_calloc(1, sizeof(char));
+			else
+				tmp = my_substr(raw, i + 1, edgeidx - 1);
 			if (!tmp)
 				return (str_freemtx(res), NULL);
 			if (i != 0 && !ft_isspace(raw[i - 1]))
@@ -68,7 +66,13 @@ char	**cmd_parse(char *raw)
 			}
 			else if (!str_mtxpush(&res, tmp) || ++residx < -1)
 				return (str_freemtx(res), free(tmp), NULL);
-			i = edgeidx;
+			if (edgeidx - 1 == i)
+			{
+				i++;
+				edgeidx++;
+			}
+			else
+				i = edgeidx;
 		}
 		else if (ft_isspace(raw[i]) && !ft_isspace(raw[i + 1]))
 			edgeidx = i + 1;
