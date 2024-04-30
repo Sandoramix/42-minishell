@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 13:16:03 by odudniak          #+#    #+#             */
-/*   Updated: 2024/04/26 10:34:19 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/04/30 19:49:47 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ static void	print_fromto(char *s, int start, int end)
 }
 
 // TODO: NORMINETTE ME PLEASE
+// TODO: keep the quotes > expand env variables > remove quotes.
+//(t_list with each node having it's type)
 char	**cmd_parse(char *raw)
 {
 	int			residx;
