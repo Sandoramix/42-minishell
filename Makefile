@@ -15,7 +15,8 @@ SRC= main.c \
 	./src/builtin/ms_env.c \
 	./src/builtin/ms_pwd.c \
 	./src/ms_cleanup.c \
-	./src/builtin/ms_export.c
+	./src/builtin/ms_export.c \
+	./src/builtin/ms_cd.c \
 
 # ----RULES-----
 all: $(NAME)

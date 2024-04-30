@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/04/24 11:53:57 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/04/30 17:37:17 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct s_var
 	t_main				_main;
 	char				**cmds_paths;
 	char				*curr_path;
+	char *home_path;
 	uint64_t			curpath_len;
 	t_uchar				*status_code;
 }			t_var;

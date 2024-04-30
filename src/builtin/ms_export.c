@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:04:40 by odudniak          #+#    #+#             */
-/*   Updated: 2024/04/26 10:38:28 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/04/30 17:50:51 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,24 +82,23 @@ int	ms_export(t_var *mshell, char **args)
 	return (OK);
 }
 
-/*
-int	main(int ac, char **av, char **envp)
-{
-	t_var		mshell;
-	const char	*input = "''exp\"ort\" a=   '''b='   c='  ' d='\"' 'e' 'f= '";
-	char		**args;
-	const char	*arg_1[] = {"export", NULL};
 
-	(void)av;
-	mshell = (t_var){0};
-	if (ac != 1)
-		return (pf_errcode(ERR_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
-	mshell._main.envp = envp;
-	ms_init(&mshell);
-	ft_printf(COLOR_MAGENTA"Initial input:\t%s\n"CR, input);
-	args = cmd_parse((char *)input);
-	ms_export(&mshell, args);
-	ms_export(&mshell, (char **)arg_1);
-	return (cleanup(&mshell, true, 0));
-}
-*/
+// int	main(int ac, char **av, char **envp)
+// {
+// 	t_var		mshell;
+// 	const char	*input = "''exp\"ort\" a=   '''b='   c='  ' d='\"' 'e' 'f= '";
+// 	char		**args;
+// 	const char	*arg_1[] = {"export", NULL};
+
+// 	(void)av;
+// 	mshell = (t_var){0};
+// 	if (ac != 1)
+// 		return (pf_errcode(ERR_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
+// 	mshell._main.envp = envp;
+// 	ms_init(&mshell);
+// 	ft_printf(COLOR_MAGENTA"Initial input:\t%s\n"CR, input);
+// 	args = cmd_parse((char *)input);
+// 	ms_export(&mshell, args);
+// 	ms_export(&mshell, (char **)arg_1);
+// 	return (cleanup(&mshell, true, 0));
+// }
