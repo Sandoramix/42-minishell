@@ -149,7 +149,7 @@ fclean: clean
 re: fclean all
 
 debug:
-	$(MAKE) DEBUGFLAGS=-g
+	$(MAKE) DEBUGFLAGS="-g -DDEBUG=true"
 debug-re: fclean debug
 
 # COLORS

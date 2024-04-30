@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:04:40 by odudniak          #+#    #+#             */
-/*   Updated: 2024/04/30 17:50:51 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/04/30 19:51:55 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ static void	ms_export_debug(t_var *mshell, char **args)
 // TODO:  print with "escape" of special characters (a='\"') ?
 // TODO:  create `chr_isspecial` which will check if the given character is
 //		  a special one.
+// TODO: after args parsing, expand env variables
+//		  and then remove the opening/closing quotes
+
 static void	ms_export_print(t_var *mshell)
 {
 	t_list	*lst;
