@@ -6,26 +6,11 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:04:40 by odudniak          #+#    #+#             */
-/*   Updated: 2024/04/30 19:50:13 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/03 13:58:26 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-static void	ms_export_debug(t_var *mshell, char **args)
-{
-	if (!DEBUG)
-		return ;
-	printf(COLOR_CYAN"[ms_export] DEBUG:\n"CR);
-	ft_putstrmtx(args);
-	(void)mshell;
-}
-
-// TODO:  print with "escape" of special characters (a='\"') ?
-// TODO:  create `chr_isspecial` which will check if the given character is
-//		  a special one.
-// TODO: after args parsing, expand env variables
-//		  and then remove the opening/closing quotes
 
 static void	ms_export_print(t_var *mshell)
 {
@@ -57,32 +42,88 @@ static int	ms_export_error(t_var *mshell, char **args, char **split)
 	return (KO);
 }
 
+int	ms_export_checkarg(char *arg)
+{
+	int		i;
+	bool	valid;
+	int		equal_idx;
+
+	i = 0;
+	valid = true;
+	equal_idx = str_idxofstr(arg, "+=");
+	if (equal_idx == -1)
+		equal_idx = str_idxofchar(arg, '=');
+	while (arg && ((equal_idx == -1 && arg[i]) || i < equal_idx))
+	{
+		if (i == 0 && (!ft_isalpha(arg[0]) && arg[0] != '_'))
+			valid = false;
+		else if (!ft_isalnum(arg[i]) && arg[i] != '_')
+			valid = false;
+		if (!valid)
+			break ;
+		i++;
+	}
+	if (!valid)
+	{
+		ft_perror("export: `%s`: not a valid identifier\n", arg);
+		return (KO);
+	}
+	return (OK);
+}
+
+int	ms_export_handler(t_var *mshell, char **args, int idx)
+{
+	char	**split;
+	t_list	*found;
+	t_list	*node;
+
+	if (str_idxofstr(args[idx], "+=") != -1)
+		split = str_split_firststr(args[idx], "+=");
+	else
+		split = str_split_first(args[idx], '=');
+	if (!split)
+		return (ms_export_error(mshell, args, NULL));
+	found = lst_findbykey_str(mshell->env, split[0]);
+	node = found;
+	if (!node)
+		node = lst_new(split[1], split[0]);
+	if (!node)
+		return (ms_export_error(mshell, args, split));
+	if (!split[1])
+		node->_hidden = true;
+	if (str_idxofstr(args[idx], "+=") != -1 && found)
+		node->val = str_freejoin(node->val, split[1]);
+	if (str_idxofstr(args[idx], "+=") != -1 && found)
+		free(split[1]);
+	if (!lst_addnode_tail(&mshell->env, node))
+		return (ms_export_error(mshell, args, split));
+	return (free(split), OK);
+}
+
 int	ms_export(t_var *mshell, char **args)
 {
 	const int	len = str_mtxlen(args);
-	char		**split;
 	int			i;
-	t_list		*node;
+	int			curr;
+	int			res;
 
-	ms_export_debug(mshell, args);
+	if (DEBUG)
+	{
+		dbg_printf(COLOR_CYAN"[ms_export] DEBUG:\n"CR);
+		ft_putstrmtx(args);
+	}
+	res = OK;
 	if (len == 1)
 		return (ms_export_print(mshell), OK);
 	i = 0;
 	while (args && args[++i])
 	{
-		split = str_split_first(args[i], '=');
-		if (!split)
-			return (ms_export_error(mshell, args, NULL));
-		node = lst_new(split[1], split[0]);
-		if (!node)
-			return (ms_export_error(mshell, args, split));
-		if (!split[1])
-			node->_hidden = true;
-		if (!lst_addnode_tail(&mshell->env, node))
-			return (ms_export_error(mshell, args, split));
-		free(split);
+		curr = ms_export_checkarg(args[i]);
+		res = res && curr;
+		if (curr == OK)
+			ms_export_handler(mshell, args, i);
 	}
-	return (OK);
+	return (res);
 }
 
 /*
@@ -100,8 +141,23 @@ int	main(int ac, char **av, char **envp)
 	mshell._main.envp = envp;
 	ms_init(&mshell);
 	ft_printf(COLOR_MAGENTA"Initial input:\t%s\n"CR, input);
+
 	args = cmd_parse((char *)input);
 	ms_export(&mshell, args);
+	str_freemtx(args);
+
+	args = cmd_parse("export c+=1");
+	ms_export(&mshell, args);
+	str_freemtx(args);
+
+	args = cmd_parse("export c1= c_ _c");
+	ms_export(&mshell, args);
+	str_freemtx(args);
+
+	args = cmd_parse("export 1c1= .c_ x55 !_c");
+	ms_export(&mshell, args);
+	str_freemtx(args);
+
 	ms_export(&mshell, (char **)arg_1);
 	return (cleanup(&mshell, true, 0));
 }
