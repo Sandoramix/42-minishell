@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 13:00:36 by odudniak          #+#    #+#             */
-/*   Updated: 2024/02/28 18:18:53 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/04 19:10:36 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,5 +16,15 @@ void	*ft_free(void *mem)
 {
 	if (mem)
 		free(mem);
+	return (NULL);
+}
+
+void	*ft_ptrfree(void **mem)
+{
+	if (mem)
+	{
+		free(*mem);
+		*mem = NULL;
+	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:35:26 by odudniak          #+#    #+#             */
-/*   Updated: 2024/04/25 18:09:36 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/04 19:12:02 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,16 @@
  * @return `NULL`
  */
 void		*ft_free(void *mem);
+
+/**
+ * @brief Free the given memory, change the pointer's value to NULL
+ * and return NULL
+ *
+ * @param mem memory to free
+ * @attention Uses `free`
+ * @return `NULL`
+ */
+void		*ft_ptrfree(void **mem);
 /**
  * @brief This function allocates memory for an array of `nmemb` elements
  * of size bytes each and returns a pointer to the allocated memory.
