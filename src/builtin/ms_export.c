@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:04:40 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/03 13:58:26 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/04 20:11:19 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,31 +33,32 @@ static void	ms_export_print(t_var *mshell)
 	}
 }
 
-static int	ms_export_error(t_var *mshell, char **args, char **split)
+static int	ms_export_error(t_var *mshell, t_list *args, char **split)
 {
-	str_freemtx(args);
+	lst_free(&args, free);
 	str_freemtx(split);
 	pf_errcode(ERR_MALLOC);
 	cleanup(mshell, true, 1);
 	return (KO);
 }
 
-int	ms_export_checkarg(char *arg)
+int	ms_export_checkarg(t_list *arg)
 {
-	int		i;
-	bool	valid;
-	int		equal_idx;
+	const char	*val = (char *)arg->val;
+	int			i;
+	bool		valid;
+	int			equal_idx;
 
 	i = 0;
-	valid = true;
-	equal_idx = str_idxofstr(arg, "+=");
+	equal_idx = str_idxofstr(val, "+=");
 	if (equal_idx == -1)
-		equal_idx = str_idxofchar(arg, '=');
-	while (arg && ((equal_idx == -1 && arg[i]) || i < equal_idx))
+		equal_idx = str_idxofchar(val, '=');
+	valid = str_ilen(val) > 0;
+	while (valid && arg && ((equal_idx == -1 && val[i]) || i < equal_idx))
 	{
-		if (i == 0 && (!ft_isalpha(arg[0]) && arg[0] != '_'))
+		if (i == 0 && (!ft_isalpha(val[0]) && val[0] != '_'))
 			valid = false;
-		else if (!ft_isalnum(arg[i]) && arg[i] != '_')
+		else if (!ft_isalnum(val[i]) && val[i] != '_')
 			valid = false;
 		if (!valid)
 			break ;
@@ -65,22 +66,23 @@ int	ms_export_checkarg(char *arg)
 	}
 	if (!valid)
 	{
-		ft_perror("export: `%s`: not a valid identifier\n", arg);
+		ft_perror("export: `%s`: not a valid identifier\n", arg->val);
 		return (KO);
 	}
 	return (OK);
 }
 
-int	ms_export_handler(t_var *mshell, char **args, int idx)
+int	ms_export_handler(t_var *mshell, t_list *args, t_list *arg)
 {
-	char	**split;
-	t_list	*found;
-	t_list	*node;
+	char		**split;
+	t_list		*found;
+	t_list		*node;
+	char		*val;
 
-	if (str_idxofstr(args[idx], "+=") != -1)
-		split = str_split_firststr(args[idx], "+=");
+	if (str_idxofstr((char *)arg->val, "+=") != -1)
+		split = str_split_firststr((char *)arg->val, "+=");
 	else
-		split = str_split_first(args[idx], '=');
+		split = str_split_first((char *)arg->val, '=');
 	if (!split)
 		return (ms_export_error(mshell, args, NULL));
 	found = lst_findbykey_str(mshell->env, split[0]);
@@ -91,48 +93,139 @@ int	ms_export_handler(t_var *mshell, char **args, int idx)
 		return (ms_export_error(mshell, args, split));
 	if (!split[1])
 		node->_hidden = true;
-	if (str_idxofstr(args[idx], "+=") != -1 && found)
+	if (found)
+		free(split[0]);
+	if (str_idxofstr((char *)arg->val, "+=") != -1 && found)
+	{
 		node->val = str_freejoin(node->val, split[1]);
-	if (str_idxofstr(args[idx], "+=") != -1 && found)
 		free(split[1]);
-	if (!lst_addnode_tail(&mshell->env, node))
+	}
+	else if (str_idxofchar((char *)arg->val, '=') != -1 && found)
+	{
+		val = node->val;
+		node->val = split[1];
+		free(val);
+	}
+	if (!found && !lst_addnode_tail(&mshell->env, node))
 		return (ms_export_error(mshell, args, split));
 	return (free(split), OK);
 }
 
-int	ms_export(t_var *mshell, char **args)
+int	ms_export(t_var *mshell, t_list *args)
 {
-	const int	len = str_mtxlen(args);
-	int			i;
-	int			curr;
-	int			res;
+	t_list			*argsp;
+	const int		len = lst_size(args);
+	int				curr;
+	int				res;
 
 	if (DEBUG)
 	{
 		dbg_printf(COLOR_CYAN"[ms_export] DEBUG:\n"CR);
-		ft_putstrmtx(args);
+		lst_printstr(args);
 	}
+	if (!args)
+		return (KO);
 	res = OK;
 	if (len == 1)
 		return (ms_export_print(mshell), OK);
-	i = 0;
-	while (args && args[++i])
+	argsp = args->next;
+	while (argsp)
 	{
-		curr = ms_export_checkarg(args[i]);
+		curr = ms_export_checkarg(argsp);
 		res = res && curr;
 		if (curr == OK)
-			ms_export_handler(mshell, args, i);
+			ms_export_handler(mshell, args, argsp);
+		argsp = argsp->next;
 	}
 	return (res);
+}
+
+char	*str_clearquotes(void **str)
+{
+	char	*final;
+	char	*s;
+	int		i;
+	int		edge;
+	char	*tmp;
+
+	s = (char *)*str;
+	i = -1;
+	final = NULL;
+	edge = 0;
+	while (s && s[++i])
+	{
+		if (chr_isquote(s[i]))
+		{
+			edge = chr_quoteclose_idx(s, s[i], i);
+			if (edge - 1 == i)
+			{
+				if (!final)
+					final = ft_calloc(1, sizeof(char));
+				if (!final)
+					return (ft_ptrfree(str));
+				++i;
+				++edge;
+				continue ;
+			}
+			if (edge == -1)
+				tmp = my_substr(s, 1, str_ilen(s) - 1);
+			else
+				tmp = my_substr(s, i + 1, edge - 1);
+			if (!tmp)
+				return (ft_ptrfree(str));
+			final = str_freejoin(final, tmp);
+			if (!final)
+				return (ft_free(tmp), ft_ptrfree(str));
+			free(tmp);
+			i = edge;
+		}
+		else if (ft_isspace(s[i]) && !ft_isspace(s[i + 1]))
+			edge = i + 1;
+		else if (!ft_isspace(s[i]) && (!s[i + 1] || chr_isquote(s[i + 1])))
+		{
+			tmp = my_substr(s, edge, i);
+			if (!tmp)
+				return (ft_ptrfree(str));
+			final = str_freejoin(final, tmp);
+			if (!final)
+				return (ft_free(tmp), ft_ptrfree(str));
+			free(tmp);
+			edge = i + 1;
+		}
+	}
+	ft_ptrfree(str);
+	*str = final;
+	return (final);
+}
+
+t_list	*expand_and_clear(t_list *args)
+{
+	t_list	*arg;
+	int		i;
+	int		edge;
+	char	*val;
+
+	arg = args;
+	while (arg)
+	{
+		dbg_printf(COLOR_CYAN"ex_clear of [%s]\n"CR, arg->val);
+		edge = 0;
+		i = -1;
+		val = (char *)arg->val;
+
+		// TODO add expansion
+		if (arg->val && !str_clearquotes(&arg->val))
+			return (lst_free(&args, free));
+		arg = arg->next;
+	}
+	return (args);
 }
 
 /*
 int	main(int ac, char **av, char **envp)
 {
 	t_var		mshell;
-	const char	*input = "''exp\"ort\" a=   '''b='   c='  ' d='\"' 'e' 'f= '";
-	char		**args;
-	const char	*arg_1[] = {"export", NULL};
+	t_list		*args;
 
 	(void)av;
 	mshell = (t_var){0};
@@ -142,23 +235,31 @@ int	main(int ac, char **av, char **envp)
 	ms_init(&mshell);
 	ft_printf(COLOR_MAGENTA"Initial input:\t%s\n"CR, input);
 
-	args = cmd_parse((char *)input);
+	args = cmd_parse_new("''exp\"ort\" a= \" \" ''  '''b='   c='  ' d='\"' 'e' 'f= '");
+	args = expand_and_clear(args);
 	ms_export(&mshell, args);
-	str_freemtx(args);
+	lst_free(&args, free);
 
-	args = cmd_parse("export c+=1");
+	args = cmd_parse_new("export c+=1");
+	args = expand_and_clear(args);
 	ms_export(&mshell, args);
-	str_freemtx(args);
+	lst_free(&args, free);
 
-	args = cmd_parse("export c1= c_ _c");
+	args = cmd_parse_new("export c1= c_ _c");
+	args = expand_and_clear(args);
 	ms_export(&mshell, args);
-	str_freemtx(args);
+	lst_free(&args, free);
 
-	args = cmd_parse("export 1c1= .c_ x55 !_c");
+	args = cmd_parse_new("export 1c1= .c_ x55 !_c");
+	args = expand_and_clear(args);
 	ms_export(&mshell, args);
-	str_freemtx(args);
+	lst_free(&args, free);
 
-	ms_export(&mshell, (char **)arg_1);
+	args = cmd_parse_new("export");
+	args = expand_and_clear(args);
+	ms_export(&mshell, args);
+	lst_free(&args, free);
+
 	return (cleanup(&mshell, true, 0));
 }
 */

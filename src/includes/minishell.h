@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/04/24 11:53:57 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/04 18:26:09 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,5 @@ void	ms_unset(t_var *mshell, char **args);
 void	ms_exit(t_var *mshell, char **args);
 
 void	*ms_pwd(t_var *mshell);
-int		ms_export(t_var *mshell, char **args);
+int		ms_export(t_var *mshell, t_list *args);
 #endif
