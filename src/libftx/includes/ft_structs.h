@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:53:30 by odudniak          #+#    #+#             */
-/*   Updated: 2024/04/24 12:53:48 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/04 15:26:13 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,5 +129,11 @@ typedef enum e_status
 	OK,
 	KO
 }	t_status;
+
+typedef enum e_argtype
+{
+	A_DEFAULT,
+	A_TOKEN
+}	t_argtype;
 
 #endif
