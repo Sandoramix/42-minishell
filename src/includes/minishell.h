@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/05 14:29:15 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/05 19:46:26 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,9 @@ void	ms_unset(t_var *mshell, char **args);
 
 void	ms_exit(t_var *mshell, char **args);
 
-void	*ms_pwd(t_var *mshell);
+void	*ms_pwd(t_var *mshell, t_list *args);
 int		ms_export(t_var *mshell, t_list *args);
+void	ms_env(t_var *mshell, t_list *args);
 
 //-----------------------------------------------------------------------------
 //---------------------------PARSING-------------------------------------------
