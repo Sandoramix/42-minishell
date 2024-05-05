@@ -115,7 +115,6 @@ SRC = ./src/char/chr_closequote_idx.c \
 	./src/str/str_ulen.c \
 	./src/strict/converter/strict_atoi.c \
 	./src/sys/cleanup.c \
-	./src/sys/cmd_parseargs.c \
 	./src/sys/sys_cmd.c \
 	./src/sys/sys_time.c \
 	./src/unistd/ft_putaddr_fd.c \

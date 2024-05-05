@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 15:46:10 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/04 16:51:34 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/05 14:07:23 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,6 @@ typedef enum e_timeunit
 
 typedef struct timeval	t_time;
 typedef struct timeval	t_timeval;
-
-/**
- * @brief Parse the string of a command.
- * It even handles internal quotes.
- * @param command command's string to parse
- * @return Array of args parsed.
- */
-char		**cmd_parse(char *command);
-
-t_list		*cmd_parse_new(char *raw);
 
 /**
  * @brief Generate list of commands where the `key` is the command of `cmds`

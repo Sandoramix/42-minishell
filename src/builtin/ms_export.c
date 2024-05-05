@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:04:40 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/04 20:11:19 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/05 14:23:57 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,87 +140,6 @@ int	ms_export(t_var *mshell, t_list *args)
 	return (res);
 }
 
-char	*str_clearquotes(void **str)
-{
-	char	*final;
-	char	*s;
-	int		i;
-	int		edge;
-	char	*tmp;
-
-	s = (char *)*str;
-	i = -1;
-	final = NULL;
-	edge = 0;
-	while (s && s[++i])
-	{
-		if (chr_isquote(s[i]))
-		{
-			edge = chr_quoteclose_idx(s, s[i], i);
-			if (edge - 1 == i)
-			{
-				if (!final)
-					final = ft_calloc(1, sizeof(char));
-				if (!final)
-					return (ft_ptrfree(str));
-				++i;
-				++edge;
-				continue ;
-			}
-			if (edge == -1)
-				tmp = my_substr(s, 1, str_ilen(s) - 1);
-			else
-				tmp = my_substr(s, i + 1, edge - 1);
-			if (!tmp)
-				return (ft_ptrfree(str));
-			final = str_freejoin(final, tmp);
-			if (!final)
-				return (ft_free(tmp), ft_ptrfree(str));
-			free(tmp);
-			i = edge;
-		}
-		else if (ft_isspace(s[i]) && !ft_isspace(s[i + 1]))
-			edge = i + 1;
-		else if (!ft_isspace(s[i]) && (!s[i + 1] || chr_isquote(s[i + 1])))
-		{
-			tmp = my_substr(s, edge, i);
-			if (!tmp)
-				return (ft_ptrfree(str));
-			final = str_freejoin(final, tmp);
-			if (!final)
-				return (ft_free(tmp), ft_ptrfree(str));
-			free(tmp);
-			edge = i + 1;
-		}
-	}
-	ft_ptrfree(str);
-	*str = final;
-	return (final);
-}
-
-t_list	*expand_and_clear(t_list *args)
-{
-	t_list	*arg;
-	int		i;
-	int		edge;
-	char	*val;
-
-	arg = args;
-	while (arg)
-	{
-		dbg_printf(COLOR_CYAN"ex_clear of [%s]\n"CR, arg->val);
-		edge = 0;
-		i = -1;
-		val = (char *)arg->val;
-
-		// TODO add expansion
-		if (arg->val && !str_clearquotes(&arg->val))
-			return (lst_free(&args, free));
-		arg = arg->next;
-	}
-	return (args);
-}
-
 /*
 int	main(int ac, char **av, char **envp)
 {
@@ -233,7 +152,6 @@ int	main(int ac, char **av, char **envp)
 		return (pf_errcode(ERR_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
 	mshell._main.envp = envp;
 	ms_init(&mshell);
-	ft_printf(COLOR_MAGENTA"Initial input:\t%s\n"CR, input);
 
 	args = cmd_parse_new("''exp\"ort\" a= \" \" ''  '''b='   c='  ' d='\"' 'e' 'f= '");
 	args = expand_and_clear(args);

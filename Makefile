@@ -15,7 +15,11 @@ SRC= main.c \
 	./src/builtin/ms_env.c \
 	./src/builtin/ms_pwd.c \
 	./src/ms_cleanup.c \
-	./src/builtin/ms_export.c
+	./src/builtin/ms_export.c \
+	./src/parsing/str_clearquotes.c \
+	./src/parsing/cmd_parse.c \
+	./src/parsing/cmd_parse_new.c \
+	./src/parsing/args_expand_clear.c
 
 # ----RULES-----
 all: $(NAME)
