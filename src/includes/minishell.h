@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/04/30 17:37:17 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/07 13:00:11 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,27 @@ void	ms_unset(t_var *mshell, char **args);
 
 void	ms_exit(t_var *mshell, char **args);
 
-void	*ms_pwd(t_var *mshell);
-int		ms_export(t_var *mshell, char **args);
+void	*ms_pwd(t_var *mshell, t_list *args);
+int		ms_export(t_var *mshell, t_list *args);
+void	ms_env(t_var *mshell, t_list *args);
+
+//-----------------------------------------------------------------------------
+//---------------------------PARSING-------------------------------------------
+
+// TODO REMOVE
+/**
+# DEPRECATED
+ * @brief Parse the string of a command.
+ * It even handles internal quotes.
+ * @param command command's string to parse
+ * @return Array of args parsed.
+ */
+char	**cmd_parse(char *command);
+char	**expand_and_clear_mtx(char **args);
+
+t_list	*cmd_parse_new(char *raw);
+
+char	*str_clearquotes(char **str);
+
+t_list	*expand_and_clear(t_list *args);
 #endif

@@ -1,25 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_parseargs.c                                    :+:      :+:    :+:   */
+/*   cmd_parse.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 13:16:03 by odudniak          #+#    #+#             */
-/*   Updated: 2024/04/30 19:49:47 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/05 14:17:15 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
-// TODO: add me to libftx
-int	quote_closure_idx(char *s, char quote_opener, int start)
-{
-	while (s && s[++start])
-		if (s[start] == quote_opener)
-			return (start);
-	return (-1);
-}
+#include <minishell.h>
 
+// TODO: add me to libftx
 static void	print_fromto(char *s, int start, int end)
 {
 	if (end < start)
@@ -29,9 +22,6 @@ static void	print_fromto(char *s, int start, int end)
 	write(1, "]", 1);
 }
 
-// TODO: NORMINETTE ME PLEASE
-// TODO: keep the quotes > expand env variables > remove quotes.
-//(t_list with each node having it's type)
 char	**cmd_parse(char *raw)
 {
 	int			residx;
@@ -48,23 +38,22 @@ char	**cmd_parse(char *raw)
 	{
 		if (chr_isquote(raw[i]))
 		{
-			edgeidx = quote_closure_idx(raw, raw[i], i);
+			edgeidx = chr_quoteclose_idx(raw, raw[i], i);
 			dbg_printf("Found a quote {%c} at:\t[%3d] - [%3d]:\t", raw[i], i, edgeidx);
 			print_fromto(raw, i, edgeidx);
 			dbg_printf("\n");
 			if (edgeidx == -1)
 				edgeidx = str_ilen(raw);
-			if (i + 1 > edgeidx - 1)
-				tmp = ft_calloc(1, sizeof(char));
-			else
-				tmp = my_substr(raw, i + 1, edgeidx - 1);
+			tmp = my_substr(raw, i, edgeidx);
 			if (!tmp)
 				return (str_freemtx(res), NULL);
-			if (i != 0 && !ft_isspace(raw[i - 1]))
+			if (i != 0 && !ft_isspace(raw[i - 1]) && !chr_istoken(raw[i - 1]))
 			{
 				dbg_printf("\tIt's near the char %c\n", raw[i - 1]);
 				res[residx] = str_freejoin(res[residx], tmp);
 				free(tmp);
+				if (!res[residx])
+					return (str_freemtx(res), NULL);
 			}
 			else if (!str_mtxpush(&res, tmp) || ++residx < -1)
 				return (str_freemtx(res), free(tmp), NULL);
@@ -78,14 +67,34 @@ char	**cmd_parse(char *raw)
 		}
 		else if (ft_isspace(raw[i]) && !ft_isspace(raw[i + 1]))
 			edgeidx = i + 1;
-		else if (!ft_isspace(raw[i]) && (ft_isspace(raw[i + 1]) || !raw[i + 1] || chr_isquote(raw[i + 1])))
+		else if (chr_istoken(raw[i]) && (ft_isspace(raw[i + 1]) || !raw[i + 1] || chr_isquote(raw[i + 1])))
 		{
-			dbg_printf("Found unquoted word at:\t[%3d] - [%3d]:\t", edgeidx, i);
+			dbg_printf("Found unquoted TOKEN at:\t[%3d] - [%3d]:\t", edgeidx, i);
 			print_fromto(raw, edgeidx, i);
 			dbg_printf("\n");
 			tmp = my_substr(raw, edgeidx, i);
 			if (!tmp || !str_mtxpush(&res, tmp) || ++residx < -1)
 				return (str_freemtx(res), free(tmp), NULL);
+		}
+		else if ((!ft_isspace(raw[i]) && !chr_istoken(raw[i])) && (ft_isspace(raw[i + 1]) || !raw[i + 1] || chr_isquote(raw[i + 1]) || chr_istoken(raw[i + 1])))
+		{
+			dbg_printf("Found unquoted WORD at:\t[%3d] - [%3d]:\t", edgeidx, i);
+			print_fromto(raw, edgeidx, i);
+			dbg_printf("\n");
+			tmp = my_substr(raw, edgeidx, i);
+			if (!tmp)
+				return (str_freemtx(res), NULL);
+			if (i != 0 && edgeidx != 0 && !ft_isspace(raw[edgeidx - 1]) && !chr_istoken(raw[edgeidx - 1]))
+			{
+				dbg_printf("\tIt's near the char %c\n", raw[i - 1]);
+				res[residx] = str_freejoin(res[residx], tmp);
+				free(tmp);
+				if (!res[residx])
+					return (str_freemtx(res), NULL);
+			}
+			else if (!str_mtxpush(&res, tmp) || ++residx < -1)
+				return (str_freemtx(res), free(tmp), NULL);
+			edgeidx = i + 1;
 		}
 	}
 	return (res);

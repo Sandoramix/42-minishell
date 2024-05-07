@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:36:51 by odudniak          #+#    #+#             */
-/*   Updated: 2024/04/25 18:23:30 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/03 13:04:38 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -306,7 +306,7 @@ char		*str_trim(char const *s1, char const *set);
 char		**str_split(char const *s, char c);
 
 char		**str_split_first(char const *s, char c);
-
+char		**str_split_firststr(char const *str, char *s);
 /**
  * @brief Check if the given `s` string ends with `end` string
  * @param s string to check

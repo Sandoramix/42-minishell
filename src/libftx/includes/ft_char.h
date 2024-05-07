@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:49:25 by odudniak          #+#    #+#             */
-/*   Updated: 2024/03/10 12:05:42 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/04 16:53:44 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,8 @@ bool		ft_charequals(char c1, char c2);
  * @return `true` if `c` is a quote, `false` otherwise.
  */
 bool		chr_isquote(char c);
+
+bool		chr_istoken(char c);
+int			chr_quoteclose_idx(char *s, char quote_opener, int start);
 
 #endif
