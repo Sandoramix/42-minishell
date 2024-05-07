@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 17:37:44 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/07 12:57:20 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/07 13:02:51 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,35 +44,19 @@ void ms_cd(t_var *mshell, t_list *args)
 // int main(int ac, char **av, char **envp)
 // {
 // 	t_var mshell;
+// 	t_list *args;
+// 	int len;
 
-// 	av = (char *[]){"cd",  NULL};
+// 	av = (char *[]){"cd", "test", NULL};
 // 	mshell = (t_var){0};
 // 	if (ac != 1)
 // 		return (pf_errcode(ERR_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
 // 	mshell._main.envp = envp;
 // 	ms_init(&mshell);
-// 	ms_pwd(&mshell);
-// 	ms_cd(&mshell, av);
-// 	ms_pwd(&mshell);
+// 	args = lst_new(av, NULL);
+// 	len = lst_size(args);
+// 	ms_pwd(&mshell, args);
+// 	ms_cd(&mshell, args);
+// 	ms_pwd(&mshell, args);
 // 	return (cleanup(&mshell, true, 0));
 // }
-
-int main(int ac, char **av, char **envp)
-{
-	t_var mshell;
-	t_list *args;
-	int len;
-
-	av = (char *[]){"cd", "test", NULL};
-	mshell = (t_var){0};
-	if (ac != 1)
-		return (pf_errcode(ERR_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
-	mshell._main.envp = envp;
-	ms_init(&mshell);
-	args = lst_new(av, NULL);
-	len = lst_size(args);
-	ms_pwd(&mshell);
-	ms_cd(&mshell, args);
-	ms_pwd(&mshell);
-	return (cleanup(&mshell, true, 0));
-}
