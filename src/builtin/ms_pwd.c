@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 14:36:35 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/05 19:44:10 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/07 13:07:05 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ void	*ms_pwd(t_var *mshell, t_list *args)
 	}
 	if (str_cmp((char *)args->val, "pwd") == 0)
 		printf("%s\n", mshell->curr_path);
+	else
+		ft_fprintf(2, "%s: command not found\n", (char *)args->val);
 	
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:44:22 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/05 19:49:37 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/07 13:06:15 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ void	ms_env(t_var *mshell, t_list *args)
 
 	if (!args && str_cmp((char *)args->val, "env") != 0)
 	{
-		ft_fprintf(2, "env: %s: No such file or directory\n", (char *)args->val);
+		ft_fprintf(2, "%s: No such file or directory\n", (char *)args->val);
 		return ;
 	}
 	if (lst_size(args) > 1)
 	{
-		ft_fprintf(2, "env: %s: Permission denied\n", (char *)args->val);
+		ft_fprintf(2, "%s: Permission denied\n", (char *)args->val);
 		mshell->status_code = (t_uchar *)126;
 	}
 	args = mshell->env;
