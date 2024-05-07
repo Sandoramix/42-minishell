@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/05 19:46:26 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/07 13:00:11 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct s_var
 	t_main				_main;
 	char				**cmds_paths;
 	char				*curr_path;
+	char *home_path;
 	uint64_t			curpath_len;
 	t_uchar				*status_code;
 }			t_var;
