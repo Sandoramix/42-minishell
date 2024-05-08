@@ -16,7 +16,7 @@ SRC= main.c \
 	./src/builtin/ms_pwd.c \
 	./src/ms_cleanup.c \
 	./src/builtin/ms_export.c \
-	./src/builtin/ms_cd.c \ \
+	./src/builtin/ms_cd.c \
 	./src/parsing/str_clearquotes.c \
 	./src/parsing/cmd_parse.c \
 	./src/parsing/cmd_parse_new.c \
