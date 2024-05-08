@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 12:33:15 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/08 15:24:22 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:54:01 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,16 @@ int	ms_loadenv(t_var *mshell)
 
 	mshell->env = env_load(mshell->_main.envp);
 	if (!mshell->env)
-		return (pf_errcode(ERR_ENV_LOAD), cleanup(mshell, true, 1));
+		return (pf_errcode(ERR_ENV_LOAD), cleanup(mshell, true, 1), KO);
 	home_node = lst_findbykey_str(mshell->env, "HOME");
 	if (home_node)
-		mshell->home_path = home_node->val;
-	dbg_printf("HOME: %s\n", mshell->home_path);
+	{
+		mshell->home_path = str_dup(home_node->val);
+		if (!mshell->home_path && home_node->val)
+			return (pf_errcode(ERR_ENV_LOAD), cleanup(mshell, true, 1));
+	}
 	mshell->cmds_paths = env_load_paths(mshell->env);
-	return (0);
+	return (OK);
 }
 
 void	ms_init(t_var *mshell)
@@ -33,6 +36,7 @@ void	ms_init(t_var *mshell)
 	mshell->status_code = ft_calloc(1, sizeof(unsigned char));
 	if (!mshell->status_code)
 		cleanup(mshell, true, 1);
+	dbg_printf("HOME: %s\n", mshell->home_path);
 	mshell->curpath_len = PATH_MAX;
 	mshell->curr_path = ft_calloc(PATH_MAX, sizeof(char));
 	if (!mshell->curr_path)
