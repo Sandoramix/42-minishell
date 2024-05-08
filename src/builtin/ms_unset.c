@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:25:21 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/08 15:23:15 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/08 16:05:18 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static void	ms_unset_debug(t_var *mshell, t_list *args, char *stage)
 	if (!DEBUG)
 		return ;
 	printf(COLOR_MAGENTA"[ms_unset] %s\n"CR, stage);
+	if (args)
+		args = args->next;
 	while (args)
 	{
 		node = lst_findbykey_str(mshell->env, args->val);
@@ -31,18 +33,24 @@ static void	ms_unset_debug(t_var *mshell, t_list *args, char *stage)
 	}
 }
 
-void	ms_unset(t_var *mshell, t_list *args)
+int	ms_unset(t_var *mshell, t_list *args)
 {
 	t_list	*tmp;
 
-	tmp = args;
+	if (!args)
+		return (pf_errcode(ERR_INVALID_ARGC), KO);
+	if (str_cmp(args->val, "unset"))
+		return (ft_perror("command not fount: %s\n"), KO);
+	tmp = args->next;
 	ms_unset_debug(mshell, args, "PRE UNSET");
 	while (tmp)
 	{
+		dbg_printf(COLOR_YELLOW"Deleting: %s\n"CR, tmp->val);
 		lst_delbykey(&mshell->env, tmp->val, (void *)str_equals, free);
 		tmp = tmp->next;
 	}
 	ms_unset_debug(mshell, args, "POST UNSET");
+	return (OK);
 }
 
 //int	main(int ac, char **av, char **envp)
