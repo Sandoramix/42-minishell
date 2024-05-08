@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/08 15:23:30 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:57:51 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef struct s_var
 	t_main				_main;
 	char				**cmds_paths;
 	char				*curr_path;
-	char *home_path;
+	char				*home_path;
 	uint64_t			curpath_len;
 	t_uchar				*status_code;
 }			t_var;
@@ -45,7 +45,7 @@ void	ms_prompt(t_var *mshell);
 
 int		cleanup(t_var *g, bool shouldexit, int status);
 
-void	ms_unset(t_var *mshell, t_list *args);
+int		ms_unset(t_var *mshell, t_list *args);
 
 void	ms_exit(t_var *mshell, char **args);
 
