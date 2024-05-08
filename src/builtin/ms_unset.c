@@ -6,40 +6,42 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:25:21 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/05 14:32:10 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:23:15 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void	ms_unset_debug(t_var *mshell, char **args, char *stage)
+static void	ms_unset_debug(t_var *mshell, t_list *args, char *stage)
 {
-	int		i;
 	t_list	*node;
 
-	i = 0;
 	if (!DEBUG)
 		return ;
 	printf(COLOR_MAGENTA"[ms_unset] %s\n"CR, stage);
-	while (args && args[++i])
+	while (args)
 	{
-		node = lst_findbykey_str(mshell->env, args[i]);
+		node = lst_findbykey_str(mshell->env, args->val);
 		if (node)
-			printf("\t"COLOR_GREEN"%s"COLOR_YELLOW"="CR"%s\n"CR,
+			dbg_printf("\t"COLOR_GREEN"%s"COLOR_YELLOW"="CR"%s\n"CR,
 				(char *)node->key, (char *)node->val);
 		else
-			printf("\t%s "COLOR_RED"IS NULL\n"CR, args[i]);
+			dbg_printf("\t%s "COLOR_RED"IS NULL\n"CR, args->val);
+		args = args->next;
 	}
 }
 
-void	ms_unset(t_var *mshell, char **args)
+void	ms_unset(t_var *mshell, t_list *args)
 {
-	int	i;
+	t_list	*tmp;
 
-	i = 0;
+	tmp = args;
 	ms_unset_debug(mshell, args, "PRE UNSET");
-	while (args && args[++i])
-		lst_delbykey(&mshell->env, args[i], (void *)str_equals, free);
+	while (tmp)
+	{
+		lst_delbykey(&mshell->env, tmp->val, (void *)str_equals, free);
+		tmp = tmp->next;
+	}
 	ms_unset_debug(mshell, args, "POST UNSET");
 }
 

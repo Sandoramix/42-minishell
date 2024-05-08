@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/07 13:00:11 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:23:30 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	ms_prompt(t_var *mshell);
 
 int		cleanup(t_var *g, bool shouldexit, int status);
 
-void	ms_unset(t_var *mshell, char **args);
+void	ms_unset(t_var *mshell, t_list *args);
 
 void	ms_exit(t_var *mshell, char **args);
 
