@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 13:16:03 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/08 17:51:24 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/08 19:21:29 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,12 @@ static bool	cmdp_switch(t_cmd_parseswitch type, char *raw, int *i, int *edge)
 	if (type == CMDP_SPACE)
 		return (ft_isspace(raw[*i]) && !ft_isspace(raw[*i + 1]));
 	if (type == CMDP_TOKEN)
-		return (chr_istoken(raw[*i])
-			&& (ft_isspace(raw[*i + 1]) || !raw[*i + 1] || chr_isquote(raw[*i + 1])));
+		return (chr_istoken(raw[*i]) && (ft_isspace(raw[*i + 1])
+				|| !raw[*i + 1] || chr_isquote(raw[*i + 1])));
 	if (type == CMDP_WORD)
-		return (!ft_isspace(raw[*i]) && ((ft_isspace(raw[*i + 1]) || !raw[*i + 1] || chr_isquote(raw[*i + 1])) || chr_istoken(raw[*i + 1])));
+		return (!ft_isspace(raw[*i]) && ((ft_isspace(raw[*i + 1])
+					|| !raw[*i + 1] || chr_isquote(raw[*i + 1]))
+				|| chr_istoken(raw[*i + 1])));
 	dbg_printf("[cmd_switch]: Unknown TYPE [%d]!\n", type);
 	return (false);
 }
