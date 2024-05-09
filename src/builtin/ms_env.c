@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:44:22 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/07 13:06:15 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/09 09:08:22 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,19 @@
 void	ms_env(t_var *mshell, t_list *args)
 {
 
-	if (!args && str_cmp((char *)args->val, "env") != 0)
+	if (!args)
+		return ;
+	if (str_cmp((char *)args->val, "env") != 0)
 	{
-		ft_fprintf(2, "%s: No such file or directory\n", (char *)args->val);
+		ft_perror("command not found: %s\n", (char *)args->val);
+		*(mshell->status_code) = 127;
 		return ;
 	}
 	if (lst_size(args) > 1)
 	{
-		ft_fprintf(2, "%s: Permission denied\n", (char *)args->val);
-		mshell->status_code = (t_uchar *)126;
+		ft_perror("env: '%s': No such file or directory\n", args->next->val);
+		*(mshell->status_code) = 127;
+		return ;
 	}
 	args = mshell->env;
 	while (args)
