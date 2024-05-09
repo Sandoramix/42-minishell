@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:25:21 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/08 16:05:18 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/09 09:20:09 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	ms_unset_debug(t_var *mshell, t_list *args, char *stage)
 
 	if (!DEBUG)
 		return ;
-	printf(COLOR_MAGENTA"[ms_unset] %s\n"CR, stage);
+	printf(COLOR_MAGENTA"[unset]\t%s\n"CR, stage);
 	if (args)
 		args = args->next;
 	while (args)
@@ -45,7 +45,7 @@ int	ms_unset(t_var *mshell, t_list *args)
 	ms_unset_debug(mshell, args, "PRE UNSET");
 	while (tmp)
 	{
-		dbg_printf(COLOR_YELLOW"Deleting: %s\n"CR, tmp->val);
+		dbg_printf(COLOR_YELLOW"[unset]\tDeleting: %s\n"CR, tmp->val);
 		lst_delbykey(&mshell->env, tmp->val, (void *)str_equals, free);
 		tmp = tmp->next;
 	}

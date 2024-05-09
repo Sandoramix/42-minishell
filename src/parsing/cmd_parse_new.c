@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 13:16:03 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/08 19:21:29 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/09 09:28:19 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,29 +20,39 @@ typedef enum e_cmd_parseswitch
 	CMDP_WORD
 }	t_cmd_parseswitch;
 
-// TODO: add me to libftx
 static void	cmd_dbgparse(t_cmd_parseswitch type, char *s, int i, int edge)
 {
+	const bool	common_part = ft_isspace(s[i + 1])
+		|| !s[i + 1] || chr_isquote(s[i + 1]);
+
+	if (!DEBUG)
+		return ;
+	dbg_printf(COLOR_GRAY);
 	if (type == CMDP_QUOTE)
 		dbg_printf("Found a quote {%c} at:\t[%3d] - [%3d]:\t", s[i], i, edge);
-	else if (type == CMDP_TOKEN || type == CMDP_WORD)
-		dbg_printf("Found unquoted %s at:\t[%3d] - [%3d]:\t",
-			(char *[2]){"TOKEN", "WORD"}[type == CMDP_WORD], edge, i);
+	else if (type == CMDP_TOKEN && chr_istoken(s[i]) && common_part)
+		dbg_printf("Found unquoted TOKEN at:\t[%3d] - [%3d]:\t", edge, i);
+	else if (type == CMDP_WORD && common_part)
+		dbg_printf("Found unquoted WORD at:\t[%3d] - [%3d]:\t", edge, i);
 	else
+	{
+		dbg_printf(CR);
 		return ;
+	}
 	write(1, "[", 1);
 	if (type == CMDP_QUOTE)
 		write(1, s + i, edge - i + 1);
 	else
 		write(1, s + edge, i - edge + 1);
 	write(1, "]\n", 2);
+	dbg_printf(CR);
 }
 
 static bool	lst_strappend_last(t_list **res, char *append, char dbg_char)
 {
 	t_list	*last;
 
-	dbg_printf("\tIt's near the char %c\n", dbg_char);
+	dbg_printf(COLOR_BGRAY"\tIt's near the char %c\n", dbg_char);
 	last = lst_gettail(*res);
 	if (!last && !lst_addnew_tail(res, append, NULL))
 		return (lst_free(res, free), free(append), false);
