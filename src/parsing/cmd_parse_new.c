@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 13:16:03 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/12 09:59:32 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/12 15:54:30 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,7 @@ t_list	*cmd_parse_new(char *raw)
 			split.tmp = my_substr(raw, split.edge, split.i);
 			if (!split.tmp || !lst_addnew_tail(&split.res, split.tmp, NULL))
 				return (lst_free(&split.res, free), free(split.tmp), NULL);
+			lst_gettail(split.res)->type = A_TOKEN;
 			split.edge = split.i + 1;
 		}
 		else if (cmdp_switch(CMDP_QUOTE, raw, &split)

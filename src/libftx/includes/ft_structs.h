@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:53:30 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/04 15:26:13 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/12 15:45:43 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ typedef struct s_list
 {
 	void				*val;
 	void				*key;
+
+	uint64_t			type;
 
 	struct s_list		*next;
 	struct s_list		*prev;
@@ -129,11 +131,5 @@ typedef enum e_status
 	OK,
 	KO
 }	t_status;
-
-typedef enum e_argtype
-{
-	A_DEFAULT,
-	A_TOKEN
-}	t_argtype;
 
 #endif

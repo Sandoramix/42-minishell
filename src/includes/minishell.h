@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/08 15:57:51 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/12 15:47:07 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define MINISHELL_H
 
 # include <libft.h>
+# include <ms_parsing.h>
+
 # define PROMPT "minishell>"
 # define PATH_MAX 4096
 
@@ -54,22 +56,5 @@ int		ms_export(t_var *mshell, t_list *args);
 void	ms_env(t_var *mshell, t_list *args);
 
 //-----------------------------------------------------------------------------
-//---------------------------PARSING-------------------------------------------
 
-// TODO REMOVE
-/**
-# DEPRECATED
- * @brief Parse the string of a command.
- * It even handles internal quotes.
- * @param command command's string to parse
- * @return Array of args parsed.
- */
-char	**cmd_parse(char *command);
-char	**expand_and_clear_mtx(char **args);
-
-t_list	*cmd_parse_new(char *raw);
-
-char	*str_clearquotes(char **str);
-
-t_list	*expand_and_clear(t_list *args);
 #endif
