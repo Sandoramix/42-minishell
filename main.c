@@ -6,13 +6,13 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:41:06 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/07 13:00:52 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/12 18:36:48 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-#if DEBUG == false
+//#if DEBUG == false
 
 int	main(int ac, char **av, char **envp)
 {
@@ -24,8 +24,9 @@ int	main(int ac, char **av, char **envp)
 		return (pf_errcode(ERR_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
 	mshell._main.envp = envp;
 	ms_init(&mshell);
-	ms_prompt(&mshell);
+	//ms_prompt(&mshell);
+	ms_loop(&mshell);
 	return (cleanup(&mshell, true, 0));
 }
 
-#endif
+//#endif

@@ -20,7 +20,8 @@ SRC= main.c \
 	./src/parsing/str_clearquotes.c \
 	./src/parsing/cmd_parse.c \
 	./src/parsing/cmd_parse_new.c \
-	./src/parsing/args_expand_clear.c
+	./src/parsing/args_expand_clear.c \
+	./src/ms_run_builtin.c 
 
 # ----RULES-----
 all: $(NAME)

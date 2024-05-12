@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/08 15:57:51 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/11 14:37:15 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include <libft.h>
 # define PROMPT "minishell>"
-# define PATH_MAX 4096
+//# define PATH_MAX 4096
 
 typedef struct s_main
 {
@@ -31,6 +31,7 @@ typedef struct s_main
 typedef struct s_var
 {
 	t_list				*env;
+	t_list 				*history;
 	t_main				_main;
 	char				**cmds_paths;
 	char				*curr_path;
@@ -42,16 +43,18 @@ typedef struct s_var
 int		ms_loadenv(t_var *mshell);
 void	ms_init(t_var *mshell);
 void	ms_prompt(t_var *mshell);
+void ms_loop(t_var *mshell);
 
 int		cleanup(t_var *g, bool shouldexit, int status);
 
 int		ms_unset(t_var *mshell, t_list *args);
 
-void	ms_exit(t_var *mshell, char **args);
+int	ms_exit(t_var *mshell, t_list *args);
 
 void	*ms_pwd(t_var *mshell, t_list *args);
 int		ms_export(t_var *mshell, t_list *args);
 void	ms_env(t_var *mshell, t_list *args);
+int ms_cd(t_var *mshell, t_list *args);
 
 //-----------------------------------------------------------------------------
 //---------------------------PARSING-------------------------------------------
