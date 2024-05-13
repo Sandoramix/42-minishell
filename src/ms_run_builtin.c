@@ -6,28 +6,35 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/12 18:42:37 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/13 17:20:58 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void print_history(t_list *history) {
-    t_list *current = history;
-    while (current != NULL) {
-        ft_printf("history item: %s\n", (char*)current->val);
-        current = current->next;
-    }
-}
-
 void print_cmd_list(t_list *cmd_list)
 {
-	t_list *current = cmd_list;
+	t_list *current;
+	
+	current = cmd_list;
 	while (current != NULL)
 	{
-		ft_printf("cmd_list item: %s\n", (char*)current->val);
+		ft_printf("command: %s\n", (char*)current->val);
 		current = current->next;
 	}
+}
+
+void print_history(t_list *history) {
+    t_list *current;
+	int i;
+
+	i = 1;
+	current = history;
+    while (current != NULL) {
+        ft_printf("%d %s\n", i, (char*)current->val);
+        current = current->next;
+		i++;
+    }
 }
 
 void add_cmd_history(t_var *mshell, char *cmd)
@@ -40,13 +47,12 @@ void add_cmd_history(t_var *mshell, char *cmd)
 	{
 		pf_errcode(ERR_MALLOC);
 		cleanup(mshell, true, 1);
-		return;
+		return ;
 	}
-
 	lst = lst_addnew_tail(&mshell->history, cmd_copy, NULL);
+	
 	if (!lst)
 	{
-		free(cmd_copy);
 		pf_errcode(ERR_MALLOC);
 		cleanup(mshell, true, 1);
 	}
@@ -68,6 +74,8 @@ int ms_run_builtin(t_var *mshell, t_list *args)
 		return (ms_pwd(mshell, args), OK);
 	else if (str_cmp(args->val, "env") == 0)
 		return (ms_env(mshell, args), OK);
+	else if (str_cmp(args->val, "history") == 0)
+		return (ms_history(mshell), OK);
 	else if (str_cmp(args->val, "exit") == 0)
 		return (ms_exit(mshell, args));
 	else
@@ -104,7 +112,6 @@ void ms_loop(t_var *mshell)
 		{
 			add_history(input);
 			add_cmd_history(mshell, input);
-			//print_history(mshell->history);
 			parse_and_exec(mshell, input);
 		}
 		free(input);

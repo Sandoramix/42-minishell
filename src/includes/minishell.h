@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/11 14:37:15 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/13 17:13:39 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include <libft.h>
 # define PROMPT "minishell>"
-//# define PATH_MAX 4096
+# define PATH_MAX 4096
 
 typedef struct s_main
 {
@@ -55,6 +55,7 @@ void	*ms_pwd(t_var *mshell, t_list *args);
 int		ms_export(t_var *mshell, t_list *args);
 void	ms_env(t_var *mshell, t_list *args);
 int ms_cd(t_var *mshell, t_list *args);
+int ms_history(t_var *mshell);
 
 //-----------------------------------------------------------------------------
 //---------------------------PARSING-------------------------------------------
