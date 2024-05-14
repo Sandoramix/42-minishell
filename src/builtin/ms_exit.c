@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:21:48 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/11 14:17:10 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/14 23:09:03 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,13 @@ int	ms_exit(t_var *mshell, t_list *args)
 	ft_fprintf(2, "exit\n");
 	if (lst_len > 1)
 		code = (t_uchar)ft_atoi((char *)args->next->val);
-	
-		
 	if (lst_len > 2)
 	{
 		ft_fprintf(2, "exit: too many arguments\n");
 		*mshell->status_code = code;
 		return (OK);
 	}
+	lst_free(&args, free);
 	if (lst_len == 1)
 		cleanup(mshell, true, *mshell->status_code);
 	cleanup(mshell, true, code);

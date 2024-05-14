@@ -3,65 +3,68 @@
 /*                                                        :::      ::::::::   */
 /*   ms_run_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/13 17:20:58 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/14 23:24:06 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void print_cmd_list(t_list *cmd_list)
+void	print_cmd_list(t_list *cmd_list)
 {
-	t_list *current;
-	
+	t_list	*current;
+
 	current = cmd_list;
 	while (current != NULL)
 	{
-		ft_printf("command: %s\n", (char*)current->val);
+		ft_printf("command: %s\n", (char *)current->val);
 		current = current->next;
 	}
 }
 
-void print_history(t_list *history) {
-    t_list *current;
-	int i;
+void	print_history(t_list *history)
+{
+	t_list	*current;
+	int		i;
 
 	i = 1;
 	current = history;
-    while (current != NULL) {
-        ft_printf("%d %s\n", i, (char*)current->val);
-        current = current->next;
+	while (current != NULL)
+	{
+		ft_printf("%d %s\n", i, (char *)current->val);
+		current = current->next;
 		i++;
-    }
+	}
 }
 
-void add_cmd_history(t_var *mshell, char *cmd)
+void	add_cmd_history(t_var *mshell, char *cmd)
 {
-	t_list *lst;
-	char *cmd_copy;
+	t_list	*lst;
+	char	*cmd_copy;
 
 	cmd_copy = str_dup(cmd);
 	if (!cmd_copy)
 	{
 		pf_errcode(ERR_MALLOC);
+		free(cmd);
 		cleanup(mshell, true, 1);
-		return ;
 	}
 	lst = lst_addnew_tail(&mshell->history, cmd_copy, NULL);
-	
 	if (!lst)
 	{
 		pf_errcode(ERR_MALLOC);
+		free(cmd);
+		free(cmd_copy);
 		cleanup(mshell, true, 1);
 	}
 }
 
-int ms_run_builtin(t_var *mshell, t_list *args)
+int	ms_run_builtin(t_var *mshell, t_list *args)
 {
 
-	//print_cmd_list(lst);
+	// print_cmd_list(lst);
 	if (str_cmp(args->val, "export") == 0)
 		return (ms_export(mshell, args));
 	else if (str_cmp(args->val, "unset") == 0)
@@ -80,32 +83,33 @@ int ms_run_builtin(t_var *mshell, t_list *args)
 		return (ms_exit(mshell, args));
 	else
 	{
-		ft_printf("KO: command not found: %s\n", args->val);
+		ft_fprintf(2, "Command not found: %s\n", args->val);
 		return (KO);
 	}
 	return (OK);
 }
 
-void parse_and_exec(t_var *mshell, char *input)
+void	parse_and_exec(t_var *mshell, char *input)
 {
-	t_list *cmd_list;
+	t_list	*cmd_list;
+
 	cmd_list = cmd_parse_new(input);
 	expand_and_clear(cmd_list);
-	//print_cmd_list(cmd_list);
+	// print_cmd_list(cmd_list);
 	if (cmd_list != NULL)
 	{
 		if (ms_run_builtin(mshell, cmd_list) == KO)
-			ft_fprintf(2, "<minishell>: command not found: %s\n", cmd_list->val);
+			ft_fprintf(2, PROGNAME": command not found: %s\n",
+				cmd_list->val);
 	}
 	lst_free(&cmd_list, free);
 }
 
-
-void ms_loop(t_var *mshell)
+void	ms_loop(t_var *mshell)
 {
-	char *input;
+	char	*input;
 
-	input = readline(PROMPT" ");
+	input = readline(PROMPT " ");
 	while (input)
 	{
 		if (str_ilen(input) > 0)
@@ -115,7 +119,7 @@ void ms_loop(t_var *mshell)
 			parse_and_exec(mshell, input);
 		}
 		free(input);
-		input = readline(PROMPT" ");
+		input = readline(PROMPT " ");
 	}
 	cleanup(mshell, true, 0);
 }

@@ -44,6 +44,12 @@ fclean: clean
 re: fclean all
 
 # ----UTILS-----
+
+VALGRIND=@valgrind --suppressions=src/readline.supp --leak-check=full --show-leak-kinds=all --track-origins=yes --quiet --tool=memcheck --keep-debuginfo=yes
+valgrind: debug-log
+	$(VALGRIND) ./$(NAME)
+
+
 re-debug-log: fclean debug-log
 re-debug: fclean debug
 

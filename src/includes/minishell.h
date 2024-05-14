@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/13 17:13:39 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/14 23:20:17 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include <libft.h>
+# define PROGNAME "minishell"
 # define PROMPT "minishell>"
 # define PATH_MAX 4096
 
