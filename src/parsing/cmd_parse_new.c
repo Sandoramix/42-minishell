@@ -6,11 +6,13 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 13:16:03 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/09 09:28:19 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/12 15:54:30 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+// TODO: document this sh*t
 
 typedef enum e_cmd_parseswitch
 {
@@ -18,9 +20,26 @@ typedef enum e_cmd_parseswitch
 	CMDP_QUOTE,
 	CMDP_TOKEN,
 	CMDP_WORD
-}	t_cmd_parseswitch;
+}	t_cmdp_switch;
 
-static void	cmd_dbgparse(t_cmd_parseswitch type, char *s, int i, int edge)
+/**
+ * @brief Structure that contains the splitted string + information about it
+ * @param tmp the newly created string.
+ * @param edge start/end idx of the original string
+ * end is for: QUOTE handling
+ * start is for: WORD/TOKEN handling (updated on SPACE check)
+ * @param i end idx of the original string
+ */
+typedef struct e_cmdp_arg
+{
+	t_list		*res;
+	int			i;
+
+	char		*tmp;
+	int			edge;
+}	t_cmdp_arg;
+
+static void	cmd_dbgparse(t_cmdp_switch type, char *s, int i, int edge)
 {
 	const bool	common_part = ft_isspace(s[i + 1])
 		|| !s[i + 1] || chr_isquote(s[i + 1]);
@@ -66,88 +85,86 @@ static bool	lst_strappend_last(t_list **res, char *append, char dbg_char)
 	return (true);
 }
 
-static bool	cmdp_switch(t_cmd_parseswitch type, char *raw, int *i, int *edge)
+static bool	cmdp_switch(t_cmdp_switch type, char *raw, t_cmdp_arg *split)
 {
+	const int		i = split->i;
+
 	if (type == CMDP_QUOTE)
 	{
-		if (!chr_isquote(raw[*i]))
+		if (!chr_isquote(raw[i]))
 			return (false);
-		(*edge) = chr_quoteclose_idx(raw, raw[*i], *i);
-		if ((*edge) == -1)
-			(*edge) = str_ilen(raw);
+		split->edge = chr_quoteclose_idx(raw, raw[i], i);
+		if (split->edge == -1)
+			split->edge = str_ilen(raw);
 	}
-	cmd_dbgparse(type, raw, *i, *edge);
+	cmd_dbgparse(type, raw, i, split->edge);
 	if (type == CMDP_QUOTE)
 		return (true);
 	if (type == CMDP_SPACE)
-		return (ft_isspace(raw[*i]) && !ft_isspace(raw[*i + 1]));
+		return (ft_isspace(raw[i]) && !ft_isspace(raw[i + 1]));
 	if (type == CMDP_TOKEN)
-		return (chr_istoken(raw[*i]) && (ft_isspace(raw[*i + 1])
-				|| !raw[*i + 1] || chr_isquote(raw[*i + 1])));
+		return (chr_istoken(raw[i]) && (ft_isspace(raw[i + 1])
+				|| !raw[i + 1] || chr_isquote(raw[i + 1])));
 	if (type == CMDP_WORD)
-		return (!ft_isspace(raw[*i]) && ((ft_isspace(raw[*i + 1])
-					|| !raw[*i + 1] || chr_isquote(raw[*i + 1]))
-				|| chr_istoken(raw[*i + 1])));
+		return (!ft_isspace(raw[i]) && ((ft_isspace(raw[i + 1])
+					|| !raw[i + 1] || chr_isquote(raw[i + 1]))
+				|| chr_istoken(raw[i + 1])));
 	dbg_printf("[cmd_switch]: Unknown TYPE [%d]!\n", type);
 	return (false);
 }
 
+static t_list	*cmdp_push_handle(char *raw, t_cmdp_arg *split)
+{
+	int		from;
+
+	from = (int [2]){split->edge, split->i}[chr_isquote(raw[split->i])];
+	if (chr_isquote(raw[split->i]))
+		split->tmp = my_substr(raw, split->i, split->edge);
+	else
+		split->tmp = my_substr(raw, split->edge, split->i);
+	if (!split->tmp)
+		return (lst_free(&split->res, free), NULL);
+	if (from != 0 && !ft_isspace(raw[from - 1]) && !chr_istoken(raw[from - 1]))
+	{
+		if (!lst_strappend_last(&split->res, split->tmp, raw[from - 1]))
+			return (NULL);
+	}
+	else if (!lst_addnew_tail(&split->res, split->tmp, NULL))
+		return (lst_free(&split->res, free), free(split->tmp), NULL);
+	if (split->edge == from)
+		split->edge = split->i + 1;
+	else if (split->edge - 1 == split->i && ++split->i)
+		split->edge++;
+	else
+		split->i = split->edge;
+	return (split->res);
+}
+
 t_list	*cmd_parse_new(char *raw)
 {
-	t_list		*res;
-	char		*tmp;
-	int			i;
-	int			edgeidx;
+	t_cmdp_arg		split;
 
-	res = NULL;
-	i = -1;
-	edgeidx = 0;
+	split = (t_cmdp_arg){0};
+	split.i = -1;
 	dbg_printf(COLOR_RED"[cmd_parse] input: `%s`\n"CR, raw);
-	while (raw && raw[++i])
+	while (raw && raw[++split.i])
 	{
-		if (cmdp_switch(CMDP_SPACE, raw, &i, &edgeidx))
-			edgeidx = i + 1;
-		else if (cmdp_switch(CMDP_QUOTE, raw, &i, &edgeidx))
+		if (cmdp_switch(CMDP_SPACE, raw, &split))
+			split.edge = split.i + 1;
+		else if (cmdp_switch(CMDP_TOKEN, raw, &split))
 		{
-			tmp = my_substr(raw, i, edgeidx);
-			if (!tmp)
-				return (lst_free(&res, free), NULL);
-			if (i != 0 && !ft_isspace(raw[i - 1]) && !chr_istoken(raw[i - 1]))
-			{
-				if (!lst_strappend_last(&res, tmp, raw[i - 1]))
-					return (NULL);
-			}
-			else if (!lst_addnew_tail(&res, tmp, NULL))
-				return (lst_free(&res, free), free(tmp), NULL);
-			if (edgeidx - 1 == i)
-			{
-				i++;
-				edgeidx++;
-			}
-			else
-				i = edgeidx;
+			split.tmp = my_substr(raw, split.edge, split.i);
+			if (!split.tmp || !lst_addnew_tail(&split.res, split.tmp, NULL))
+				return (lst_free(&split.res, free), free(split.tmp), NULL);
+			lst_gettail(split.res)->type = A_TOKEN;
+			split.edge = split.i + 1;
 		}
-		else if (cmdp_switch(CMDP_TOKEN, raw, &i, &edgeidx))
+		else if (cmdp_switch(CMDP_QUOTE, raw, &split)
+			|| cmdp_switch(CMDP_WORD, raw, &split))
 		{
-			tmp = my_substr(raw, edgeidx, i);
-			if (!tmp || !lst_addnew_tail(&res, tmp, NULL))
-				return (lst_free(&res, free), free(tmp), NULL);
-			edgeidx = i + 1;
-		}
-		else if (cmdp_switch(CMDP_WORD, raw, &i, &edgeidx))
-		{
-			tmp = my_substr(raw, edgeidx, i);
-			if (!tmp)
-				return (lst_free(&res, free), NULL);
-			if (i != 0 && edgeidx != 0 && !ft_isspace(raw[edgeidx - 1]) && !chr_istoken(raw[edgeidx - 1]))
-			{
-				if (!lst_strappend_last(&res, tmp, raw[edgeidx - 1]))
-					return (NULL);
-			}
-			else if (!lst_addnew_tail(&res, tmp, NULL))
-				return (lst_free(&res, free), free(tmp), NULL);
-			edgeidx = i + 1;
+			if (!cmdp_push_handle(raw, &split))
+				return (NULL);
 		}
 	}
-	return (res);
+	return (split.res);
 }

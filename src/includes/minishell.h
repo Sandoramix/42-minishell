@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/14 23:20:17 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/15 15:57:27 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define MINISHELL_H
 
 # include <libft.h>
+# include <ms_parsing.h>
+
 # define PROGNAME "minishell"
 # define PROMPT "minishell>"
 # define PATH_MAX 4096
@@ -59,22 +61,5 @@ int ms_cd(t_var *mshell, t_list *args);
 int ms_history(t_var *mshell);
 
 //-----------------------------------------------------------------------------
-//---------------------------PARSING-------------------------------------------
 
-// TODO REMOVE
-/**
-# DEPRECATED
- * @brief Parse the string of a command.
- * It even handles internal quotes.
- * @param command command's string to parse
- * @return Array of args parsed.
- */
-char	**cmd_parse(char *command);
-char	**expand_and_clear_mtx(char **args);
-
-t_list	*cmd_parse_new(char *raw);
-
-char	*str_clearquotes(char **str);
-
-t_list	*expand_and_clear(t_list *args);
 #endif

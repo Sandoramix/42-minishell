@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:04:40 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/09 09:28:35 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/12 15:51:29 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,6 @@ int	ms_export(t_var *mshell, t_list *args)
 	return (res);
 }
 
-/*
 int	main(int ac, char **av, char **envp)
 {
 	t_var		mshell;
@@ -153,21 +152,20 @@ int	main(int ac, char **av, char **envp)
 	mshell._main.envp = envp;
 	ms_init(&mshell);
 
-	args = cmd_parse_new("unset LS_COLORS TERMINATOR XDG_DATA_DIRS XDG_SESSION_PATH SESSION_MANAGER GIO_LAUNCHED_DESKTOP_FILE PAGER LESS SHLVL LANGUAGE GJS_DEBUG_TOPICS ZSH LOGNAME LANG");
-	args = expand_and_clear(args);
-	ms_unset(&mshell, args);
-	lst_free(&args, free);
-
+	//args = cmd_parse_new("unset LS_COLORS TERMINATOR XDG_DATA_DIRS XDG_SESSION_PATH SESSION_MANAGER GIO_LAUNCHED_DESKTOP_FILE PAGER LESS SHLVL LANGUAGE GJS_DEBUG_TOPICS ZSH LOGNAME LANG");
+	//args = expand_and_clear(args);
+	//ms_unset(&mshell, args);
+	//lst_free(&args, free);
 
 	args = cmd_parse_new("''exp\"ort\" a= \" \" '' '''b='   c='  ' d='\"' 'e' 'f= '");
 	args = expand_and_clear(args);
 	ms_export(&mshell, args);
 	lst_free(&args, free);
 
-	args = cmd_parse_new("env bla");
-	args = expand_and_clear(args);
-	ms_env(&mshell, args);
-	lst_free(&args, free);
+	//args = cmd_parse_new("env bla");
+	//args = expand_and_clear(args);
+	//ms_env(&mshell, args);
+	//lst_free(&args, free);
 
 	//args = cmd_parse_new("export c1= c_ _c");
 	//args = expand_and_clear(args);
@@ -179,7 +177,6 @@ int	main(int ac, char **av, char **envp)
 	//ms_export(&mshell, args);
 	//lst_free(&args, free);
 
-
 	//args = cmd_parse_new("export");
 	//args = expand_and_clear(args);
 	//ms_export(&mshell, args);
@@ -187,4 +184,3 @@ int	main(int ac, char **av, char **envp)
 
 	return (cleanup(&mshell, true, 0));
 }
-*/
