@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:04:40 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/12 15:51:29 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/15 16:00:15 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,47 +140,47 @@ int	ms_export(t_var *mshell, t_list *args)
 	return (res);
 }
 
-int	main(int ac, char **av, char **envp)
-{
-	t_var		mshell;
-	t_list		*args;
+// int	main(int ac, char **av, char **envp)
+// {
+// 	t_var		mshell;
+// 	t_list		*args;
 
-	(void)av;
-	mshell = (t_var){0};
-	if (ac != 1)
-		return (pf_errcode(ERR_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
-	mshell._main.envp = envp;
-	ms_init(&mshell);
+// 	(void)av;
+// 	mshell = (t_var){0};
+// 	if (ac != 1)
+// 		return (pf_errcode(ERR_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
+// 	mshell._main.envp = envp;
+// 	ms_init(&mshell);
 
-	//args = cmd_parse_new("unset LS_COLORS TERMINATOR XDG_DATA_DIRS XDG_SESSION_PATH SESSION_MANAGER GIO_LAUNCHED_DESKTOP_FILE PAGER LESS SHLVL LANGUAGE GJS_DEBUG_TOPICS ZSH LOGNAME LANG");
-	//args = expand_and_clear(args);
-	//ms_unset(&mshell, args);
-	//lst_free(&args, free);
+// 	//args = cmd_parse_new("unset LS_COLORS TERMINATOR XDG_DATA_DIRS XDG_SESSION_PATH SESSION_MANAGER GIO_LAUNCHED_DESKTOP_FILE PAGER LESS SHLVL LANGUAGE GJS_DEBUG_TOPICS ZSH LOGNAME LANG");
+// 	//args = expand_and_clear(args);
+// 	//ms_unset(&mshell, args);
+// 	//lst_free(&args, free);
 
-	args = cmd_parse_new("''exp\"ort\" a= \" \" '' '''b='   c='  ' d='\"' 'e' 'f= '");
-	args = expand_and_clear(args);
-	ms_export(&mshell, args);
-	lst_free(&args, free);
+// 	args = cmd_parse_new("''exp\"ort\" a= \" \" '' '''b='   c='  ' d='\"' 'e' 'f= '");
+// 	args = expand_and_clear(args);
+// 	ms_export(&mshell, args);
+// 	lst_free(&args, free);
 
-	//args = cmd_parse_new("env bla");
-	//args = expand_and_clear(args);
-	//ms_env(&mshell, args);
-	//lst_free(&args, free);
+// 	//args = cmd_parse_new("env bla");
+// 	//args = expand_and_clear(args);
+// 	//ms_env(&mshell, args);
+// 	//lst_free(&args, free);
 
-	//args = cmd_parse_new("export c1= c_ _c");
-	//args = expand_and_clear(args);
-	//ms_export(&mshell, args);
-	//lst_free(&args, free);
+// 	//args = cmd_parse_new("export c1= c_ _c");
+// 	//args = expand_and_clear(args);
+// 	//ms_export(&mshell, args);
+// 	//lst_free(&args, free);
 
-	//args = cmd_parse_new("export 1c1= .c_ x55 !_c");
-	//args = expand_and_clear(args);
-	//ms_export(&mshell, args);
-	//lst_free(&args, free);
+// 	//args = cmd_parse_new("export 1c1= .c_ x55 !_c");
+// 	//args = expand_and_clear(args);
+// 	//ms_export(&mshell, args);
+// 	//lst_free(&args, free);
 
-	//args = cmd_parse_new("export");
-	//args = expand_and_clear(args);
-	//ms_export(&mshell, args);
-	//lst_free(&args, free);
+// 	//args = cmd_parse_new("export");
+// 	//args = expand_and_clear(args);
+// 	//ms_export(&mshell, args);
+// 	//lst_free(&args, free);
 
-	return (cleanup(&mshell, true, 0));
-}
+// 	return (cleanup(&mshell, true, 0));
+// }
