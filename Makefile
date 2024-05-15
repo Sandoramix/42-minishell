@@ -19,6 +19,7 @@ SRC= main.c \
 	./src/builtin/ms_cd.c \
 	./src/parsing/str_clearquotes.c \
 	./src/parsing/cmd_parse.c \
+	./src/parsing/str_env_variable.c \
 	./src/parsing/cmd_parse_new.c \
 	./src/parsing/args_expand_clear.c \
 	./src/ms_run_builtin.c \
@@ -47,6 +48,7 @@ re: fclean all
 
 VALGRIND=@valgrind --suppressions=src/readline.supp --leak-check=full --show-leak-kinds=all --track-origins=yes --quiet --tool=memcheck --keep-debuginfo=yes
 valgrind: debug-log
+	clear
 	$(VALGRIND) ./$(NAME)
 
 

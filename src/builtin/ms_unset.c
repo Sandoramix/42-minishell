@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:25:21 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/09 09:20:09 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/15 19:55:32 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,12 @@ int	ms_unset(t_var *mshell, t_list *args)
 //	mshell._main.envp = envp;
 //	ms_init(&mshell);
 //	args = cmd_parse("''un\"set\" LESS ''  'P''ATH' 'HOME' 'LS_COLORS'");
-//	args = expand_and_clear_mtx(args);
+//	args = expand_and_clear_mtx(&mshell, args);
 //	ms_unset(&mshell, args);
 //	str_freemtx(args);
 
 //	listargs = cmd_parse_new("export");
-//	listargs = expand_and_clear(listargs);
+//	listargs = expand_and_clear(&mshell, listargs);
 //	ms_export(&mshell, listargs);
 //	lst_free(&listargs, free);
 //	return (cleanup(&mshell, true, 0));

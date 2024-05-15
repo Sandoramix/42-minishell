@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:04:40 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/15 16:00:15 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/15 21:09:44 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,49 +42,26 @@ static int	ms_export_error(t_var *mshell, t_list *args, char **split)
 	return (KO);
 }
 
-int	ms_export_checkarg(t_list *arg)
-{
-	const char	*val = (char *)arg->val;
-	int			i;
-	bool		valid;
-	int			equal_idx;
 
-	i = 0;
-	equal_idx = str_idxofstr(val, "+=");
-	if (equal_idx == -1)
-		equal_idx = str_idxofchar(val, '=');
-	valid = str_ilen(val) > 0;
-	while (valid && arg && ((equal_idx == -1 && val[i]) || i < equal_idx))
-	{
-		if (i == 0 && (!ft_isalpha(val[0]) && val[0] != '_'))
-			valid = false;
-		else if (!ft_isalnum(val[i]) && val[i] != '_')
-			valid = false;
-		if (!valid)
-			break ;
-		i++;
-	}
+int	ms_export_checkarg(char *val)
+{
+	bool		valid;
+
+	valid = str_isvariable(val);
 	if (!valid)
 	{
-		ft_perror("export: `%s`: not a valid identifier\n", arg->val);
+		ft_perror("export: `%s`: not a valid identifier\n", val);
 		return (KO);
 	}
 	return (OK);
 }
 
-int	ms_export_handler(t_var *mshell, t_list *args, t_list *arg)
+int	ms_export_handler(t_var *mshell, char **split, t_list *args, t_list *arg)
 {
-	char		**split;
 	t_list		*found;
 	t_list		*node;
 	char		*val;
 
-	if (str_idxofstr((char *)arg->val, "+=") != -1)
-		split = str_split_firststr((char *)arg->val, "+=");
-	else
-		split = str_split_first((char *)arg->val, '=');
-	if (!split)
-		return (ms_export_error(mshell, args, NULL));
 	found = lst_findbykey_str(mshell->env, split[0]);
 	node = found;
 	if (!node)
@@ -113,6 +90,7 @@ int	ms_export_handler(t_var *mshell, t_list *args, t_list *arg)
 
 int	ms_export(t_var *mshell, t_list *args)
 {
+	char			**split;
 	t_list			*argsp;
 	const int		len = lst_size(args);
 	int				curr;
@@ -131,10 +109,18 @@ int	ms_export(t_var *mshell, t_list *args)
 	argsp = args->next;
 	while (argsp)
 	{
-		curr = ms_export_checkarg(argsp);
-		res = res && curr;
-		if (curr == OK)
-			ms_export_handler(mshell, args, argsp);
+		if (str_idxofstr((char *)argsp->val, "+=") != -1)
+			split = str_split_firststr((char *)argsp->val, "+=");
+		else
+			split = str_split_first((char *)argsp->val, '=');
+		if (!split)
+			return (ms_export_error(mshell, args, NULL));
+		curr = ms_export_checkarg(split[0]);
+		if (curr == KO)
+			str_freemtx(split);
+		else
+			ms_export_handler(mshell, split, args, argsp);
+		res = res || curr;
 		argsp = argsp->next;
 	}
 	return (res);
@@ -153,32 +139,32 @@ int	ms_export(t_var *mshell, t_list *args)
 // 	ms_init(&mshell);
 
 // 	//args = cmd_parse_new("unset LS_COLORS TERMINATOR XDG_DATA_DIRS XDG_SESSION_PATH SESSION_MANAGER GIO_LAUNCHED_DESKTOP_FILE PAGER LESS SHLVL LANGUAGE GJS_DEBUG_TOPICS ZSH LOGNAME LANG");
-// 	//args = expand_and_clear(args);
+// 	//args = expand_and_clear(&mshell, args);
 // 	//ms_unset(&mshell, args);
 // 	//lst_free(&args, free);
 
 // 	args = cmd_parse_new("''exp\"ort\" a= \" \" '' '''b='   c='  ' d='\"' 'e' 'f= '");
-// 	args = expand_and_clear(args);
+// 	args = expand_and_clear(&mshell, args);
 // 	ms_export(&mshell, args);
 // 	lst_free(&args, free);
 
 // 	//args = cmd_parse_new("env bla");
-// 	//args = expand_and_clear(args);
+// 	//args = expand_and_clear(&mshell, args);
 // 	//ms_env(&mshell, args);
 // 	//lst_free(&args, free);
 
 // 	//args = cmd_parse_new("export c1= c_ _c");
-// 	//args = expand_and_clear(args);
+// 	//args = expand_and_clear(&mshell, args);
 // 	//ms_export(&mshell, args);
 // 	//lst_free(&args, free);
 
 // 	//args = cmd_parse_new("export 1c1= .c_ x55 !_c");
-// 	//args = expand_and_clear(args);
+// 	//args = expand_and_clear(&mshell, args);
 // 	//ms_export(&mshell, args);
 // 	//lst_free(&args, free);
 
 // 	//args = cmd_parse_new("export");
-// 	//args = expand_and_clear(args);
+// 	//args = expand_and_clear(&mshell, args);
 // 	//ms_export(&mshell, args);
 // 	//lst_free(&args, free);
 

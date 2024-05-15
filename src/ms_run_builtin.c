@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/14 23:24:06 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/15 20:33:22 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ int	ms_run_builtin(t_var *mshell, t_list *args)
 		return (ms_exit(mshell, args));
 	else
 	{
-		ft_fprintf(2, "Command not found: %s\n", args->val);
+		if (args)
+			ft_perror(PROGNAME": Command not found: %s\n", args->val);
 		return (KO);
 	}
 	return (OK);
@@ -94,14 +95,10 @@ void	parse_and_exec(t_var *mshell, char *input)
 	t_list	*cmd_list;
 
 	cmd_list = cmd_parse_new(input);
-	expand_and_clear(cmd_list);
+	expand_and_clear(mshell, cmd_list);
 	// print_cmd_list(cmd_list);
 	if (cmd_list != NULL)
-	{
-		if (ms_run_builtin(mshell, cmd_list) == KO)
-			ft_fprintf(2, PROGNAME": command not found: %s\n",
-				cmd_list->val);
-	}
+		ms_run_builtin(mshell, cmd_list);
 	lst_free(&cmd_list, free);
 }
 

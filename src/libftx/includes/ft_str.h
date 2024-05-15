@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:36:51 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/03 13:04:38 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/15 21:28:20 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,6 +177,7 @@ int			str_idxofchar(const char *s, char c);
  * or `-1` if it's not present.
  */
 int			str_idxofstr(const char *str, char *find);
+int			str_idxofstr_from(const char *str, int start, char *find);
 /**
  * @brief Add right padding to the string with specified char if necessary.
  * @attention Original string is mutated.
@@ -217,6 +218,7 @@ char		*str_tolower(char *s);
  * @return the pointer to the new `str`. Or the same str if something went wrong.
  */
 char		*str_replace_first(char *str, char *find, char *replace);
+char		*str_replace_from_to(char *str, int start, int end, char *replace);
 /**
  * @brief Find and replace the `all` substrings of `str` with another string.
  * @attention Uses: malloc, free.

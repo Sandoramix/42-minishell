@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 13:16:03 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/12 15:54:30 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/15 22:23:48 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,9 @@ static bool	cmdp_switch(t_cmdp_switch type, char *raw, t_cmdp_arg *split)
 		return (chr_istoken(raw[i]) && (ft_isspace(raw[i + 1])
 				|| !raw[i + 1] || chr_isquote(raw[i + 1])));
 	if (type == CMDP_WORD)
-		return (!ft_isspace(raw[i]) && ((ft_isspace(raw[i + 1])
-					|| !raw[i + 1] || chr_isquote(raw[i + 1]))
-				|| chr_istoken(raw[i + 1])));
+		return ((!ft_isspace(raw[i]) && !chr_istoken(raw[i]))
+			&& (ft_isspace(raw[i + 1]) || !raw[i + 1]
+				|| chr_isquote(raw[i + 1]) || chr_istoken(raw[i + 1])));
 	dbg_printf("[cmd_switch]: Unknown TYPE [%d]!\n", type);
 	return (false);
 }
@@ -153,6 +153,7 @@ t_list	*cmd_parse_new(char *raw)
 			split.edge = split.i + 1;
 		else if (cmdp_switch(CMDP_TOKEN, raw, &split))
 		{
+			// TODO what if there's "<<|" = should | be separated from << ?
 			split.tmp = my_substr(raw, split.edge, split.i);
 			if (!split.tmp || !lst_addnew_tail(&split.res, split.tmp, NULL))
 				return (lst_free(&split.res, free), free(split.tmp), NULL);

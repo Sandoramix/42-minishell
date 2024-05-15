@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:53:30 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/12 15:45:43 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/15 21:43:23 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct s_list
 	bool				*_is_lis;
 	int					*_lis_max;
 	bool				_hidden;
+	char				_first_char;
 }	t_list;
 
 typedef struct s_dllist
