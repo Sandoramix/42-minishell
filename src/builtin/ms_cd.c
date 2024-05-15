@@ -6,39 +6,47 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 17:37:44 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/07 13:02:51 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/13 20:37:19 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void ms_cd(t_var *mshell, t_list *args)
+
+int ms_cd(t_var *mshell, t_list *args)
 {
 	int len;
 	struct stat buf;
+	t_list *current;
 
 	len = lst_size(args);
+	current = lst_findbykey_str(mshell->env, "HOME");
 	if (len > 2)
 	{
 		ft_fprintf(2, "cd: too many arguments\n");
 		*mshell->status_code = 1;
-		return ;
+		return (KO);
 	}
 	else if (len == 1)
-		chdir(mshell->home_path);
+		chdir(current->val);
 	else if (len == 2)
 	{
-		if (stat(args->val, &buf) != 0)
+		if (stat(args->next->val, &buf) != 0)
 		{
 			ft_fprintf(2, "%s: No such file or directory\n", args->val);
 			*mshell->status_code = 1;
-			return ;
+			return (KO);
 		}
-		chdir(args->val);
-		mshell->home_path = args->val;
+		chdir(args->next->val);
 	}
+	if (len == 1)
+		mshell->home_path = current->val;
+	else
+		mshell->home_path = args->next->val;
+
 	ft_printf("cd: %s\n", mshell->home_path);
 	*mshell->status_code = 0;
+	return (OK);
 }
 
 // int main(int ac, char **av, char **envp)

@@ -6,29 +6,31 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:21:48 by marboccu          #+#    #+#             */
-/*   Updated: 2024/04/25 18:56:03 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/14 23:09:03 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	ms_exit(t_var *mshell, char **args)
+int	ms_exit(t_var *mshell, t_list *args)
 {
 	t_uchar		code;
-	const int	mtx_len = str_mtxlen(args);
+	const int	lst_len = lst_size(args);
 
 	ft_fprintf(2, "exit\n");
-	if (mtx_len > 1)
-		code = (t_uchar)ft_atoi(args[1]);
-	if (mtx_len > 2)
+	if (lst_len > 1)
+		code = (t_uchar)ft_atoi((char *)args->next->val);
+	if (lst_len > 2)
 	{
 		ft_fprintf(2, "exit: too many arguments\n");
 		*mshell->status_code = code;
-		return ;
+		return (OK);
 	}
-	if (mtx_len == 1)
+	lst_free(&args, free);
+	if (lst_len == 1)
 		cleanup(mshell, true, *mshell->status_code);
 	cleanup(mshell, true, code);
+	return (OK);
 }
 
 //int	main(int ac, char **av, char **envp)

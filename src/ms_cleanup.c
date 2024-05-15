@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 16:38:19 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/08 15:44:17 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/14 23:17:29 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 // TODO: Implement cleanup
 int	cleanup(t_var *g, bool shouldexit, int status)
 {
-	(void)g;
+	clear_history();
+	lst_free(&g->history, free);
 	free(g->home_path);
 	str_freemtx(g->cmds_paths);
 	lst_free(&g->env, free);

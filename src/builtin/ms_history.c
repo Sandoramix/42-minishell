@@ -1,32 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ms_history.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/20 11:41:06 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/12 18:36:48 by marboccu         ###   ########.fr       */
+/*   Created: 2024/05/13 17:11:16 by marboccu          #+#    #+#             */
+/*   Updated: 2024/05/13 17:18:00 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-//#if DEBUG == false
-
-int	main(int ac, char **av, char **envp)
+int ms_history(t_var *mshell)
 {
-	t_var	mshell;
+	t_list *current;
+	int i;
 
-	(void)av;
-	mshell = (t_var){0};
-	if (ac != 1)
-		return (pf_errcode(ERR_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
-	mshell._main.envp = envp;
-	ms_init(&mshell);
-	//ms_prompt(&mshell);
-	ms_loop(&mshell);
-	return (cleanup(&mshell, true, 0));
+	i = 1;
+	current = mshell->history;
+	if (!current)
+	{
+		ft_fprintf(2, "history: No history\n");
+		*mshell->status_code = 1;
+		return (KO);
+	}
+	while (current != NULL)
+	{
+		ft_printf("%d %s\n", i, (char*)current->val);
+		current = current->next;
+		i++;
+	}
+	*mshell->status_code = 0;
+	return (OK);
 }
-
-//#endif
