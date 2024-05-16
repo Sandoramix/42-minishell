@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 12:33:15 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/08 15:54:01 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/16 09:23:37 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	ms_init(t_var *mshell)
 	mshell->status_code = ft_calloc(1, sizeof(unsigned char));
 	if (!mshell->status_code)
 		cleanup(mshell, true, 1);
-	dbg_printf("HOME: %s\n", mshell->home_path);
+	dbg_printf("HOME PATH: %s\n", mshell->home_path);
 	mshell->curpath_len = PATH_MAX;
 	mshell->curr_path = ft_calloc(PATH_MAX, sizeof(char));
 	if (!mshell->curr_path)
@@ -44,4 +44,5 @@ void	ms_init(t_var *mshell)
 		pf_errcode(ERR_MALLOC);
 		cleanup(mshell, true, 1);
 	}
+	sys_update_cwd(mshell);
 }

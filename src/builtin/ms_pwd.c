@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 14:36:35 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/07 13:07:05 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/16 09:18:35 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,17 @@
 
 void	*ms_pwd(t_var *mshell, t_list *args)
 {
-	char		*pwd;
-
 	if (!args || lst_size(args) > 1)
 	{
 		ft_fprintf(2, "pwd: too many arguments\n");
 		*mshell->status_code = 1;
 		return (NULL);
 	}
-	pwd = getcwd(mshell->curr_path, mshell->curpath_len);
-	if (!pwd && errno == ERANGE)
-	{
-		mshell->curpath_len *= 2;
-		free(mshell->curr_path);
-		mshell->curr_path = ft_calloc(mshell->curpath_len, sizeof(char));
-		if (!mshell->curr_path)
-			return (pf_errcode(ERR_MALLOC), cleanup(mshell, true, 1), NULL);
-		return (ms_pwd(mshell, args), NULL);
-	}
+	sys_update_cwd(mshell);
 	if (str_cmp((char *)args->val, "pwd") == 0)
 		printf("%s\n", mshell->curr_path);
 	else
 		ft_fprintf(2, "%s: command not found\n", (char *)args->val);
-	
 	return (NULL);
 }
 

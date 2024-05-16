@@ -14,6 +14,7 @@ SRC= main.c \
 	./src/builtin/ms_unset.c \
 	./src/builtin/ms_env.c \
 	./src/builtin/ms_pwd.c \
+	./src/sys/sys_update_cwd.c \
 	./src/ms_cleanup.c \
 	./src/builtin/ms_export.c \
 	./src/builtin/ms_cd.c \

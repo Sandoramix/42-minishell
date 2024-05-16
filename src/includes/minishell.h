@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/15 15:57:27 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/16 09:17:49 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,10 @@ int	ms_exit(t_var *mshell, t_list *args);
 void	*ms_pwd(t_var *mshell, t_list *args);
 int		ms_export(t_var *mshell, t_list *args);
 void	ms_env(t_var *mshell, t_list *args);
-int ms_cd(t_var *mshell, t_list *args);
-int ms_history(t_var *mshell);
+int		ms_cd(t_var *mshell, t_list *args);
+int		ms_history(t_var *mshell);
 
 //-----------------------------------------------------------------------------
+void	*sys_update_cwd(t_var *mshell);
 
 #endif

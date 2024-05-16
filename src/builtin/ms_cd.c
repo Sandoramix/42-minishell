@@ -3,48 +3,53 @@
 /*                                                        :::      ::::::::   */
 /*   ms_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 17:37:44 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/13 20:37:19 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/16 09:22:53 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
 
-int ms_cd(t_var *mshell, t_list *args)
+int	ms_cd(t_var *mshell, t_list *args)
 {
-	int len;
-	struct stat buf;
-	t_list *current;
+	int			len;
+	struct stat	buf;
+	t_list		*current_home;
 
 	len = lst_size(args);
-	current = lst_findbykey_str(mshell->env, "HOME");
 	if (len > 2)
 	{
-		ft_fprintf(2, "cd: too many arguments\n");
+		*mshell->status_code = 1;
+		return (ft_perror("cd: too many arguments\n"), KO);
+	}
+	else if (len == 1)
+	{
+		current_home = lst_findbykey_str(mshell->env, "HOME");
+		if (current_home)
+		{
+			mshell->home_path = str_dup(current_home->val);
+			if (!mshell->home_path)
+				return (pf_errcode(ERR_MALLOC), cleanup(mshell, true, 1));
+		}
+		if (!mshell->home_path)
+			printf("%s\n", mshell->curr_path);
+		else
+			chdir(mshell->home_path);
+		sys_update_cwd(mshell);
+		return (OK);
+	}
+	if (stat(args->next->val, &buf) != 0)
+	{
+		ft_fprintf(2, "%s: No such file or directory\n", args->val);
 		*mshell->status_code = 1;
 		return (KO);
 	}
-	else if (len == 1)
-		chdir(current->val);
-	else if (len == 2)
-	{
-		if (stat(args->next->val, &buf) != 0)
-		{
-			ft_fprintf(2, "%s: No such file or directory\n", args->val);
-			*mshell->status_code = 1;
-			return (KO);
-		}
-		chdir(args->next->val);
-	}
-	if (len == 1)
-		mshell->home_path = current->val;
-	else
-		mshell->home_path = args->next->val;
-
-	ft_printf("cd: %s\n", mshell->home_path);
+	chdir(args->next->val);
+	sys_update_cwd(mshell);
+	dbg_printf("cd: %s -> %s\n", args->next->val, mshell->curr_path);
 	*mshell->status_code = 0;
 	return (OK);
 }
