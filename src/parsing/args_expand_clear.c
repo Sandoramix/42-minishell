@@ -6,12 +6,11 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:24:26 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/15 22:20:06 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/16 18:41:50 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
 
 char	chr_is_inside_quotes(char *str, int idx)
 {
@@ -112,23 +111,6 @@ t_list	*expand_and_clear(t_var *mshell, t_list *args)
 		}
 		dbg_printf(COLOR_CYAN"\tresult|%s|\n"CR, arg->val);
 		arg = arg->next;
-	}
-	return (args);
-}
-
-char	**expand_and_clear_mtx(t_var *mshell, char **args)
-{
-	int		i;
-
-	i = -1;
-	(void)mshell;
-	while (args && args[++i])
-	{
-		dbg_printf(COLOR_CYAN"[expand_clear_mtx]\t|%s|\n"CR, args[i]);
-		// TODO add expansion
-		if (args[i] && !str_clearquotes(&(args[i])))
-			return (str_freemtx(args));
-		dbg_printf(COLOR_CYAN"\t|%s|\n"CR, args[i]);
 	}
 	return (args);
 }

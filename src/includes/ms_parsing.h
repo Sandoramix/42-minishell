@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 15:46:30 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/15 21:09:37 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/16 18:53:51 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,48 @@
 # include <libft.h>
 //---------------------------PARSING-------------------------------------------
 
+// TODO: document this sh*t
+
+typedef enum e_cmd_parseswitch
+{
+	CMDP_SPACE,
+	CMDP_QUOTE,
+	CMDP_TOKEN,
+	CMDP_WORD
+}	t_cmdp_switch;
+
+/**
+ * @brief Structure that contains the splitted string + information about it
+ * @param tmp the newly created string.
+ * @param edge start/end idx of the original string
+ * end is for: QUOTE handling
+ * start is for: WORD/TOKEN handling (updated on SPACE check)
+ * @param i end idx of the original string
+ */
+typedef struct e_cmdp_arg
+{
+	t_list		*res;
+	int			i;
+
+	char		*tmp;
+	int			edge;
+}	t_cmdp_arg;
+
 typedef enum e_argtype
 {
 	A_DEFAULT,
 	A_TOKEN
 }	t_argtype;
 
-// TODO REMOVE
 /**
-# DEPRECATED
  * @brief Parse the string of a command.
- * It even handles internal quotes.
  * @param command command's string to parse
- * @return Array of args parsed.
+ * @return List of args parsed.
  */
-char	**cmd_parse(char *command);
-char	**expand_and_clear_mtx(t_var *mshell, char **args);
-
-t_list	*cmd_parse_new(char *raw);
+t_list	*cmd_parse(char *command);
+t_list	*expand_and_clear(t_var *mshell, t_list *args);
 
 char	*str_clearquotes(char **str);
-
-t_list	*expand_and_clear(t_var *mshell, t_list *args);
 
 bool	str_isvariable(char *s);
 
