@@ -1,44 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_history.c                                       :+:      :+:    :+:   */
+/*   ms_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/13 17:11:16 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/17 16:51:47 by marboccu         ###   ########.fr       */
+/*   Created: 2024/05/17 16:22:46 by marboccu          #+#    #+#             */
+/*   Updated: 2024/05/17 16:47:59 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	ms_history(t_var *mshell, t_list *args)
+int ms_echo(t_var *mshell, t_list *args)
 {
-	t_list	*current;
-	int		i;
+	t_list *current;
 	const int len = lst_size(args);
 
-	i = 1;
-	current = mshell->history;
-	if (len > 1)
-	{
-		ft_perror("history: too many arguments\n");
-		*mshell->status_code = 1;
-		return (KO);
-	}
-	// FIXME Serve?
-	//if (!current)
-	//{
-	//	ft_perror("history: No history\n");
-	//	*mshell->status_code = 1;
-	//	return (KO);
-	//}
+	current = args;
+	if (len > 0)
+		current = current->next;
+	if (len > 1 && str_cmp(args->next->val, "-n") == 0)
+		current = current->next;
 	while (current != NULL)
 	{
-		ft_printf("%d %s\n", i, (char *)current->val);
+		printf("%s", (char *)current->val);
 		current = current->next;
-		i++;
+		if (current != NULL)
+			printf(" ");
 	}
-	*mshell->status_code = 0;
+	if (len == 1 || (len > 1 && str_cmp(args->next->val, "-n") != 0))
+		printf("\n");
+	mshell->status_code = 0;
 	return (OK);
 }

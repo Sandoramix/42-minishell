@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 17:37:44 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/16 09:22:53 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/17 16:58:47 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	ms_cd(t_var *mshell, t_list *args)
 		current_home = lst_findbykey_str(mshell->env, "HOME");
 		if (current_home)
 		{
+			free(mshell->home_path);
 			mshell->home_path = str_dup(current_home->val);
 			if (!mshell->home_path)
 				return (pf_errcode(ERR_MALLOC), cleanup(mshell, true, 1));
