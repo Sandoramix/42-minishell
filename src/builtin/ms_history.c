@@ -3,22 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   ms_history.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 17:11:16 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/16 18:49:26 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/17 16:51:47 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	ms_history(t_var *mshell)
+int	ms_history(t_var *mshell, t_list *args)
 {
 	t_list	*current;
 	int		i;
+	const int len = lst_size(args);
 
 	i = 1;
 	current = mshell->history;
+	if (len > 1)
+	{
+		ft_perror("history: too many arguments\n");
+		*mshell->status_code = 1;
+		return (KO);
+	}
 	// FIXME Serve?
 	//if (!current)
 	//{
