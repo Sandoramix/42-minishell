@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/16 18:54:09 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/17 16:34:46 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int		ms_export(t_var *mshell, t_list *args);
 void	ms_env(t_var *mshell, t_list *args);
 int		ms_cd(t_var *mshell, t_list *args);
 int		ms_history(t_var *mshell);
+int ms_echo(t_var *mshell, t_list *args);
 
 void	parse_and_exec(t_var *mshell, char *input);
 void	add_cmd_history(t_var *mshell, char *cmd);

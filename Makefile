@@ -24,7 +24,8 @@ SRC = ./main.c \
 	./src/parsing/str_env_variable.c \
 	./src/sys/sys_update_cwd.c \
 	./src/utils/history_utils.c \
-	./src/utils/ms_cleanup.c
+	./src/utils/ms_cleanup.c \
+	./src/builtin/ms_echo.c
 
 # ----RULES-----
 all: $(NAME)
