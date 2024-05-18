@@ -1,11 +1,17 @@
 NAME = libft.a
 PNAME = [LIBFTX]
 
+# -----VARIABLES-DECLARATIONS-+-OVVERRIDES-----
+DEBUG_VALUE=0
+
 CC = cc
-CFLAGS = -Wall -Wextra -Werror $(DEBUGFLAGS)
-COMPILE = $(CC) $(CFLAGS)
+CFLAGS = -Wall -Wextra -Werror -g -DDEBUG=$(DEBUG_VALUE)
+
 ARCHIVE = ar rc $(NAME)
+
 RM = rm -f
+
+# ----SOURCE-FILES----
 
 SRC = ./src/char/chr_closequote_idx.c \
 	./src/char/chr_isquote.c \
@@ -128,16 +134,17 @@ SRC = ./src/char/chr_closequote_idx.c \
 
 OBJ = ${SRC:.c=.o}
 
+# ----RULES-----
+
 all: $(NAME)
 
-%.o: %.c
-	@$(COMPILE) -Iincludes -c $< -o $@
-	@echo "$(BLUE)$(PNAME):\t$< COMPILED!"
+debug:
+	$(MAKE) DEBUGFLAGS="-DDEBUG=1"
 
 $(NAME): $(OBJ)
 	@$(ARCHIVE) $(OBJ)
 	@echo "$(GREEN)$(PNAME):\tLIBRARY CREATED$(R)"
-	[ -z "$(strip $(DEBUGFLAGS))" ] || echo "$(RED)$(PNAME):\tDEBUG MODE ENABLED$(R)"
+	[ "$(strip $(DEBUG_VALUE))" = "0" ] || echo "$(RED)[$(PNAME)]:\tDEBUG MODE ENABLED$(R)"
 clean:
 	@$(RM) $(OBJ)
 	@echo "$(RED)$(PNAME):\tOBJECTS DELETED$(R)"
@@ -147,16 +154,21 @@ fclean: clean
 	@echo "$(RED)$(PNAME):\tLIBRARY DELETED$(R)"
 
 re: fclean all
+re-debug: fclean debug
 
-debug:
-	$(MAKE) DEBUGFLAGS="-g -DDEBUG=true"
-debug-re: fclean debug
+# ----RULE-UTILS-----
 
-# COLORS
+%.o: %.c
+	@$(CC) $(CFLAGS) -Iincludes -c $< -o $@
+	@echo "$(BLUE)$(PNAME):\t$< COMPILED!"
+
+# --------------
+
+.PHONY: all clean fclean re
+.SILENT:
+
+# ----COLORS----
 GREEN=\033[0;32m
 RED=\033[0;31m
 BLUE=\033[0;34m
 R=\033[0m
-
-.PHONY: all clean fclean re
-.SILENT:

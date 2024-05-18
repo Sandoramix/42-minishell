@@ -1,11 +1,20 @@
 NAME = minishell
+
+# -----$(NAME) but uppercase-----
 PNAME = $(shell echo -n ${NAME} | tr 'a-z' 'A-Z')
 
+# -----VARIABLES-DECLARATIONS-+-OVVERRIDES-----
+DEBUG_VALUE=0
+
+LIBFTX_DIR=src/libftx
+
 CC = cc
-INCLUDES = -Isrc/includes -Isrc/libftx/includes
-CFLAGS = -Wall -Wextra -Werror $(INCLUDES) $(DEBUGFLAGS)
+INCLUDES = -Isrc/includes -I$(LIBFTX_DIR)/includes
+CFLAGS = -Wall -Wextra -Werror -g $(INCLUDES) -DDEBUG=$(DEBUG_VALUE)
 
 RM = rm -rf
+
+# ----SOURCE-FILES----
 
 SRC = ./main.c \
 	./src/builtin/ms_cd.c \
@@ -28,41 +37,38 @@ SRC = ./main.c \
 	./src/builtin/ms_echo.c
 
 # ----RULES-----
+
 all: $(NAME)
+debug:
+	$(MAKE) DEBUG_VALUE=1
 
 $(NAME): $(SRC)
-	$(MAKE) -C src/libftx
-	$(CC) $(CFLAGS) $(SRC) -pthread -o $(NAME) -Lsrc/libftx -lft -lreadline
+	$(MAKE) -C $(LIBFTX_DIR)
+	$(CC) $(CFLAGS) $(SRC) -o $(NAME) -L$(LIBFTX_DIR) -lft -lreadline -pthread
 	@echo "$(GREEN)[$(PNAME)]:\tPROGRAM CREATED$(R)"
-	[ -z "$(strip $(DEBUGFLAGS))" ] || echo "$(RED)[$(PNAME)]:\tDEBUG MODE ENABLED$(R)"
+	[ "$(strip $(DEBUG_VALUE))" = "0" ] || echo "$(RED)[$(PNAME)]:\tDEBUG MODE ENABLED$(R)"
 
 clean:
-	$(MAKE) -C src/libftx clean
+	$(MAKE) -C $(LIBFTX_DIR) clean
 
 fclean: clean
-	$(MAKE) -C src/libftx fclean
+	$(MAKE) -C $(LIBFTX_DIR) fclean
 	@$(RM) $(NAME)
 	@echo "$(BLUE)[$(PNAME)]:\tPROGRAM DELETED$(R)"
 
 re: fclean all
+re-debug: fclean debug
 
 # ----UTILS-----
 
 VALGRIND=@valgrind --suppressions=src/readline.supp --leak-check=full --show-leak-kinds=all --track-origins=yes --quiet --tool=memcheck --keep-debuginfo=yes
-valgrind: debug-log
+valgrind: debug
 	clear
 	$(VALGRIND) ./$(NAME)
 
-
-re-debug-log: fclean debug-log
-re-debug: fclean debug
-
-debug:
-	$(MAKE) DEBUGFLAGS="-g"
-debug-log:
-	$(MAKE) DEBUGFLAGS="-g -DDEBUG=true"
 # --------------
-.PHONY: all clean fclean re
+
+.PHONY: all clean fclean re re-debug debug
 .SILENT:
 
 # ----COLORS----
