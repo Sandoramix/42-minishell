@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_init.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 12:33:15 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/16 09:23:37 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/18 13:52:41 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ void	ms_init(t_var *mshell)
 	if (!mshell->status_code)
 		cleanup(mshell, true, 1);
 	dbg_printf("HOME PATH: %s\n", mshell->home_path);
-	mshell->curpath_len = PATH_MAX;
-	mshell->curr_path = ft_calloc(PATH_MAX, sizeof(char));
+	mshell->curpath_len = CWD_INITIAL_SIZE;
+	mshell->curr_path = ft_calloc(CWD_INITIAL_SIZE, sizeof(char));
 	if (!mshell->curr_path)
 	{
 		pf_errcode(ERR_MALLOC);

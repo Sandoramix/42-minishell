@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 17:11:16 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/17 17:04:40 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/18 13:23:56 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,12 @@ int	ms_history(t_var *mshell, t_list *args)
 	const int len = lst_size(args);
 
 	i = 1;
+	(void)i;
 	current = mshell->history;
 	if (len > 1)
 	{
 		ft_perror("history: too many arguments\n");
-		*mshell->status_code = 1;
+		*(mshell->status_code) = 1;
 		return (KO);
 	}
 	while (current != NULL)
@@ -32,6 +33,6 @@ int	ms_history(t_var *mshell, t_list *args)
 		current = current->next;
 		i++;
 	}
-	*mshell->status_code = 0;
+	*(mshell->status_code) = 0;
 	return (OK);
 }

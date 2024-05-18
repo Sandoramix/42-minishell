@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/17 16:51:03 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/18 13:52:23 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 # define PROGNAME "minishell"
 # define PROMPT "minishell>"
-# define PATH_MAX 4096
+# define CWD_INITIAL_SIZE 4096
 
 typedef struct s_main
 {
