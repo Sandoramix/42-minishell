@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:53:30 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/15 21:43:23 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/18 16:43:13 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,17 @@ typedef struct s_intmtx
  * @brief `List` data structure
  * @param val value of the node.
  * @param key additional attribute which could be used as search param.
+ * @param type Whatthetype of this variable :3
  * @param next pointer of the next node.
  * @param prev pointer of the previous node.
  * @param _is_lis (used on list of numbers) is the node a part of LIS ?
  * (Longest Increasing sequence).
  * @param _list_max LIS' max length that the current node can become.
+ * @param _hidden Used in `ms_export`. If a variable
+ * is declared without a value (export c), when running `export` it wont show
+ * an equal sign + empty string (e.g. declare -x c)
+ * @param _first_char Used in `cmd_parse`.
+ * A possible first char of the `val`'s string.
  */
 typedef struct s_list
 {

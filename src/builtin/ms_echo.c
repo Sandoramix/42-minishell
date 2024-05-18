@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ms_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:22:46 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/18 13:27:08 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/18 16:34:30 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int ms_echo(t_var *mshell, t_list *args)
+int	ms_echo(t_var *mshell, t_list *args)
 {
-	t_list *current;
-	const int len = lst_size(args);
+	t_list		*current;
+	const int	len = lst_size(args);
 
 	current = args;
 	if (len > 0)
