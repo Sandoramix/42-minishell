@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:41:06 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/19 18:10:23 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/19 18:26:30 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	main(int ac, char **av, char **envp)
 	SHLVL  LANGUAGE GJS_DEBUG_TOPICS ZSH LOGNAME LANG");
 	ms_unset(&mshell, args);
 	lst_free(&args, free);
+	parse_and_exec(&mshell, "''exp\"ort\" a= \" \" '' '''b='   c='  ' d='\"' 'e' 'f= '");
 	ms_prompt(&mshell);
 	return (cleanup(&mshell, true, 0));
 }
