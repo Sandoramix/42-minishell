@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_run_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/18 13:19:23 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/19 18:08:49 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,41 @@ int	ms_run_builtin(t_var *mshell, t_list *args)
 	return (OK);
 }
 
+bool	syntax_check(t_list *args)
+{
+	const char	*known_tokens[] = {"<", "<<", ">", ">>", "|", NULL};
+	int			i;
+
+	while (args)
+	{
+		if (args->type == A_TOKEN)
+		{
+			i = 0;
+			while (known_tokens[i] && str_cmp(args->val, known_tokens[i]) != 0)
+				i++;
+			if (i == 5)
+				return (false);
+			if ((args->prev && args->prev->type == A_TOKEN)
+				|| (args->next && args->next->type == A_TOKEN))
+				return (false);
+			if (!str_cmp("<<", args->val) && !args->next)
+				return (false);
+		}
+		args = args->next;
+	}
+	return (true);
+}
+
 void	parse_and_exec(t_var *mshell, char *input)
 {
 	t_list	*cmd_list;
+	bool	syntax;
 
-	cmd_list = cmd_parse(input);
-	expand_and_clear(mshell, cmd_list);
-	if (cmd_list != NULL)
+	cmd_list = cmd_parse(mshell, input);
+	syntax = syntax_check(cmd_list);
+	if (!syntax)
+		ft_perror("Syntax error\n");
+	if (syntax && cmd_list != NULL)
 		ms_run_builtin(mshell, cmd_list);
 	lst_free(&cmd_list, free);
 }

@@ -115,7 +115,7 @@ static t_list	*cmdp_push_handle(char *raw, t_cmdp_arg *split)
 	return (split->res);
 }
 
-t_list	*cmd_parse(char *raw)
+t_list	*cmd_parse(t_var *mshell, char *raw)
 {
 	t_cmdp_arg		split;
 
@@ -142,5 +142,5 @@ t_list	*cmd_parse(char *raw)
 				return (NULL);
 		}
 	}
-	return (split.res);
+	return (expand_and_clear(mshell, split.res));
 }

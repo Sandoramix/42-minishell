@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:25:21 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/16 18:42:14 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/19 18:12:08 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ int	ms_unset(t_var *mshell, t_list *args)
 //int	main(int ac, char **av, char **envp)
 //{
 //	t_var			mshell;
-//	char			**args;
 //	t_list			*listargs;
 
 //	(void)av;
@@ -65,13 +64,7 @@ int	ms_unset(t_var *mshell, t_list *args)
 //		return (pf_errcode(ERR_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
 //	mshell._main.envp = envp;
 //	ms_init(&mshell);
-//	args = cmd_parse("''un\"set\" LESS ''  'P''ATH' 'HOME' 'LS_COLORS'");
-//	args = expand_and_clear_mtx(&mshell, args);
-//	ms_unset(&mshell, args);
-//	str_freemtx(args);
-
-//	listargs = cmd_parse("export");
-//	listargs = expand_and_clear(&mshell, listargs);
+//	listargs = cmd_parse(mshell, "export");
 //	ms_export(&mshell, listargs);
 //	lst_free(&listargs, free);
 //	return (cleanup(&mshell, true, 0));

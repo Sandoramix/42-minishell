@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:04:40 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/18 12:55:25 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/19 18:12:04 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,33 +138,27 @@ int	ms_export(t_var *mshell, t_list *args)
 // 	mshell._main.envp = envp;
 // 	ms_init(&mshell);
 
-// 	//args = cmd_parse("unset LS_COLORS TERMINATOR XDG_DATA_DIRS XDG_SESSION_PATH SESSION_MANAGER GIO_LAUNCHED_DESKTOP_FILE PAGER LESS SHLVL LANGUAGE GJS_DEBUG_TOPICS ZSH LOGNAME LANG");
-// 	//args = expand_and_clear(&mshell, args);
+// 	//args = cmd_parse(mshell, "unset LS_COLORS TERMINATOR XDG_DATA_DIRS XDG_SESSION_PATH SESSION_MANAGER GIO_LAUNCHED_DESKTOP_FILE PAGER LESS SHLVL LANGUAGE GJS_DEBUG_TOPICS ZSH LOGNAME LANG");
 // 	//ms_unset(&mshell, args);
 // 	//lst_free(&args, free);
 
-// 	args = cmd_parse("''exp\"ort\" a= \" \" '' '''b='   c='  ' d='\"' 'e' 'f= '");
-// 	args = expand_and_clear(&mshell, args);
+// 	args = cmd_parse(mshell, "''exp\"ort\" a= \" \" '' '''b='   c='  ' d='\"' 'e' 'f= '");
 // 	ms_export(&mshell, args);
 // 	lst_free(&args, free);
 
-// 	//args = cmd_parse("env bla");
-// 	//args = expand_and_clear(&mshell, args);
+// 	//args = cmd_parse(mshell, "env bla");
 // 	//ms_env(&mshell, args);
 // 	//lst_free(&args, free);
 
-// 	//args = cmd_parse("export c1= c_ _c");
-// 	//args = expand_and_clear(&mshell, args);
+// 	//args = cmd_parse(mshell, "export c1= c_ _c");
 // 	//ms_export(&mshell, args);
 // 	//lst_free(&args, free);
 
-// 	//args = cmd_parse("export 1c1= .c_ x55 !_c");
-// 	//args = expand_and_clear(&mshell, args);
+// 	//args = cmd_parse(mshell, "export 1c1= .c_ x55 !_c");
 // 	//ms_export(&mshell, args);
 // 	//lst_free(&args, free);
 
-// 	//args = cmd_parse("export");
-// 	//args = expand_and_clear(&mshell, args);
+// 	//args = cmd_parse(mshell, "export");
 // 	//ms_export(&mshell, args);
 // 	//lst_free(&args, free);
 

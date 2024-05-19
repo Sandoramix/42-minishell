@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 15:46:30 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/16 18:53:51 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/19 17:58:05 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ typedef enum e_argtype
  * @param command command's string to parse
  * @return List of args parsed.
  */
-t_list	*cmd_parse(char *command);
+t_list	*cmd_parse(t_var *mshell, char *command);
 t_list	*expand_and_clear(t_var *mshell, t_list *args);
 
 char	*str_clearquotes(char **str);

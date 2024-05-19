@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:44:22 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/16 18:42:14 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/19 18:10:44 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	ms_env(t_var *mshell, t_list *args)
 // 		return (pf_errcode(ERR_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
 // 	mshell._main.envp = envp;
 // 	ms_init(&mshell);
-// 	args = cmd_parse("env");
+// 	args = cmd_parse(mshell, "env");
 // 	ms_env(&mshell, args);
 // 	return (cleanup(&mshell, true, 0));
 // }
