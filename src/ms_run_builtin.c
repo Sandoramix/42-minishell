@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_run_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/19 18:08:49 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/19 18:21:50 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,16 +64,44 @@ bool	syntax_check(t_list *args)
 	return (true);
 }
 
+bool find_matching_final_quote(char *s)
+{
+	int		quote;
+	int		edge;
+	int i;
+
+	i = -1;
+	while (s[++i])
+	{
+		if (chr_isquote(s[i]))
+		{
+			quote = s[i];
+			edge = chr_quoteclose_idx(s, quote, i);
+			if (edge == -1)
+				return (false);
+			i = edge;
+		}
+	}
+	return (true);
+}
+
 void	parse_and_exec(t_var *mshell, char *input)
 {
 	t_list	*cmd_list;
 	bool	syntax;
+	bool quotes;
 
 	cmd_list = cmd_parse(mshell, input);
-	syntax = syntax_check(cmd_list);
-	if (!syntax)
-		ft_perror("Syntax error\n");
-	if (syntax && cmd_list != NULL)
-		ms_run_builtin(mshell, cmd_list);
+	quotes = find_matching_final_quote(input);
+	if (!quotes)
+		ft_perror("Quotes not closed\n");
+	else
+	{
+		syntax = syntax_check(cmd_list);
+		if (!syntax)
+			ft_perror("Syntax error\n");
+		if (syntax && cmd_list != NULL)
+			ms_run_builtin(mshell, cmd_list);
+	}
 	lst_free(&cmd_list, free);
 }
