@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:24:26 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/16 18:41:50 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/20 10:14:18 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	chr_is_inside_quotes(char *str, int idx)
 	}
 	return (0);
 }
-
+//FIXME: echo '$b'"$" or echo '$b'"$b" :)
 t_list	*arg_expand(t_var *mshell, t_list *arg)
 {
 	int		dollar_idx;
@@ -50,18 +50,19 @@ t_list	*arg_expand(t_var *mshell, t_list *arg)
 			arg->_first_char = ((char *)arg->val)[0];
 		return (arg);
 	}
-	len = str_ilen((char *)arg->val);
 	while (dollar_idx != -1)
 	{
+		len = str_ilen((char *)arg->val);
 		end = str_var_ending_idx((char *)arg->val, dollar_idx);
-		dbg_printf("\tFound a $ at [%3d] - [%3d]\n", dollar_idx, end);
+		dbg_printf("\tFound a $ at [%3d] - [%3d] {len: %d}\n", dollar_idx, end,
+			len);
 		if (chr_is_inside_quotes((char *)arg->val, dollar_idx) == '\'')
 		{
 			dbg_printf(COLOR_MAGENTA"\t\tIt's inside single quote ('). Skipping\n");
 			dollar_idx = str_idxofchar((char *)arg->val + dollar_idx + 1, '$');
 			continue ;
 		}
-		if (end == len || end - 1 == dollar_idx)
+		if (end == len || end == dollar_idx)
 		{
 			dbg_printf(COLOR_MAGENTA"\t\tIt's does not have a good ending idx\n");
 			dollar_idx = str_idxofchar((char *)arg->val + dollar_idx + 1, '$');
@@ -88,7 +89,7 @@ t_list	*arg_expand(t_var *mshell, t_list *arg)
 			if (!arg->val)
 				return (pf_errcode(ERR_MALLOC), cleanup(mshell, true, KO), NULL);
 		}
-		dollar_idx = str_idxofchar((char *)arg->val + end, '$');
+		dollar_idx = str_idxofchar((char *)arg->val, '$');
 	}
 	return (arg);
 }
