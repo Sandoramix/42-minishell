@@ -130,7 +130,8 @@ SRC = ./src/char/chr_closequote_idx.c \
 	./src/unistd/ft_putnchars_fd.c \
 	./src/unistd/ft_putstr_fd.c \
 	./src/unistd/ft_putstrmtx.c \
-	./src/unistd/ft_writeulbase_fd.c
+	./src/unistd/ft_writeulbase_fd.c \
+	./src/str/str_ischar_inquotes.c
 
 OBJ = ${SRC:.c=.o}
 

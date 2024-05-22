@@ -1,35 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   str_idxofchar.c                                    :+:      :+:    :+:   */
+/*   str_ischar_inquotes.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/19 14:52:19 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/22 15:05:19 by odudniak         ###   ########.fr       */
+/*   Created: 2024/05/22 15:08:53 by odudniak          #+#    #+#             */
+/*   Updated: 2024/05/22 15:12:50 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <libft.h>
 
-int	str_idxofchar(const char *s, char c)
+char	str_ischar_inquotes(char *str, int idx)
 {
-	int	i;
+	int		i;
+	int		end;
 
-	i = -1;
-	while (s && s[++i])
-		if (s[i] == c)
-			return (i);
-	return (-1);
-}
-
-int	str_idxofchar_from(const char *s, int start, char c)
-{
-	int	i;
-
-	i = start - 1;
-	while (s && s[++i])
-		if (s[i] == c)
-			return (i);
-	return (-1);
+	if (!str || idx <= 0 || idx >= str_ilen(str) - 1)
+		return (0);
+	i = 0;
+	while (i < idx && str[i])
+	{
+		if (chr_isquote(str[i]))
+		{
+			end = chr_quoteclose_idx(str, str[i], i);
+			if (end == -1)
+				return (0);
+			if (end > idx)
+				return (str[i]);
+			i = end;
+		}
+		i++;
+	}
+	return (0);
 }

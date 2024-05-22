@@ -128,7 +128,6 @@ t_list	*cmd_parse(t_var *mshell, char *raw)
 			split.edge = split.i + 1;
 		else if (cmdp_switch(CMDP_TOKEN, raw, &split))
 		{
-			// TODO what if there's "<<|" = should | be separated from << ?
 			split.tmp = my_substr(raw, split.edge, split.i);
 			if (!split.tmp || !lst_addnew_tail(&split.res, split.tmp, NULL))
 				return (lst_free(&split.res, free), free(split.tmp), NULL);
