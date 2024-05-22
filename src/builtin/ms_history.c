@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_history.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 17:11:16 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/18 13:23:56 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/22 15:38:49 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,11 @@
 
 int	ms_history(t_var *mshell, t_list *args)
 {
-	t_list	*current;
-	int		i;
-	const int len = lst_size(args);
+	t_list		*current;
+	int			i;
+	const int	len = lst_size(args);
 
 	i = 1;
-	(void)i;
 	current = mshell->history;
 	if (len > 1)
 	{

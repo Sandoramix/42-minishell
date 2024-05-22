@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:04:40 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/19 18:12:04 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/22 15:46:34 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,14 +137,6 @@ int	ms_export(t_var *mshell, t_list *args)
 // 		return (pf_errcode(ERR_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
 // 	mshell._main.envp = envp;
 // 	ms_init(&mshell);
-
-// 	//args = cmd_parse(mshell, "unset LS_COLORS TERMINATOR XDG_DATA_DIRS XDG_SESSION_PATH SESSION_MANAGER GIO_LAUNCHED_DESKTOP_FILE PAGER LESS SHLVL LANGUAGE GJS_DEBUG_TOPICS ZSH LOGNAME LANG");
-// 	//ms_unset(&mshell, args);
-// 	//lst_free(&args, free);
-
-// 	args = cmd_parse(mshell, "''exp\"ort\" a= \" \" '' '''b='   c='  ' d='\"' 'e' 'f= '");
-// 	ms_export(&mshell, args);
-// 	lst_free(&args, free);
 
 // 	//args = cmd_parse(mshell, "env bla");
 // 	//ms_env(&mshell, args);

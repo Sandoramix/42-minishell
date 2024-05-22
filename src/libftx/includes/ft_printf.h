@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 17:04:19 by odudniak          #+#    #+#             */
-/*   Updated: 2024/04/25 19:37:41 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/22 15:37:30 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,5 +121,5 @@ int			pf_errcode(t_errorcode code);
  * @param ... All necessary args
  * @return Total printed chars.
  */
-int	dbg_printf(const char *str, ...);
+int			dbg_printf(const char *str, ...);
 #endif

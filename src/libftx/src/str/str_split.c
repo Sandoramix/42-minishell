@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 00:16:48 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/20 09:55:07 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/22 15:36:17 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ char	**str_split_first(char const *s, char c)
 		res[0] = str_dup(s);
 	return (res);
 }
-
 
 char	**str_split_firststr(char const *str, char *s)
 {

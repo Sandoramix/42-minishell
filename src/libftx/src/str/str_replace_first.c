@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 16:44:10 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/15 21:28:20 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/22 15:36:04 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ char	*str_replace_first(char *str, char *find, char *replace)
 	str = res;
 	return (str);
 }
-
 
 char	*str_replace_from_to(char *str, int start, int end, char *replace)
 {

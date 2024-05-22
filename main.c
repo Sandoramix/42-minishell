@@ -3,24 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:41:06 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/19 18:26:30 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/22 15:47:05 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-//#if DEBUG == false
-
-
 // TODO REMOVE ME
-t_var *tmpshell;
+t_var	*g_tmpshell;
+
 void	safe_exit(int signal)
 {
 	(void)signal;
-	cleanup(tmpshell, true, 130);
+	cleanup(g_tmpshell, true, 130);
 }
 
 int	main(int ac, char **av, char **envp)
@@ -35,15 +33,13 @@ int	main(int ac, char **av, char **envp)
 	mshell._main.envp = envp;
 	ms_init(&mshell);
 	signal(SIGINT, safe_exit);
-	tmpshell = &mshell;
+	g_tmpshell = &mshell;
 	args = cmd_parse(&mshell, "unset LS_COLORS TERMINATOR XDG_DATA_DIRS \
 	XDG_SESSION_PATH SESSION_MANAGER GIO_LAUNCHED_DESKTOP_FILE PAGER LESS \
 	SHLVL  LANGUAGE GJS_DEBUG_TOPICS ZSH LOGNAME LANG");
 	ms_unset(&mshell, args);
 	lst_free(&args, free);
-	parse_and_exec(&mshell, "''exp\"ort\" a= \" \" '' '''b='   c='  ' d='\"' 'e' 'f= '");
+	parse_and_exec(&mshell, "'$b'\"$b\"");
 	ms_prompt(&mshell);
 	return (cleanup(&mshell, true, 0));
 }
-
-//#endif

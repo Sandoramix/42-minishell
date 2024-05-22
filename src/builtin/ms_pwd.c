@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 14:36:35 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/19 18:11:16 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/22 15:39:35 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,3 @@ void	*ms_pwd(t_var *mshell, t_list *args)
 // 	ms_pwd(&mshell, args);
 // 	return (cleanup(&mshell, true, 0));
 // }
-

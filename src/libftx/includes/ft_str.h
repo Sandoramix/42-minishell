@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:36:51 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/15 21:28:20 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/22 15:12:23 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,7 @@ char		*str_nstr(const char *s1, const char *s2, size_t n);
  * @return Index of the first occurence of `c`, or `-1` if it's not present
  */
 int			str_idxofchar(const char *s, char c);
+int			str_idxofchar_from(const char *s, int start, char c);
 /**
  * @brief FInd the index of first occurence of substring `find` inside `str`
  *
@@ -390,4 +391,13 @@ char		**str_mtxcpy(char **dest, char **src, size_t n);
  * or `NULL` if any error happened.
  */
 char		**str_mtxpush(char ***mtxp, char *s);
+/**
+ * @brief Check if the given char at `idx` position of `str` is surrounded
+ * by quotes.
+ * @param str string to compare
+ * @param idx index of the char to check
+ * @return `0` if the given idx is not surrounded by a quote, otherwise a
+ * char of the surrounding quote is returned (`'` or `"`)
+ */
+char		str_ischar_inquotes(char *str, int idx);
 #endif

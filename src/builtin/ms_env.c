@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:44:22 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/19 18:10:44 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/22 15:46:18 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	ms_env(t_var *mshell, t_list *args)
 {
-
 	if (!args)
 		return ;
 	if (str_cmp((char *)args->val, "env") != 0)

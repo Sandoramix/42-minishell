@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_run_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/19 18:21:50 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/22 15:41:14 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,11 @@ bool	syntax_check(t_list *args)
 	return (true);
 }
 
-bool find_matching_final_quote(char *s)
+bool	find_matching_final_quote(char *s)
 {
 	int		quote;
 	int		edge;
-	int i;
+	int		i;
 
 	i = -1;
 	while (s[++i])
@@ -89,7 +89,7 @@ void	parse_and_exec(t_var *mshell, char *input)
 {
 	t_list	*cmd_list;
 	bool	syntax;
-	bool quotes;
+	bool	quotes;
 
 	cmd_list = cmd_parse(mshell, input);
 	quotes = find_matching_final_quote(input);

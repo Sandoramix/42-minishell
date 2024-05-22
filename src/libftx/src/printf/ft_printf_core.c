@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf_core.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 17:51:11 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/18 13:13:56 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/22 15:37:12 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ size_t	pf_getsimpleres(int fd, va_list *list, t_pfflag flag)
 	else if (flag.type == PF_UINT)
 		return (ft_writeulbase_fd(va_arg(*list, unsigned int), BASE10, fd));
 	else if (flag.type == PF_HEX && !lowercase)
-		return (ft_writeulbase_fd(va_arg(*list, unsigned int), BASE16UPPER, fd));
+		return (ft_writeulbase_fd(va_arg(*list, unsigned int),
+				BASE16UPPER, fd));
 	else if (flag.type == PF_HEX && lowercase)
 		return (ft_writeulbase_fd(va_arg(*list, unsigned int), BASE16, fd));
 	else if (flag.type == PF_POINTER)
