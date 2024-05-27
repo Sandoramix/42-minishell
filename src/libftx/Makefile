@@ -12,13 +12,19 @@ ARCHIVE = ar rc $(NAME)
 RM = rm -f
 
 # ----SOURCE-FILES----
-
 SRC = ./src/char/chr_closequote_idx.c \
+	./src/char/chr_equals.c \
+	./src/char/chr_isalnum.c \
+	./src/char/chr_isalpha.c \
+	./src/char/chr_isascii.c \
+	./src/char/chr_isdigit.c \
+	./src/char/chr_isprint.c \
 	./src/char/chr_isquote.c \
+	./src/char/chr_issign.c \
+	./src/char/chr_isspace.c \
 	./src/char/chr_istoken.c \
-	./src/char/ft_charequals.c \
-	./src/char/ft_ctolower.c \
-	./src/char/ft_ctoupper.c \
+	./src/char/chr_tolower.c \
+	./src/char/chr_toupper.c \
 	./src/converter/ft_atoi.c \
 	./src/converter/ft_boolstr.c \
 	./src/converter/ft_itoa.c \
@@ -26,18 +32,6 @@ SRC = ./src/char/chr_closequote_idx.c \
 	./src/converter/ft_itohex.c \
 	./src/converter/ft_uitoa.c \
 	./src/converter/ft_ultoa_base.c \
-	./src/ctype/ft_isalnum.c \
-	./src/ctype/ft_isalpha.c \
-	./src/ctype/ft_isascii.c \
-	./src/ctype/ft_isdigit.c \
-	./src/ctype/ft_isprint.c \
-	./src/ctype/ft_issign.c \
-	./src/ctype/ft_isspace.c \
-	./src/dl_list/dll_create.c \
-	./src/dl_list/dll_delete.c \
-	./src/dl_list/dll_print.c \
-	./src/dl_list/dll_search.c \
-	./src/dl_list/dll_utils.c \
 	./src/env/env_load.c \
 	./src/env/env_search.c \
 	./src/files/file_gen.c \
@@ -45,14 +39,6 @@ SRC = ./src/char/chr_closequote_idx.c \
 	./src/files/ft_readfile.c \
 	./src/getnextline/get_next_line.c \
 	./src/getnextline/get_next_line_utils.c \
-	./src/int/array/int_clear.c \
-	./src/int/array/int_populate.c \
-	./src/int/array/int_print.c \
-	./src/int/array/int_search.c \
-	./src/int/ft_int_minmax_idx.c \
-	./src/int/ft_intcmp.c \
-	./src/int/int_free.c \
-	./src/int/int_imin.c \
 	./src/lists/lst_count.c \
 	./src/lists/lst_create.c \
 	./src/lists/lst_delete.c \
@@ -79,11 +65,6 @@ SRC = ./src/char/chr_closequote_idx.c \
 	./src/printf/ft_printf.c \
 	./src/printf/ft_printf_core.c \
 	./src/printf/pf_errcode.c \
-	./src/pthread/mutex/mutex_getters.c \
-	./src/pthread/mutex/mutex_increments.c \
-	./src/pthread/mutex/mutex_setters.c \
-	./src/pthread/mutex/mutex_wrapper.c \
-	./src/pthread/pthread_wrapper.c \
 	./src/str/str_chr.c \
 	./src/str/str_cmp.c \
 	./src/str/str_count_c.c \
@@ -97,6 +78,7 @@ SRC = ./src/char/chr_closequote_idx.c \
 	./src/str/str_ilen.c \
 	./src/str/str_includesset.c \
 	./src/str/str_isblank.c \
+	./src/str/str_ischar_inquotes.c \
 	./src/str/str_iteri.c \
 	./src/str/str_join.c \
 	./src/str/str_lcat.c \
@@ -119,7 +101,6 @@ SRC = ./src/char/chr_closequote_idx.c \
 	./src/str/str_toupper.c \
 	./src/str/str_trim.c \
 	./src/str/str_ulen.c \
-	./src/strict/converter/strict_atoi.c \
 	./src/sys/cleanup.c \
 	./src/sys/sys_cmd.c \
 	./src/sys/sys_time.c \
@@ -130,8 +111,7 @@ SRC = ./src/char/chr_closequote_idx.c \
 	./src/unistd/ft_putnchars_fd.c \
 	./src/unistd/ft_putstr_fd.c \
 	./src/unistd/ft_putstrmtx.c \
-	./src/unistd/ft_writeulbase_fd.c \
-	./src/str/str_ischar_inquotes.c
+	./src/unistd/ft_writeulbase_fd.c
 
 OBJ = ${SRC:.c=.o}
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 14:33:51 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/13 13:27:26 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/27 21:17:27 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,8 @@
 
 # include <ft_char.h>
 # include <ft_convert.h>
-# include <ft_ctype.h>
 # include <ft_file.h>
 # include <ft_gnl.h>
-# include <ft_int.h>
 # include <ft_lists.h>
 # include <ft_math.h>
 # include <ft_mem.h>
@@ -49,7 +47,6 @@
 # include <ft_structs.h>
 # include <ft_unistd.h>
 # include <ft_system.h>
-# include <ft_phtread.h>
 
 # define BASE10 "0123456789"
 # define BASE16 "0123456789abcdef"
@@ -62,6 +59,8 @@
 # ifndef FILE_HEREDOC
 #  define FILE_HEREDOC ".heredoc"
 # endif
+
+typedef struct s_var	t_var;
 
 /**
  * @brief General purpose Cleanup funcion

@@ -16,7 +16,7 @@
 
 static void	cmd_dbgparse(t_cmdp_switch type, char *s, int i, int edge)
 {
-	const bool	common_part = ft_isspace(s[i + 1])
+	const bool	common_part = chr_isspace(s[i + 1])
 		|| !s[i + 1] || chr_isquote(s[i + 1]);
 
 	if (!DEBUG)
@@ -76,13 +76,13 @@ static bool	cmdp_switch(t_cmdp_switch type, char *raw, t_cmdp_arg *split)
 	if (type == CMDP_QUOTE)
 		return (true);
 	if (type == CMDP_SPACE)
-		return (ft_isspace(raw[i]) && !ft_isspace(raw[i + 1]));
+		return (chr_isspace(raw[i]) && !chr_isspace(raw[i + 1]));
 	if (type == CMDP_TOKEN)
-		return (chr_istoken(raw[i]) && (ft_isspace(raw[i + 1])
+		return (chr_istoken(raw[i]) && (chr_isspace(raw[i + 1])
 				|| !raw[i + 1] || chr_isquote(raw[i + 1])));
 	if (type == CMDP_WORD)
-		return ((!ft_isspace(raw[i]) && !chr_istoken(raw[i]))
-			&& (ft_isspace(raw[i + 1]) || !raw[i + 1]
+		return ((!chr_isspace(raw[i]) && !chr_istoken(raw[i]))
+			&& (chr_isspace(raw[i + 1]) || !raw[i + 1]
 				|| chr_isquote(raw[i + 1]) || chr_istoken(raw[i + 1])));
 	dbg_printf("[cmd_switch]: Unknown TYPE [%d]!\n", type);
 	return (false);
@@ -94,12 +94,12 @@ static t_list	*cmdp_push_handle(char *raw, t_cmdp_arg *split)
 
 	from = (int [2]){split->edge, split->i}[chr_isquote(raw[split->i])];
 	if (chr_isquote(raw[split->i]))
-		split->tmp = my_substr(raw, split->i, split->edge);
+		split->tmp = str_substr(raw, split->i, split->edge);
 	else
-		split->tmp = my_substr(raw, split->edge, split->i);
+		split->tmp = str_substr(raw, split->edge, split->i);
 	if (!split->tmp)
 		return (lst_free(&split->res, free), NULL);
-	if (from != 0 && !ft_isspace(raw[from - 1]) && !chr_istoken(raw[from - 1]))
+	if (from != 0 && !chr_isspace(raw[from - 1]) && !chr_istoken(raw[from - 1]))
 	{
 		if (!lst_strappend_last(&split->res, split->tmp, raw[from - 1]))
 			return (NULL);
@@ -128,7 +128,7 @@ t_list	*cmd_parse(t_var *mshell, char *raw)
 			split.edge = split.i + 1;
 		else if (cmdp_switch(CMDP_TOKEN, raw, &split))
 		{
-			split.tmp = my_substr(raw, split.edge, split.i);
+			split.tmp = str_substr(raw, split.edge, split.i);
 			if (!split.tmp || !lst_addnew_tail(&split.res, split.tmp, NULL))
 				return (lst_free(&split.res, free), free(split.tmp), NULL);
 			lst_gettail(split.res)->type = A_TOKEN;

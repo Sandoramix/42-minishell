@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:47:35 by odudniak          #+#    #+#             */
-/*   Updated: 2024/04/21 14:51:07 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/27 20:55:05 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,54 +14,6 @@
 # define FT_LISTS_H
 # include <libft.h>
 
-//!-----------------------DOUBLE LINKED LISTS (INTEGERS)---------
-//!DEPRECATED
-/**
- * @brief get list's last node
- * @param head head of the list
- * @return pointer to tail
- */
-t_dllist	*dll_gettail(t_dllist *head);
-/**
- * @brief Print the list from head to tail
- * @param head list's head
- */
-void		dll_printlist(t_dllist *head);
-void		dll_printlist_full(t_dllist *head);
-/**
- * @brief Print the list from tail to head
- * @param head list's head
- */
-void		dll_printrevlist(t_dllist *head);
-/**
- * @brief Get list's node by it's index
- * @param head list's head
- * @param idx index to get
- * @return list's node or `NULL` if `idx` is not valid
- */
-t_dllist	*dll_byidx(t_dllist *head, int idx);
-/**
- * @brief Retrieve the list's current size
- * @param head list's head
- * @return `int`
- */
-int			dll_size(t_dllist *head);
-
-// TODO ADD DOCS
-t_dllist	*dll_delhead(t_dllist **head);
-t_dllist	*dll_deltail(t_dllist **head);
-t_dllist	*dll_addtail(t_dllist **head, int *val);
-t_dllist	*dll_addnode_tail(t_dllist **head, t_dllist *node);
-t_dllist	*dll_addhead(t_dllist **head, int *val);
-t_dllist	*dll_addnode_head(t_dllist **head, t_dllist *node);
-t_dllist	*dll_new(int *val);
-void		*dll_clearlist(t_dllist **head);
-
-int			dll_idxof(t_dllist *head, int val);
-t_dllist	*dll_minmax(t_dllist *head, bool min);
-int			dll_minmax_idx(t_dllist *head, bool min);
-int			dll_next_occur_idx(t_dllist *head, int prevmax, bool min);
-int			dll_calc_lis(t_dllist *head);
 //!-------------------------LISTS------------------------------
 
 //! MERGING LISTS WITH DOUBLE LINKED LISTS

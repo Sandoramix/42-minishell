@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 20:35:57 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/15 21:51:22 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/27 21:02:41 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ bool	str_isvariable(char *s)
 	i = -1;
 	while (valid && s && s[++i])
 	{
-		if (i == 0 && (!ft_isalpha(s[0]) && s[0] != '_'))
+		if (i == 0 && (!chr_isalpha(s[0]) && s[0] != '_'))
 			return (false);
-		else if (!ft_isalnum(s[i]) && s[i] != '_')
+		else if (!chr_isalnum(s[i]) && s[i] != '_')
 			return (false);
 	}
 	return (true);
@@ -41,8 +41,8 @@ int	str_var_ending_idx(char *s, int start)
 	i = start;
 	while (s && s[i])
 	{
-		if ((i == start && (!ft_isdigit(s[start]) || s[start] == '_'))
-			|| (ft_isalnum(s[i]) || s[i] == '_'))
+		if ((i == start && (!chr_isdigit(s[start]) || s[start] == '_'))
+			|| (chr_isalnum(s[i]) || s[i] == '_'))
 			;
 		else
 			return (i - 1);

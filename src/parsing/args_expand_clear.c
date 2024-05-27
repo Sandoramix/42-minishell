@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:24:26 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/22 15:38:12 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/27 21:36:28 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_list	*replace_variable(t_var *mshell, t_list *arg, int *d_idx, int *end)
 	char	*variable;
 	t_list	*env;
 
-	variable = my_substr(arg->val, (*d_idx) + 1, (*end));
+	variable = str_substr(arg->val, (*d_idx) + 1, (*end));
 	if (!variable)
 		return (pf_errcode(ERR_MALLOC), NULL);
 	dbg_printf(COLOR_GRAY"\t\tVariable to search: [%s]\n", variable);
@@ -72,6 +72,9 @@ t_list	*arg_expand(t_var *mshell, t_list *arg)
 	dbg_printf(COLOR_YELLOW"[arg_expand] of [%s]\n", arg->val);
 	if (arg->val)
 		arg->_first_char = ((char *)arg->val)[0];
+	if (arg->prev && arg->prev->type == A_TOKEN
+		&& str_equals(arg->prev->val, "<<"))
+		return (arg);
 	while (dollar_idx != -1)
 	{
 		if (!arg_update(mshell, arg, &dollar_idx))

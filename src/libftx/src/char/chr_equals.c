@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_charequals.c                                    :+:      :+:    :+:   */
+/*   chr_equals.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/28 18:18:31 by odudniak          #+#    #+#             */
-/*   Updated: 2024/02/28 18:52:36 by odudniak         ###   ########.fr       */
+/*   Created: 2024/05/27 21:07:07 by odudniak          #+#    #+#             */
+/*   Updated: 2024/05/27 21:07:09 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-bool	ft_charequals(char c1, char c2)
+bool	chr_equals(char c1, char c2)
 {
 	return (c1 == c2);
 }

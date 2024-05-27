@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 14:17:47 by odudniak          #+#    #+#             */
-/*   Updated: 2024/03/01 20:35:19 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/27 21:24:26 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static char	*gnl_read_until_needed(int fd, char *buffer)
 	{
 		rlen = read(fd, rdata, BUFFER_SIZE);
 		if (rlen > 0)
-			buffer = my_strjoin(buffer, rdata, rlen);
+			buffer = str_nfreejoin(buffer, rdata, rlen);
 		else if (rlen <= 0 && str_ilen(buffer) == 0)
 			buffer = ft_free(buffer);
 	}
@@ -49,12 +49,12 @@ char	*get_next_line(int fd, bool keep_nl)
 	if (!buffer[fd])
 		return (NULL);
 	idxof = str_idxofchar(buffer[fd], '\n');
-	res = my_substr(buffer[fd], 0, \
+	res = str_substr(buffer[fd], 0, \
 	((int [2]){str_ilen(buffer[fd]), idxof - !keep_nl})[idxof >= 0]);
-	tmp = my_substr(buffer[fd], ((int [2]){str_ilen(buffer[fd]), \
+	tmp = str_substr(buffer[fd], ((int [2]){str_ilen(buffer[fd]), \
 	idxof + 1})[idxof >= 0], str_ilen(buffer[fd]));
 	free(buffer[fd]);
-	buffer[fd] = my_strjoin(tmp, NULL, str_ilen(tmp));
+	buffer[fd] = str_nfreejoin(tmp, NULL, str_ilen(tmp));
 	if (!str_ilen(buffer[fd]))
 		buffer[fd] = ft_free(buffer[fd]);
 	return (res);

@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 15:46:10 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/05 14:07:23 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/27 21:15:53 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,6 @@ typedef enum e_timeunit
 typedef struct timeval	t_time;
 typedef struct timeval	t_timeval;
 
-/**
- * @brief Generate list of commands where the `key` is the command of `cmds`
- * and the `val` is it's absolute path or if not found the same `key`
- * @param cmds Commands executable to find (cannot be a string of length `0`)
- * @param paths paths from `PATH` env
- * @return list of commands
- */
-t_list		*sys_loadcmds(char **cmds, char **paths);
 /**
  * @brief Generate an array of all setted `PATH` paths0
  * @param env node of the `PATH` environment variable
