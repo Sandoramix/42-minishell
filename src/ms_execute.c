@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:02:15 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/27 12:05:16 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/27 16:10:41 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,44 +68,38 @@ void ms_exec_cmd(t_var *mshell, t_list *cmd)
 {
 	char	*cmd_path;
 	char	**args;
-	t_list  *curr;
+	//t_list  *curr;
 	pid_t	pid;
 
-	curr = cmd;
-	cmd_path = sys_findcmdpath(mshell->cmds_paths, curr->val);
+	//curr = cmd;
+	cmd_path = sys_findcmdpath(mshell->cmds_paths, cmd->val);
 	if (!cmd_path)
 	{
-		ft_perror("Command not found: %s\n", curr->val);
+		ft_perror("Command not found: %s\n", cmd->val);
 		return ;
 	}
-	while (curr != NULL)
+	args = ft_lst_to_array(cmd);
+	if (!args)
 	{
-		args = ft_lst_to_array(curr);
-		if (!args)
-		{
-			ft_perror("duplication failed\n");
-			free(cmd_path);
-			return ;
-		}
-		pid = fork();
-		if (pid < 0)
-		{
-			ft_perror("fork failed\n");
-			free(args);
-			free(cmd_path);
-			return ;
-		}
-		else if (pid == 0)
-		{
-			if (execve(cmd_path, args, mshell->_main.envp) == -1)
-				ft_perror("execve failed\n");
-			free(args);
-		}
-		else
-			waitpid(pid, (int *)mshell->status_code, 0);
-		free(args);
-		curr = curr->next;
+		ft_perror("duplication failed\n");
+		return ;
 	}
+	pid = fork();
+	if (pid < 0)
+	{
+		ft_perror("fork failed\n");
+		free(args);
+		free(cmd_path);
+		return ;
+	}
+	else if (pid == 0)
+	{
+		if (execve(cmd_path, args, mshell->_main.envp) == -1)
+			ft_perror("execve failed\n");
+	}
+	else
+		waitpid(pid, (int *)mshell->status_code, 0);
+	free(args);
 	free(cmd_path);
 	
 }

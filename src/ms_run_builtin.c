@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/27 10:25:58 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/27 16:04:20 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,7 @@ int	ms_run_builtin(t_var *mshell, t_list *args)
 	else if (str_cmp(args->val, "exit") == 0)
 		return (ms_exit(mshell, args));
 	else
-	{
 		ms_exec_cmd(mshell, args);
-		// if (args)
-		// 	ft_perror(PROGNAME": Command not found: %s\n", args->val);
-		// return (KO);
-	}
 	return (OK);
 }
 
@@ -128,9 +123,8 @@ void	parse_and_exec(t_var *mshell, char *input)
 			ms_run_builtin(mshell, cmd_list);
 			// else
 			// {
-			// 	printf("ms_exec_cmd\n");
+			// 	//printf("ms_exec_cmd\n");
 			// 	ms_exec_cmd(mshell, cmd_list);
-			
 			// }
 		}
 	}
