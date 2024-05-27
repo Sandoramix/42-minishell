@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:41:06 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/22 15:47:05 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/27 21:56:50 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	safe_exit(int signal)
 int	main(int ac, char **av, char **envp)
 {
 	t_var	mshell;
-	t_list	*args;
 
 	(void)av;
 	mshell = (t_var){0};
@@ -34,12 +33,11 @@ int	main(int ac, char **av, char **envp)
 	ms_init(&mshell);
 	signal(SIGINT, safe_exit);
 	g_tmpshell = &mshell;
-	args = cmd_parse(&mshell, "unset LS_COLORS TERMINATOR XDG_DATA_DIRS \
+	parse_and_exec(&mshell, "unset LS_COLORS TERMINATOR XDG_DATA_DIRS \
 	XDG_SESSION_PATH SESSION_MANAGER GIO_LAUNCHED_DESKTOP_FILE PAGER LESS \
 	SHLVL  LANGUAGE GJS_DEBUG_TOPICS ZSH LOGNAME LANG");
-	ms_unset(&mshell, args);
-	lst_free(&args, free);
-	parse_and_exec(&mshell, "'$b'\"$b\"");
+	parse_and_exec(&mshell, "export a=l b=s");
+	parse_and_exec(&mshell, "$a$b");
 	ms_prompt(&mshell);
 	return (cleanup(&mshell, true, 0));
 }
