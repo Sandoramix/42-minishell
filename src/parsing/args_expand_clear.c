@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:24:26 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/27 21:36:28 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/27 21:45:17 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,12 @@ t_list	*arg_expand(t_var *mshell, t_list *arg)
 
 	dollar_idx = str_idxofchar((char *)arg->val, '$');
 	dbg_printf(COLOR_YELLOW"[arg_expand] of [%s]\n", arg->val);
-	if (arg->val)
-		arg->_first_char = ((char *)arg->val)[0];
-	if (arg->prev && arg->prev->type == A_TOKEN
-		&& str_equals(arg->prev->val, "<<"))
+	if (arg->prev && arg->prev->type == A_TOKEN)
+	{
+		if (arg->val && ((char *)arg->val)[0] == '\'')
+			arg->prev->_prevent_expansion = true;
 		return (arg);
+	}
 	while (dollar_idx != -1)
 	{
 		if (!arg_update(mshell, arg, &dollar_idx))
