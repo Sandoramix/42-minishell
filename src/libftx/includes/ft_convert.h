@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 09:48:00 by odudniak          #+#    #+#             */
-/*   Updated: 2024/03/10 09:48:36 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/27 21:10:04 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,15 +75,5 @@ char		*ft_uitoa(unsigned int n);
  * @attention Uses: malloc
  */
 char		*ft_ultoa_base(unsigned long n, const char *base);
-
-//!-------------------------STRICT GANG--------------------------
-/**
- * @brief Atoi but very strict. doesn't tollerate any non digit characters
- * except for spaces
- *
- * @param s
- * @return int*
- */
-int			*strict_atoi(const char *s);
 
 #endif

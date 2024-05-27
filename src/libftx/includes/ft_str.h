@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:36:51 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/22 15:12:23 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/27 21:32:36 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,7 +260,15 @@ char		*str_pushchar(char *s, char c);
  * NULL if the allocation fails.
  * @attention Uses: malloc
  */
-char		*str_substr(char const *s, unsigned int start, size_t len);
+char		*str_lensubstr(char *s, size_t start, size_t len);
+/**
+ * @brief Create a substring of string `s` from `start` to `end` (included)
+ * @param s Main string
+ * @param start Start index
+ * @param end End index (included)
+ * @return Result of the string or `NULL` if length of `s` is zero.
+ */
+char		*str_substr(char *s, size_t start, size_t end);
 /**
  * @brief Allocates (with malloc(3)) and returns a new
  * string, which is the result of the concatenation
@@ -293,7 +301,7 @@ char		*str_freejoin(char *s1, char const *s2);
  * NULL if the allocation fails.
  * @attention Uses: malloc
  */
-char		*str_trim(char const *s1, char const *set);
+char		*str_trim(char *s1, char const *set);
 /**
  * @brief Allocates (with malloc(3)) and returns an array
  * of strings obtained by splitting 's' using the
@@ -306,10 +314,10 @@ char		*str_trim(char const *s1, char const *set);
  * NULL if the allocation fails.
  * @attention Uses: malloc
  */
-char		**str_split(char const *s, char c);
+char		**str_split(char *s, char c);
 
-char		**str_split_first(char const *s, char c);
-char		**str_split_firststr(char const *str, char *s);
+char		**str_split_first(char *s, char c);
+char		**str_split_firststr(char *str, char *s);
 /**
  * @brief Check if the given `s` string ends with `end` string
  * @param s string to check
@@ -400,4 +408,16 @@ char		**str_mtxpush(char ***mtxp, char *s);
  * char of the surrounding quote is returned (`'` or `"`)
  */
 char		str_ischar_inquotes(char *str, int idx);
+
+/**
+ * @brief Concatenate two strings and `free` the first one.
+ * @attention Uses: `malloc` & `free`
+ * @param s1 First string which will be freed after the copy.
+ * @param s2 Second string
+ * @param s2_n Number of characters to copy from `s2`
+ * @return Concatenation of both strings, or `NULL` on allocation
+ * failure.
+ */
+char		*str_nfreejoin(char *s1, char *s2, size_t s2_n);
+
 #endif

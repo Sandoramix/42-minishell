@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 17:51:11 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/22 15:37:12 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/27 21:03:47 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ size_t	pf_handlechar(int fd, char c, t_pfflag flag)
 
 size_t	pf_getsimpleres(int fd, va_list *list, t_pfflag flag)
 {
-	const bool	lowercase = ft_ctolower(flag._str[flag._end])
+	const bool	lowercase = chr_tolower(flag._str[flag._end])
 		== flag._str[flag._end];
 
 	if (flag.type == PF_CHAR)

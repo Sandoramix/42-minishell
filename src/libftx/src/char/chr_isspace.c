@@ -1,20 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   int_imin.c                                         :+:      :+:    :+:   */
+/*   chr_isspace.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it>   +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/31 15:02:32 by odudniak          #+#    #+#             */
-/*   Updated: 2024/02/28 18:18:53 by odudniak         ###   ########.fr       */
+/*   Created: 2024/05/27 21:07:57 by odudniak          #+#    #+#             */
+/*   Updated: 2024/05/27 21:07:58 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 
-int	int_imin(int n1, int n2)
+bool	chr_isspace(char c)
 {
-	if (n1 <= n2)
-		return (n1);
-	return (n2);
+	return (c == ' ' || (c >= 9 && c <= 13));
 }

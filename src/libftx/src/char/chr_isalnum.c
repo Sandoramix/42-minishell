@@ -1,22 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_intcmp.c                                        :+:      :+:    :+:   */
+/*   chr_isalnum.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/21 01:36:04 by odudniak          #+#    #+#             */
-/*   Updated: 2024/02/28 18:18:53 by odudniak         ###   ########.fr       */
+/*   Created: 2024/05/27 21:07:20 by odudniak          #+#    #+#             */
+/*   Updated: 2024/05/27 21:07:21 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
+#include "libft.h"
 
-int	ft_intcmp(int n1, int n2)
+bool	chr_isalnum(char c)
 {
-	if (n1 > n2)
-		return (1);
-	if (n1 < n2)
-		return (-1);
-	return (0);
+	return (chr_isalpha(c) || chr_isdigit(c));
 }

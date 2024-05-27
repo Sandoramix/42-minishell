@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/14 00:16:48 by odudniak          #+#    #+#             */
-/*   Updated: 2024/02/28 18:18:53 by odudniak         ###   ########.fr       */
+/*   Created: 2024/05/27 21:25:00 by odudniak          #+#    #+#             */
+/*   Updated: 2024/05/27 21:31:36 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*str_substr(char const *s, unsigned int start, size_t len)
+char	*str_lensubstr(char *s, size_t start, size_t len)
 {
 	char	*res;
 	size_t	s_len;

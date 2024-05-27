@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:53:30 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/18 16:43:13 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/27 21:49:18 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,27 +18,6 @@ typedef unsigned char	t_uchar;
 typedef struct timeval	t_time;
 typedef struct timeval	t_timeval;
 typedef unsigned long	t_ulong;
-
-/**
- * @brief Struct for handling arrays of integers
- * @param arr array of integers
- * @param size n. of elements inside the given `arr` array
- */
-typedef struct s_intarr
-{
-	int		*arr;
-	int		size;
-}	t_intarr;
-/**
- * @brief Struct for handling arrays of pointers of integers
- * @param mtx array of pointers to integers.
- * @param size n. of element inside the given `mtx` array of integers.
- */
-typedef struct s_intmtx
-{
-	int		**mtx;
-	int		size;
-}	t_intmtx;
 
 /**
  * @brief `List` data structure
@@ -53,8 +32,9 @@ typedef struct s_intmtx
  * @param _hidden Used in `ms_export`. If a variable
  * is declared without a value (export c), when running `export` it wont show
  * an equal sign + empty string (e.g. declare -x c)
- * @param _first_char Used in `cmd_parse`.
- * A possible first char of the `val`'s string.
+ * @param _prevent_expansion Used for `A_TOKEN` types like `<<` (heredoc).
+ * Tells if it should prevent the expansion because the next arg had a single
+ * quote as first character.
  */
 typedef struct s_list
 {
@@ -69,19 +49,8 @@ typedef struct s_list
 	bool				*_is_lis;
 	int					*_lis_max;
 	bool				_hidden;
-	char				_first_char;
+	bool				_prevent_expansion;
 }	t_list;
-
-typedef struct s_dllist
-{
-	int					*val;
-
-	struct s_dllist		*next;
-	struct s_dllist		*prev;
-
-	bool				*_is_lis;
-	int					*_lis_max;
-}	t_dllist;
 
 /**
  * @brief Struct for a point

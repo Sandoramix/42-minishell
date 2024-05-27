@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 14:17:53 by odudniak          #+#    #+#             */
-/*   Updated: 2024/03/01 20:49:29 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/27 21:28:27 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "libft.h"
 #include "ft_printf.h"
 
-char	*my_strjoin(char *s1, char *s2, size_t s2_n)
+char	*str_nfreejoin(char *s1, char *s2, size_t s2_n)
 {
 	char	*res;
 	size_t	s1len;
@@ -32,7 +32,7 @@ char	*my_strjoin(char *s1, char *s2, size_t s2_n)
 	return (res);
 }
 
-char	*my_substr(char *s, size_t start, size_t end)
+char	*str_substr(char *s, size_t start, size_t end)
 {
 	char	*res;
 	size_t	slen;

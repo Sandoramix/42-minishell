@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:16:45 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/05 14:28:43 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/27 21:24:26 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static char	*handle_quoted(char **str, char *final, int *i, int *edge)
 		return (++(*i), ++(*edge), final);
 	if (*edge == -1)
 		*edge = str_ilen(s);
-	tmp = my_substr(s, *i + 1, *edge - 1);
+	tmp = str_substr(s, *i + 1, *edge - 1);
 	if (!tmp)
 		return (ft_ptrfree(str));
 	final = str_freejoin(final, tmp);
@@ -56,7 +56,7 @@ static char	*handle_unquoted(char **str, char *final, int *i, int *edge)
 	char	*s;
 
 	s = *str;
-	tmp = my_substr(s, *edge, *i);
+	tmp = str_substr(s, *edge, *i);
 	if (!tmp)
 		return (ft_ptrfree(str));
 	final = str_freejoin(final, tmp);
@@ -93,9 +93,9 @@ char	*str_clearquotes(char **str)
 	{
 		if (chr_isquote(s[i]))
 			final = handle_quoted((char **)str, final, &i, &edge);
-		else if (ft_isspace(s[i]) && !ft_isspace(s[i + 1]))
+		else if (chr_isspace(s[i]) && !chr_isspace(s[i + 1]))
 			edge = i + 1;
-		else if (!ft_isspace(s[i]) && (!s[i + 1] || chr_isquote(s[i + 1])))
+		else if (!chr_isspace(s[i]) && (!s[i + 1] || chr_isquote(s[i + 1])))
 			final = handle_unquoted((char **)str, final, &i, &edge);
 		if (!final)
 			return (NULL);
