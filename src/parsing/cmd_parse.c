@@ -121,7 +121,7 @@ t_list	*cmd_parse(t_var *mshell, char *raw)
 
 	split = (t_cmdp_arg){0};
 	split.i = -1;
-	dbg_printf(COLOR_RED"[cmd_parse] input: `%s`\n"CR, raw);
+	dbg_printf(COLOR_BRED"[cmd_parse] input: `%s`\n"CR, raw);
 	while (raw && raw[++split.i])
 	{
 		if (cmdp_switch(CMDP_SPACE, raw, &split))
