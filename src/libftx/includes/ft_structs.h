@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:53:30 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/27 21:43:08 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/27 21:49:18 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,9 @@ typedef unsigned long	t_ulong;
  * @param _hidden Used in `ms_export`. If a variable
  * is declared without a value (export c), when running `export` it wont show
  * an equal sign + empty string (e.g. declare -x c)
- * @param _first_char Used in `cmd_parse`.
- * A possible first char of the `val`'s string.
+ * @param _prevent_expansion Used for `A_TOKEN` types like `<<` (heredoc).
+ * Tells if it should prevent the expansion because the next arg had a single
+ * quote as first character.
  */
 typedef struct s_list
 {
