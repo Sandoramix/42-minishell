@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_run_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/22 15:41:14 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/27 10:25:58 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,10 @@ int	ms_run_builtin(t_var *mshell, t_list *args)
 		return (ms_exit(mshell, args));
 	else
 	{
-		if (args)
-			ft_perror(PROGNAME": Command not found: %s\n", args->val);
-		return (KO);
+		ms_exec_cmd(mshell, args);
+		// if (args)
+		// 	ft_perror(PROGNAME": Command not found: %s\n", args->val);
+		// return (KO);
 	}
 	return (OK);
 }
@@ -85,6 +86,27 @@ bool	find_matching_final_quote(char *s)
 	return (true);
 }
 
+bool is_builtin(char *cmd)
+{
+	if (str_cmp(cmd, "export") == 0)
+		return (0);
+	else if (str_cmp(cmd, "unset") == 0)
+		return (0);
+	else if (str_cmp(cmd, "echo") == 0)
+		return (0);
+	else if (str_cmp(cmd, "cd") == 0)
+		return (0);
+	else if (str_cmp(cmd, "pwd") == 0)
+		return (0);
+	else if (str_cmp(cmd, "env") == 0)
+		return (0);
+	else if (str_cmp(cmd, "history") == 0)
+		return (0);
+	else if (str_cmp(cmd, "exit") == 0)
+		return (0);
+	return (false);
+}
+
 void	parse_and_exec(t_var *mshell, char *input)
 {
 	t_list	*cmd_list;
@@ -101,7 +123,16 @@ void	parse_and_exec(t_var *mshell, char *input)
 		if (!syntax)
 			ft_perror("Syntax error\n");
 		if (syntax && cmd_list != NULL)
+		{
+			//if (is_builtin(cmd_list->val) == 0)
 			ms_run_builtin(mshell, cmd_list);
+			// else
+			// {
+			// 	printf("ms_exec_cmd\n");
+			// 	ms_exec_cmd(mshell, cmd_list);
+			
+			// }
+		}
 	}
 	lst_free(&cmd_list, free);
 }

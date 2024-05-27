@@ -34,7 +34,8 @@ SRC = ./main.c \
 	./src/sys/sys_update_cwd.c \
 	./src/utils/history_utils.c \
 	./src/utils/ms_cleanup.c \
-	./src/builtin/ms_echo.c
+	./src/builtin/ms_echo.c \
+	./src/ms_execute.c
 
 # ----RULES-----
 
