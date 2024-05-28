@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:02:15 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/28 11:22:08 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/28 12:33:56 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,12 @@ void ms_exec_cmd(t_var *mshell, t_list *cmd)
 	else if (pid == 0)
 	{
 		if (execve(cmd_path, args, mshell->_main.envp) == -1)
-			ft_perror("execve failed\n");
+		{
+			ft_perror("command not found: %s\n", cmd->val);
+			free(args);
+			free(cmd_path);
+			exit(KO);
+		}
 	}
 	else
 		waitpid(pid, (int *)mshell->status_code, 0);

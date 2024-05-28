@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 12:33:15 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/27 10:12:20 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/28 12:24:02 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	ms_init(t_var *mshell)
 	mshell->status_code = ft_calloc(1, sizeof(unsigned char));
 	if (!mshell->status_code)
 		cleanup(mshell, true, 1);
-	dbg_printf("HOME PATH: %s\n", mshell->home_path);
+	//dbg_printf("HOME PATH: %s\n", mshell->home_path);
 	mshell->curpath_len = CWD_INITIAL_SIZE;
 	mshell->curr_path = ft_calloc(CWD_INITIAL_SIZE, sizeof(char));
 	if (!mshell->curr_path)
