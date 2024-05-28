@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:02:15 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/28 12:33:56 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/28 16:06:08 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,23 +64,27 @@ char **ft_lst_to_array(t_list *lst)
 	return (arr);
 }
 
-void ms_exec_cmd(t_var *mshell, t_list *cmd)
+// TODO: fix prompt comando singolo (es. cat, wc -l)
+// TODO: fix memory leaks
+int ms_exec_cmd(t_var *mshell, t_list *cmd)
 {
 	char	*cmd_path;
 	char	**args;
 	pid_t	pid;
+	int status;
 
 	cmd_path = sys_findcmdpath(mshell->cmds_paths, cmd->val);
 	if (!cmd_path)
 	{
 		ft_perror("Command not found: %s\n", cmd->val);
-		return ;
+		return (KO);
 	}
 	args = ft_lst_to_array(cmd);
 	if (!args)
 	{
 		ft_perror("duplication failed\n");
-		return ;
+		free(cmd_path);
+		return (KO);
 	}
 	pid = fork();
 	if (pid < 0)
@@ -88,7 +92,7 @@ void ms_exec_cmd(t_var *mshell, t_list *cmd)
 		ft_perror("fork failed\n");
 		free(args);
 		free(cmd_path);
-		return ;
+		return (KO);
 	}
 	else if (pid == 0)
 	{
@@ -97,11 +101,15 @@ void ms_exec_cmd(t_var *mshell, t_list *cmd)
 			ft_perror("command not found: %s\n", cmd->val);
 			free(args);
 			free(cmd_path);
-			exit(KO);
+			cleanup(mshell, true, KO);
 		}
 	}
 	else
-		waitpid(pid, (int *)mshell->status_code, 0);
+	{
+		waitpid(pid, &status, 0);
+		*mshell->status_code = (t_uchar) (status);
+	}
 	free(args);
 	free(cmd_path);
+	return (OK);
 }
