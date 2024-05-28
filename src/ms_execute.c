@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:02:15 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/28 16:06:08 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/28 19:25:02 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,33 +74,31 @@ int ms_exec_cmd(t_var *mshell, t_list *cmd)
 	int status;
 
 	cmd_path = sys_findcmdpath(mshell->cmds_paths, cmd->val);
-	if (!cmd_path)
-	{
-		ft_perror("Command not found: %s\n", cmd->val);
-		return (KO);
-	}
 	args = ft_lst_to_array(cmd);
 	if (!args)
 	{
-		ft_perror("duplication failed\n");
+		pf_errcode(ERR_MALLOC);
 		free(cmd_path);
+		str_freemtx(args);
 		return (KO);
 	}
 	pid = fork();
 	if (pid < 0)
 	{
-		ft_perror("fork failed\n");
-		free(args);
+		pf_errcode(ERR_FORK);
+		str_freemtx(args);
 		free(cmd_path);
+		lst_free(&cmd, free);
 		return (KO);
 	}
 	else if (pid == 0)
 	{
 		if (execve(cmd_path, args, mshell->_main.envp) == -1)
 		{
-			ft_perror("command not found: %s\n", cmd->val);
-			free(args);
+			ft_perror("Command not found: %s\n", cmd->val);
+			str_freemtx(args);
 			free(cmd_path);
+			lst_free(&cmd, free);
 			cleanup(mshell, true, KO);
 		}
 	}
@@ -109,7 +107,7 @@ int ms_exec_cmd(t_var *mshell, t_list *cmd)
 		waitpid(pid, &status, 0);
 		*mshell->status_code = (t_uchar) (status);
 	}
-	free(args);
+	str_freemtx(args);
 	free(cmd_path);
 	return (OK);
 }

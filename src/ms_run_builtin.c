@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/28 12:20:34 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/28 19:19:12 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,8 +122,8 @@ void	parse_and_exec(t_var *mshell, char *input)
 		{
 			//if (is_builtin(cmd_list->val) == 0)
 			ms_run_builtin(mshell, cmd_list);
-			while (wait(&status) != -1)	;
-			*mshell->status_code = (t_uchar) (status);
+			while (wait(&status) != -1)
+				*(mshell->status_code) = (t_uchar) (status);
 			// else
 			// {
 			// 	//printf("ms_exec_cmd\n");
