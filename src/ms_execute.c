@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:02:15 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/27 16:10:41 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/28 11:22:08 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,8 @@ void ms_exec_cmd(t_var *mshell, t_list *cmd)
 {
 	char	*cmd_path;
 	char	**args;
-	//t_list  *curr;
 	pid_t	pid;
 
-	//curr = cmd;
 	cmd_path = sys_findcmdpath(mshell->cmds_paths, cmd->val);
 	if (!cmd_path)
 	{
@@ -101,5 +99,4 @@ void ms_exec_cmd(t_var *mshell, t_list *cmd)
 		waitpid(pid, (int *)mshell->status_code, 0);
 	free(args);
 	free(cmd_path);
-	
 }

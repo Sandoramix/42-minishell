@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/27 16:04:20 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/28 02:19:31 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ void	parse_and_exec(t_var *mshell, char *input)
 	t_list	*cmd_list;
 	bool	syntax;
 	bool	quotes;
+	int status;
 
 	cmd_list = cmd_parse(mshell, input);
 	quotes = find_matching_final_quote(input);
@@ -121,6 +122,8 @@ void	parse_and_exec(t_var *mshell, char *input)
 		{
 			//if (is_builtin(cmd_list->val) == 0)
 			ms_run_builtin(mshell, cmd_list);
+			while (wait(&status) != -1)	;
+			*mshell->status_code = (t_uchar) (status);
 			// else
 			// {
 			// 	//printf("ms_exec_cmd\n");
