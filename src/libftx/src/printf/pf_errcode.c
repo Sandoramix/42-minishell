@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pf_errcode.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 08:23:24 by odudniak          #+#    #+#             */
-/*   Updated: 2024/03/06 12:06:50 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/28 23:26:29 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ static int	errswitch(t_errorcode code)
 		return (ft_perror("Dup2 failure."));
 	if (code == ERR_EXECVE)
 		return (ft_perror("Execve failure."));
+	if (code == ERR_SYNTAX)
+		return (ft_perror("Syntax error."));
 	return (ft_perror("."));
 }
 

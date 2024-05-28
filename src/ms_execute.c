@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:02:15 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/28 19:25:02 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/28 23:29:05 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char **ft_lst_to_array(t_list *lst)
 		arr[i] = str_dup(lst->val);
 		if (!arr[i])
 		{
-			ft_perror("duplication failed\n");
+			pf_errcode(ERR_MALLOC);
 			str_freemtx(arr);
 			return (NULL);
 		}
@@ -64,8 +64,6 @@ char **ft_lst_to_array(t_list *lst)
 	return (arr);
 }
 
-// TODO: fix prompt comando singolo (es. cat, wc -l)
-// TODO: fix memory leaks
 int ms_exec_cmd(t_var *mshell, t_list *cmd)
 {
 	char	*cmd_path;

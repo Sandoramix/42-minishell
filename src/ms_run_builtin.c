@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/28 19:19:12 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/28 23:26:52 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,23 +112,17 @@ void	parse_and_exec(t_var *mshell, char *input)
 	cmd_list = cmd_parse(mshell, input);
 	quotes = find_matching_final_quote(input);
 	if (!quotes)
-		ft_perror("Quotes not closed\n");
-	else
+		pf_errcode(ERR_SYNTAX);
+	else	
 	{
 		syntax = syntax_check(cmd_list);
 		if (!syntax)
-			ft_perror("Syntax error\n");
+			pf_errcode(ERR_SYNTAX);
 		if (syntax && cmd_list != NULL)
 		{
-			//if (is_builtin(cmd_list->val) == 0)
 			ms_run_builtin(mshell, cmd_list);
 			while (wait(&status) != -1)
 				*(mshell->status_code) = (t_uchar) (status);
-			// else
-			// {
-			// 	//printf("ms_exec_cmd\n");
-			// 	ms_exec_cmd(mshell, cmd_list);
-			// }
 		}
 	}
 	lst_free(&cmd_list, free);

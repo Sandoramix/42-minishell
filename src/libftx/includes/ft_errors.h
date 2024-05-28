@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_errors.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 07:47:06 by odudniak          #+#    #+#             */
-/*   Updated: 2024/03/13 11:53:15 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/28 23:26:11 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ typedef enum e_errorcode
 	ERR_FORK,
 	ERR_PIPE,
 	ERR_DUP2,
-	ERR_EXECVE
+	ERR_EXECVE,
+	ERR_SYNTAX,
 }	t_errorcode;
 
 #endif
