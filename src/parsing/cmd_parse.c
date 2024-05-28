@@ -19,7 +19,7 @@ static void	cmd_dbgparse(t_cmdp_switch type, char *s, int i, int edge)
 	const bool	common_part = chr_isspace(s[i + 1])
 		|| !s[i + 1] || chr_isquote(s[i + 1]);
 
-	if (!DEBUG)
+	if (!DEBUG || dbg_printf("") == -1)
 		return ;
 	dbg_printf(COLOR_GRAY);
 	if (type == CMDP_QUOTE)

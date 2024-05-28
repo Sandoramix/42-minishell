@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 20:35:57 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/27 21:02:41 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/28 22:13:07 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	str_var_ending_idx(char *s, int start)
 	i = start;
 	while (s && s[i])
 	{
-		if ((i == start && (!chr_isdigit(s[start]) || s[start] == '_'))
+		if ((i == start && (chr_isalpha(s[start]) || s[start] == '_'))
 			|| (chr_isalnum(s[i]) || s[i] == '_'))
 			;
 		else
