@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 20:35:57 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/28 22:13:07 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/29 15:42:15 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ int	str_var_ending_idx(char *s, int start)
 		return (-1);
 	if (s[start] == '$')
 		start++;
+	if (s[start] == '?')
+		return (start);
 	i = start;
 	while (s && s[i])
 	{

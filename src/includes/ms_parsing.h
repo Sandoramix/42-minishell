@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 15:46:30 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/29 14:59:57 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/29 15:59:06 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,6 @@ char	*str_clearquotes(char **str);
 bool	str_isvariable(char *s);
 
 int		str_var_ending_idx(char *s, int start);
+
+char	*arg_update(t_var *mshell, char **arg, int *d_idx, bool in_heredoc);
 #endif

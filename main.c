@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:41:06 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/29 15:29:54 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/29 16:04:19 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,8 @@ int	main(int ac, char **av, char **envp)
 	// SHLVL  LANGUAGE GJS_DEBUG_TOPICS ZSH LOGNAME LANG");
 	// parse_and_exec(&mshell, "export a=l b=s");
 	// parse_and_exec(&mshell, "$a$b");
-	//parse_and_exec(&mshell, "export A='test'");
-	//parse_and_exec(&mshell, "''ech'o'\"\" $'A' $A \"$A\" '$A' |'$'A|");
+	parse_and_exec(&mshell, "export A='test'");
+	parse_and_exec(&mshell, "''ech'o'\"\" $'A' $A \"$A\" '$A' |'$'A| $?");
 	//parse_and_exec(&mshell, "exit");
-	ms_prompt(&mshell);
 	return (cleanup(&mshell, true, 0));
 }

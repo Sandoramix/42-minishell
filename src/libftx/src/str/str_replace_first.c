@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 16:44:10 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/29 15:13:03 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/29 15:34:38 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ char	*str_replace_from_to(char *str, int start, int end, char *replace)
 	selected_len = end - start + 1;
 	if (selected_len < 0)
 		return (str);
+	if (!replace)
+		return (free(str), NULL);
 	res_len = str_ulen(str) - selected_len + str_ulen(replace) + 1;
 	res = ft_calloc(res_len, sizeof(char));
 	if (!res)

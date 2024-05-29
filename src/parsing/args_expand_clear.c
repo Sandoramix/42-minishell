@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:24:26 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/29 15:24:54 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/29 16:05:16 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,21 @@ char	*replace_empty(t_var *mshell, char **arg, int *d_idx, int *end)
 	return (*arg);
 }
 
+char	*replace_laststatus(t_var *mshell, char **arg, int *d_idx, int *end)
+{
+	char	*status;
+
+	status = ft_itoa(*mshell->status_code);
+	if (!status)
+		return (pf_errcode(ERR_MALLOC), NULL);
+	(*arg) = str_replace_from_to((*arg), (*d_idx), (*end), status);
+	free(status);
+	if (!*arg)
+		return (pf_errcode(ERR_MALLOC), NULL);
+	(*d_idx) = str_idxofchar((*arg), '$');
+	return (*arg);
+}
+
 char	*replace_variable(t_var *mshell, char **arg, int *d_idx, int *end)
 {
 	char	*variable;
@@ -33,6 +48,8 @@ char	*replace_variable(t_var *mshell, char **arg, int *d_idx, int *end)
 	if (!variable)
 		return (pf_errcode(ERR_MALLOC), NULL);
 	dbg_printf(CGRAY"\t\tVariable to search: [%s]\n", variable);
+	if (str_equals(variable, "?"))
+		return (free(variable), replace_laststatus(mshell, arg, d_idx, end));
 	env = lst_findbykey_str(mshell->env, variable);
 	free(variable);
 	if (!env)
@@ -50,6 +67,8 @@ char	*arg_update(t_var *mshell, char **arg, int *d_idx, bool in_heredoc)
 	const int		len = str_ilen((*arg));
 	int				end;
 
+	if (*d_idx == -1)
+		return (*arg);
 	end = str_var_ending_idx((*arg), (*d_idx));
 	dbg_printf("\tFound a $ at [%3d] - [%3d]\n", (*d_idx), end, len);
 	if (str_ischar_inquotes((*arg), (*d_idx)) == '\'')
@@ -60,15 +79,14 @@ char	*arg_update(t_var *mshell, char **arg, int *d_idx, bool in_heredoc)
 	if (end == *d_idx && chr_isquote(((*arg))[*d_idx + 1]) && !in_heredoc)
 	{
 		(*arg) = str_replace_from_to((*arg), (*d_idx), (end), "");
-		if (!(*arg))
-			return (NULL);
 		(*d_idx) = str_idxofchar_from((*arg), (*d_idx) + 1, '$');
 		return (*arg);
 	}
-	else if (end == len || (end == *d_idx))
+	else if (end == *d_idx)
 	{
 		(*d_idx) = str_idxofchar_from((*arg), (*d_idx) + 1, '$');
-		return (dbg_printf(CMAGENTA "\t\tIt has a bad ending idx\n"), *arg);
+		dbg_printf(CMAGENTA"\t\tIt has a bad ending idx\n");
+		return (*arg);
 	}
 	return (replace_variable(mshell, arg, d_idx, &end));
 }
@@ -86,7 +104,8 @@ t_list	*arg_expand(t_var *mshell, t_list *arg)
 	{
 		if (argument && argument[0] == '\'')
 			arg->prev->_prevent_expansion = true;
-		return (arg);
+		if (str_equals(arg->val, "<<"))
+			return (arg);
 	}
 	while (dollar_idx != -1)
 	{
