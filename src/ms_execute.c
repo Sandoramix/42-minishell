@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_execute.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:02:15 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/28 23:29:05 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/29 21:21:59 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,12 @@ char **ft_lst_to_array(t_list *lst)
 	return (arr);
 }
 
-int ms_exec_cmd(t_var *mshell, t_list *cmd)
+int	ms_exec_cmd(t_var *mshell, t_list *cmd)
 {
 	char	*cmd_path;
 	char	**args;
 	pid_t	pid;
-	int status;
+	int		status;
 
 	cmd_path = sys_findcmdpath(mshell->cmds_paths, cmd->val);
 	args = ft_lst_to_array(cmd);
@@ -91,14 +91,14 @@ int ms_exec_cmd(t_var *mshell, t_list *cmd)
 	}
 	else if (pid == 0)
 	{
-		if (execve(cmd_path, args, mshell->_main.envp) == -1)
-		{
-			ft_perror("Command not found: %s\n", cmd->val);
-			str_freemtx(args);
-			free(cmd_path);
-			lst_free(&cmd, free);
-			cleanup(mshell, true, KO);
-		}
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+		execve(cmd_path, args, mshell->_main.envp);
+		ft_perror("Command not found: %s\n", cmd->val);
+		str_freemtx(args);
+		free(cmd_path);
+		lst_free(&cmd, free);
+		cleanup(mshell, true, KO);
 	}
 	else
 	{

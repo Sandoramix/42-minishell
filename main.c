@@ -6,19 +6,23 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:41:06 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/29 16:06:31 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/29 21:29:28 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-// TODO REMOVE ME
-t_var	*g_tmpshell;
+t_uchar	g_status;
 
-void	safe_exit(int signal)
+void	handle_sig(int signal)
 {
-	(void)signal;
-	cleanup(g_tmpshell, true, 130);
+	if (signal == SIGINT)
+	{
+		g_status = 130;
+		rl_replace_line("", 0);
+		ioctl(STDIN_FILENO, TIOCSTI,"\n")
+		rl_on_new_line();
+	}
 }
 
 int	main(int ac, char **av, char **envp)
@@ -27,20 +31,13 @@ int	main(int ac, char **av, char **envp)
 
 	(void)av;
 	mshell = (t_var){0};
+	g_status = 0;
 	if (ac != 1)
 		return (pf_errcode(ERR_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
 	mshell._main.envp = envp;
 	ms_init(&mshell);
-	signal(SIGINT, safe_exit);
-	g_tmpshell = &mshell;
-	// parse_and_exec(&mshell, "unset LS_COLORS TERMINATOR XDG_DATA_DIRS
-	// XDG_SESSION_PATH SESSION_MANAGER GIO_LAUNCHED_DESKTOP_FILE PAGER LESS
-	// SHLVL  LANGUAGE GJS_DEBUG_TOPICS ZSH LOGNAME LANG");
-	// parse_and_exec(&mshell, "export a=l b=s");
-	// parse_and_exec(&mshell, "$a$b");
-	//parse_and_exec(&mshell, "export A='test'");
-	//parse_and_exec(&mshell, "''ech'o'\"\" $'A' $A \"$A\" '$A' |'$'A| $?");
-	//parse_and_exec(&mshell, "exit");
+	signal(SIGINT, handle_sig);
+	signal(SIGQUIT, SIG_IGN);
 	ms_prompt(&mshell);
 	return (cleanup(&mshell, true, 0));
 }
