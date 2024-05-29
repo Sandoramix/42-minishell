@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 15:46:30 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/19 17:58:05 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/29 13:00:50 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,12 @@ typedef enum e_cmd_parseswitch
 typedef struct e_cmdp_arg
 {
 	t_list		*res;
-	int			i;
 
 	char		*tmp;
 	int			edge;
+	int			i;
+
+	char		*str;
 }	t_cmdp_arg;
 
 typedef enum e_argtype
