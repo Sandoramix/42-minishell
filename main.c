@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:41:06 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/28 12:20:13 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/28 22:23:14 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ int	main(int ac, char **av, char **envp)
 	ms_init(&mshell);
 	signal(SIGINT, safe_exit);
 	g_tmpshell = &mshell;
-	// parse_and_exec(&mshell, "unset LS_COLORS TERMINATOR XDG_DATA_DIRS \
-	// XDG_SESSION_PATH SESSION_MANAGER GIO_LAUNCHED_DESKTOP_FILE PAGER LESS \
+	// parse_and_exec(&mshell, "unset LS_COLORS TERMINATOR XDG_DATA_DIRS
+	// XDG_SESSION_PATH SESSION_MANAGER GIO_LAUNCHED_DESKTOP_FILE PAGER LESS
 	// SHLVL  LANGUAGE GJS_DEBUG_TOPICS ZSH LOGNAME LANG");
 	// parse_and_exec(&mshell, "export a=l b=s");
 	// parse_and_exec(&mshell, "$a$b");
