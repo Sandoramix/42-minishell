@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 17:37:44 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/29 15:19:45 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/29 16:36:32 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,12 @@ static int	ms_cd_home(t_var *mshell)
 	return (OK);
 }
 
+// salvarsi cartella corrente a inizio funzione cd
+// split x / poi controllo se cartella esiste poi fare cd
+// . / va ignorato NO cd
+// .. fai chdir 
+// quando trovi cartella fai check che sia cartella e che esiste e poi chdir
+// appena si trova una cartella che non esiste ritorni errore e chdir alla cartella salvata
 int	ms_cd(t_var *mshell, t_list *args)
 {
 	int			len;
