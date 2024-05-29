@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:16:45 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/27 21:24:26 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/29 15:29:11 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static char	*handle_quoted(char **str, char *final, int *i, int *edge)
 	char		*s;
 
 	s = *str;
-	*edge = chr_quoteclose_idx(s, s[*i], *i);
+	*edge = chr_quoteclose_idx(s, *i);
 	if (*edge - 1 == *i)
 		return (++(*i), ++(*edge), final);
 	if (*edge == -1)

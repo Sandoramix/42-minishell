@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:49:25 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/27 21:14:19 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/29 15:29:23 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,13 @@ Known tokens:
 `true` if the char `c` is a token, `false` otherwise.
 */
 bool		chr_istoken(char c);
-int			chr_quoteclose_idx(char *s, char quote_opener, int start);
+/**
+ * @brief Find the index of the closing quote starting from idx `start`
+ * @param s string to check
+ * @param start index of the starting quote
+ * @return a valid index if there's a closure quote, or `-1` if it doesn't exist
+ * or the char at `start` idx is not a quote
+ */
+int			chr_quoteclose_idx(char *s, int start);
 
 #endif

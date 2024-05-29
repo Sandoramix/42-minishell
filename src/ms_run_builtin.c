@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_run_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/28 23:26:52 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/29 15:29:06 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ bool	syntax_check(t_list *args)
 
 bool	find_matching_final_quote(char *s)
 {
-	int		quote;
 	int		edge;
 	int		i;
 
@@ -71,8 +70,7 @@ bool	find_matching_final_quote(char *s)
 	{
 		if (chr_isquote(s[i]))
 		{
-			quote = s[i];
-			edge = chr_quoteclose_idx(s, quote, i);
+			edge = chr_quoteclose_idx(s, i);
 			if (edge == -1)
 				return (false);
 			i = edge;

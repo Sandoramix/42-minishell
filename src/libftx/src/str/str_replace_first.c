@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 16:44:10 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/22 15:36:04 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/29 15:13:03 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,7 @@ char	*str_replace_first(char *str, char *find, char *replace)
 	res_len = str_ulen(str) - str_ulen(find) + str_ulen(replace) + 1;
 	res = ft_calloc(res_len, sizeof(char));
 	if (!res)
-	{
-		return (str);
-	}
+		return (free(str), NULL);
 	ft_memcpy(res, str, occurrence_idx);
 	str_lcat(res, replace, res_len);
 	str_lcat(res, str + occurrence_idx + str_ulen(find), res_len);
@@ -47,9 +45,7 @@ char	*str_replace_from_to(char *str, int start, int end, char *replace)
 	res_len = str_ulen(str) - selected_len + str_ulen(replace) + 1;
 	res = ft_calloc(res_len, sizeof(char));
 	if (!res)
-	{
-		return (str);
-	}
+		return (free(str), NULL);
 	ft_memcpy(res, str, start);
 	str_lcat(res, replace, res_len);
 	str_lcat(res, str + start + selected_len, res_len);

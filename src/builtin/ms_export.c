@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:04:40 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/22 15:46:34 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/29 15:19:45 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int	ms_export(t_var *mshell, t_list *args)
 
 	if (DEBUG)
 	{
-		dbg_printf(COLOR_CYAN"[export]\tDEBUG:\n"CR);
+		dbg_printf(CCYAN"[export]\tDEBUG:\n"CR);
 		lst_printstr(args);
 	}
 	if (!args)

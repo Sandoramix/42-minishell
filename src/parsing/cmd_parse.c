@@ -21,7 +21,7 @@ static void	cmd_dbgparse(t_cmdp_switch type, char *s, int i, int edge)
 
 	if (!DEBUG || dbg_printf("") == -1)
 		return ;
-	dbg_printf(COLOR_GRAY);
+	dbg_printf(CGRAY);
 	if (type == CMDP_QUOTE)
 		dbg_printf("Found a quote {%c} at:\t[%3d] - [%3d]:\t", s[i], i, edge);
 	else if (type == CMDP_TOKEN && chr_istoken(s[i]) && common_part)
@@ -46,7 +46,7 @@ static bool	cmdp_append_last(t_list **res, char *append, char dbg_char)
 {
 	t_list	*last;
 
-	dbg_printf(COLOR_BGRAY"\tIt's near the char %c\n", dbg_char);
+	dbg_printf(CBGRAY"\tIt's near the char %c\n", dbg_char);
 	last = lst_gettail(*res);
 	if (!last && !lst_addnew_tail(res, append, NULL))
 		return (lst_free(res, free), free(append), false);
@@ -100,7 +100,7 @@ static t_list	*cmdp_handleword(t_cmdp_arg *var)
 
 static t_list	*cmdp_handlequote(t_cmdp_arg *var)
 {
-	var->edge = chr_quoteclose_idx(var->str, var->str[var->i], var->i);
+	var->edge = chr_quoteclose_idx(var->str, var->i);
 	if (var->edge == -1)
 		var->edge = str_ilen(var->str);
 	cmd_dbgparse(CMDP_QUOTE, var->str, var->i, var->edge);
@@ -142,7 +142,7 @@ t_list	*cmd_parse(t_var *mshell, char *s)
 	var = (t_cmdp_arg){0};
 	var.i = -1;
 	var.str = s;
-	dbg_printf(COLOR_BRED"[cmd_parse] input: `%s`\n"CR, s);
+	dbg_printf(CBRED"[cmd_parse] input: `%s`\n"CR, s);
 	while (s && s[++var.i])
 	{
 		if (chr_isspace(s[var.i]) && !chr_isspace(s[var.i + 1]))
@@ -159,5 +159,5 @@ t_list	*cmd_parse(t_var *mshell, char *s)
 		if (!var.res)
 			return (NULL);
 	}
-	return (expand_and_clear(mshell, var.res));
+	return (cmd_expand_clear(mshell, var.res));
 }

@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 17:37:44 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/22 15:45:50 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/29 15:19:45 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	ms_cd(t_var *mshell, t_list *args)
 	}
 	chdir(args->next->val);
 	sys_update_cwd(mshell);
-	dbg_printf(COLOR_CYAN"cd:[%s]->%s\n"CR, args->next->val, mshell->curr_path);
+	dbg_printf(CCYAN"cd:[%s]->%s\n"CR, args->next->val, mshell->curr_path);
 	*mshell->status_code = 0;
 	return (OK);
 }
