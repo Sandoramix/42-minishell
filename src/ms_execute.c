@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:02:15 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/31 12:56:00 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/31 12:57:54 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,11 +99,6 @@ int	ms_exec_cmd(t_var *mshell, t_list *cmd)
 		lst_free(&cmd, free);
 		freeallcmds(mshell->all_cmds);
 		cleanup(mshell, true, KO);
-	}
-	else
-	{
-		waitpid(pid, &status, 0);
-		*mshell->status_code = (t_uchar) (status);
 	}
 	str_freemtx(args);
 	free(cmd_path);
