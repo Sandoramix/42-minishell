@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/31 12:53:11 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/31 12:54:04 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # define PROGNAME "minishell"
 # define PROMPT "minishell>"
 # define CWD_INITIAL_SIZE 4096
+
+extern t_uchar	g_status;
 
 typedef struct s_main
 {

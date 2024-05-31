@@ -6,12 +6,13 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:04:40 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/29 15:19:45 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/29 20:07:05 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
+// TODO mshell->cmds_paths should update at every HOME env update
 static void	ms_export_print(t_var *mshell)
 {
 	t_list	*lst;
