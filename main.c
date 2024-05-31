@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:41:06 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/29 21:29:28 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/31 11:15:02 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	handle_sig(int signal)
 	{
 		g_status = 130;
 		rl_replace_line("", 0);
-		ioctl(STDIN_FILENO, TIOCSTI,"\n")
+		ioctl(STDIN_FILENO, TIOCSTI,"\n");
 		rl_on_new_line();
 	}
 }
