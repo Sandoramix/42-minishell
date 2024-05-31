@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:24:26 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/29 16:05:16 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/31 11:17:07 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ t_list	*arg_expand(t_var *mshell, t_list *arg)
 	dbg_printf(CYELLOW"[arg_expand] of [%s]\n", argument);
 	if (arg->prev && arg->prev->type == A_TOKEN)
 	{
-		if (argument && argument[0] == '\'')
+		if (argument && str_chr(arg->val, '\''))
 			arg->prev->_prevent_expansion = true;
 		if (str_equals(arg->val, "<<"))
 			return (arg);
