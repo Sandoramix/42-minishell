@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/31 15:54:25 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/31 20:52:26 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,11 +101,11 @@ void	*ms_run_commands(t_var *mshell, t_list *all)
 	{
 		command = cmds_list->val;
 		ms_exec_command(mshell, command, size > 1);
-		cmds_list->val = NULL;
 		lst_free(&command, free);
-		mshell->all_cmds = cmds_list->next;
+		mshell->all_cmds = mshell->all_cmds->next;
 		free(cmds_list);
 		cmds_list = mshell->all_cmds;
 	}
+	free(cmds_list);
 	return (lst_free(&mshell->all_cmds, free), NULL);
 }

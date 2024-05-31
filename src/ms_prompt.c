@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 12:40:27 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/31 15:38:02 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/31 20:53:29 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,10 @@ void	ms_prompt(t_var *mshell)
 {
 	char	*input;
 
+	char *x = str_dup("ls | exit");
+	mshell->last_input = x;
+	ms_handleinput(mshell, x);
+	free(x);
 	while (42)
 	{
 		input = readline(PROMPT " ");
