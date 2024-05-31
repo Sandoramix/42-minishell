@@ -42,6 +42,7 @@ SRC = ./src/char/chr_closequote_idx.c \
 	./src/lists/lst_count.c \
 	./src/lists/lst_create.c \
 	./src/lists/lst_delete.c \
+	./src/lists/lst_delete2.c \
 	./src/lists/lst_get.c \
 	./src/lists/lst_print.c \
 	./src/lists/lst_search.c \

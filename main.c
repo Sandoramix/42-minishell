@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:41:06 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/29 16:06:31 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/31 12:52:46 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,18 @@ void	safe_exit(int signal)
 	(void)signal;
 	cleanup(g_tmpshell, true, 130);
 }
-
+// TODO refactor
+void	*freeallcmds(t_list *cmds)
+{
+	t_list	*next;
+	while (cmds)
+	{
+		next = cmds->next;
+		free(cmds);
+		cmds = next;
+	}
+	return (NULL);
+}
 int	main(int ac, char **av, char **envp)
 {
 	t_var	mshell;

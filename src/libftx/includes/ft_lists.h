@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:47:35 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/27 20:55:05 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/31 11:51:55 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,7 @@ void		*lst_printstr(t_list *head);
 t_list		*lst_delbykey(t_list **lst, void *key,
 				bool (*equal)(void *a, void *b), void (*valfree_fn)(void *));
 
+t_list		*lst_delnode(t_list **node, void (*valfree_fn)(void *));
 //-----------------------------------------------------------------------------
 
 #endif

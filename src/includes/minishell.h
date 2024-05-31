@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/28 15:57:33 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/05/31 12:53:11 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ typedef struct s_var
 	char				*home_path;
 	uint64_t			curpath_len;
 	t_uchar				*status_code;
+
+	t_list				*all_cmds;
 }			t_var;
 
 int		ms_loadenv(t_var *mshell);
@@ -60,11 +62,11 @@ int		ms_cd(t_var *mshell, t_list *args);
 int		ms_history(t_var *mshell, t_list *args);
 int		ms_echo(t_var *mshell, t_list *args);
 
-void	parse_and_exec(t_var *mshell, char *input);
+void	*parse_and_exec(t_var *mshell, char *input);
 void	add_cmd_history(t_var *mshell, char *cmd);
 void	print_history(t_list *history);
 //-----------------------------------------------------------------------------
 void	*sys_update_cwd(t_var *mshell);
-int ms_exec_cmd(t_var *mshell, t_list *args);
-
+int 	ms_exec_cmd(t_var *mshell, t_list *args);
+void	*freeallcmds(t_list *cmds);
 #endif

@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:21:48 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/14 23:09:03 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/31 12:52:29 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@ int	ms_exit(t_var *mshell, t_list *args)
 	t_uchar		code;
 	const int	lst_len = lst_size(args);
 
+	if (lst_size(mshell->all_cmds) > 1)
+	{
+		lst_free(&args, free);
+		return (OK);
+	}
 	ft_fprintf(2, "exit\n");
 	if (lst_len > 1)
 		code = (t_uchar)ft_atoi((char *)args->next->val);
@@ -27,6 +32,8 @@ int	ms_exit(t_var *mshell, t_list *args)
 		return (OK);
 	}
 	lst_free(&args, free);
+	freeallcmds(mshell->all_cmds);
+	mshell->all_cmds = NULL;
 	if (lst_len == 1)
 		cleanup(mshell, true, *mshell->status_code);
 	cleanup(mshell, true, code);
