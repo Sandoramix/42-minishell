@@ -18,12 +18,14 @@ RM = rm -rf
 
 SRC = ./main.c \
 	./src/builtin/ms_cd.c \
+	./src/builtin/ms_echo.c \
 	./src/builtin/ms_env.c \
 	./src/builtin/ms_exit.c \
 	./src/builtin/ms_export.c \
 	./src/builtin/ms_history.c \
 	./src/builtin/ms_pwd.c \
 	./src/builtin/ms_unset.c \
+	./src/ms_execute.c \
 	./src/ms_init.c \
 	./src/ms_prompt.c \
 	./src/ms_run_builtin.c \
@@ -34,8 +36,7 @@ SRC = ./main.c \
 	./src/sys/sys_update_cwd.c \
 	./src/utils/history_utils.c \
 	./src/utils/ms_cleanup.c \
-	./src/builtin/ms_echo.c \
-	./src/ms_execute.c
+	./src/utils/parsing_utils.c
 
 # ----RULES-----
 

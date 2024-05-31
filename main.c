@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:41:06 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/31 12:57:32 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:53:16 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,14 @@ void	handle_sig(int signal)
 }
 
 // TODO refactor
-void	*freeallcmds(t_list *cmds)
+void	*freeallcmds(t_list *cmds, bool free_content)
 {
 	t_list	*next;
 	while (cmds)
 	{
 		next = cmds->next;
+		if (free_content)
+			lst_free(&cmds, free);
 		free(cmds);
 		cmds = next;
 	}

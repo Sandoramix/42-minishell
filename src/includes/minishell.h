@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/31 12:54:04 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:53:30 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_var
 	uint64_t			curpath_len;
 	t_uchar				*status_code;
 
+	char				*last_input;
 	t_list				*all_cmds;
 }			t_var;
 
@@ -64,11 +65,16 @@ int		ms_cd(t_var *mshell, t_list *args);
 int		ms_history(t_var *mshell, t_list *args);
 int		ms_echo(t_var *mshell, t_list *args);
 
+
+void	*ms_run_commands(t_var *mshell, t_list *all);
 void	*parse_and_exec(t_var *mshell, char *input);
 void	add_cmd_history(t_var *mshell, char *cmd);
 void	print_history(t_list *history);
 //-----------------------------------------------------------------------------
 void	*sys_update_cwd(t_var *mshell);
 int 	ms_exec_cmd(t_var *mshell, t_list *args);
-void	*freeallcmds(t_list *cmds);
+
+void	*freeallcmds(t_list *cmds, bool free_content);
+
+bool	ms_is_builtin(char *cmd);
 #endif

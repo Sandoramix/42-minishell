@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 12:33:15 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/29 20:24:50 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:40:59 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int	ms_loadenv(t_var *mshell)
 		if (!mshell->home_path && home_node->val)
 			return (pf_errcode(ERR_ENV_LOAD), cleanup(mshell, true, 1));
 	}
-	mshell->cmds_paths = env_load_paths(mshell->env);
 	return (OK);
 }
 
@@ -34,7 +33,6 @@ void	ms_init(t_var *mshell)
 {
 	ms_loadenv(mshell);
 	mshell->status_code = &g_status;
-	//dbg_printf("HOME PATH: %s\n", mshell->home_path);
 	mshell->curpath_len = CWD_INITIAL_SIZE;
 	mshell->curr_path = ft_calloc(CWD_INITIAL_SIZE, sizeof(char));
 	if (!mshell->curr_path)

@@ -6,15 +6,14 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/31 12:49:43 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:54:25 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	ms_run_builtin(t_var *mshell, t_list *args, bool tofork)
+int	ms_run_builtin(t_var *mshell, t_list *args)
 {
-	(void)tofork;
 	if (str_equals(args->val, "export"))
 		return (ms_export(mshell, args));
 	else if (str_equals(args->val, "unset"))
@@ -30,74 +29,35 @@ int	ms_run_builtin(t_var *mshell, t_list *args, bool tofork)
 	else if (str_equals(args->val, "history"))
 		return (ms_history(mshell, args), OK);
 	else if (str_equals(args->val, "exit"))
+		return (ms_exit(mshell, args));
+	return (KO);
+}
+
+int	ms_exec_command(t_var *mshell, t_list *args, bool tofork)
+{
+	pid_t	pid;
+
+	if (ms_is_builtin(args->val) && !tofork)
+		ms_run_builtin(mshell, args);
+	else if (ms_is_builtin(args->val) && tofork)
 	{
-		if (!tofork || lst_gettail(mshell->all_cmds)->val == args)
-			return (ms_exit(mshell, args));
+		pid = fork();
+		if (pid < 0)
+			return (pf_errcode(ERR_FORK), KO);
+		else if (!pid)
+		{
+			ms_run_builtin(mshell, args);
+			lst_free(&args, free);
+			freeallcmds(mshell->all_cmds, false);
+			cleanup(mshell, true, *mshell->status_code);
+		}
 	}
 	else
 		ms_exec_cmd(mshell, args);
 	return (OK);
 }
 
-bool	syntax_check(t_list *args)
-{
-	const char	*known_tokens[] = {"<", "<<", ">", ">>", "|", NULL};
-	int			i;
-
-	while (args)
-	{
-		if (args->type == A_TOKEN)
-		{
-			i = 0;
-			while (known_tokens[i] && str_cmp(args->val, known_tokens[i]) != 0)
-				i++;
-			if (i == 5)
-				return (false);
-			if ((args->prev && args->prev->type == A_TOKEN)
-				|| (args->next && args->next->type == A_TOKEN))
-				return (false);
-			if (!str_cmp("<<", args->val) && !args->next)
-				return (false);
-			if (str_equals(args->val, "|") && (!args->prev || !args->next))
-				return (false);
-		}
-		args = args->next;
-	}
-	return (true);
-}
-
-bool	find_matching_final_quote(char *s)
-{
-	int		edge;
-	int		i;
-
-	i = -1;
-	while (s[++i])
-	{
-		if (chr_isquote(s[i]))
-		{
-			edge = chr_quoteclose_idx(s, i);
-			if (edge == -1)
-				return (false);
-			i = edge;
-		}
-	}
-	return (true);
-}
-
-bool	is_builtin(char *cmd)
-{
-	const char	*valid[] = {"export", "unset", "echo", "cd", "pwd",
-		"env", "history", "exit", NULL};
-	int			i;
-
-	i = -1;
-	while (valid[++i])
-		if (str_equals(cmd, (char *)valid[i]))
-			return (true);
-	return (false);
-}
-
+// Ritorna una lista di liste in `val`
 t_list	*lst_split_bystrval(t_list *all, char *val)
 {
 	t_list	*split;
@@ -127,47 +87,25 @@ t_list	*lst_split_bystrval(t_list *all, char *val)
 
 void	*ms_run_commands(t_var *mshell, t_list *all)
 {
-	t_list	*pipelined;
+	t_list	*cmds_list;
 	int		size;
 	t_list	*command;
 
 	mshell->all_cmds = lst_split_bystrval(all, "|");
 	if (!mshell->all_cmds)
 		return (NULL);
-	pipelined = mshell->all_cmds;
-	size = lst_size(pipelined);
+	cmds_list = mshell->all_cmds;
+	size = lst_size(cmds_list);
 	dbg_printf("TOTAL LIST SIZE: %d\n", size);
-	while (pipelined)
+	while (cmds_list)
 	{
-		command = pipelined->val;
-		ms_run_builtin(mshell, command, size > 1);
-		pipelined->val = NULL;
+		command = cmds_list->val;
+		ms_exec_command(mshell, command, size > 1);
+		cmds_list->val = NULL;
 		lst_free(&command, free);
-		mshell->all_cmds = pipelined->next;
-		free(pipelined);
-		pipelined = mshell->all_cmds;
+		mshell->all_cmds = cmds_list->next;
+		free(cmds_list);
+		cmds_list = mshell->all_cmds;
 	}
 	return (lst_free(&mshell->all_cmds, free), NULL);
-}
-
-void	*parse_and_exec(t_var *mshell, char *input)
-{
-	t_list	*cmd_list;
-	bool	syntax;
-	bool	quotes;
-	int		status_code;
-
-	cmd_list = cmd_parse(mshell, input);
-	if (!cmd_list)
-		return (lst_free(&cmd_list, free), input);
-	quotes = find_matching_final_quote(input);
-	if (!quotes)
-		return (pf_errcode(ERR_SYNTAX), lst_free(&cmd_list, free), NULL);
-	syntax = syntax_check(cmd_list);
-	if (!syntax)
-		return (pf_errcode(ERR_SYNTAX), lst_free(&cmd_list, free), NULL);
-	ms_run_commands(mshell, cmd_list);
-	while (wait(&status_code) != -1)
-		*(mshell->status_code) = (t_uchar)status_code;
-	return (input);
 }

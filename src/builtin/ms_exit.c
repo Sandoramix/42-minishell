@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:21:48 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/31 12:52:29 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:53:55 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,17 @@ int	ms_exit(t_var *mshell, t_list *args)
 	t_uchar		code;
 	const int	lst_len = lst_size(args);
 
-	if (lst_size(mshell->all_cmds) > 1)
-	{
-		lst_free(&args, free);
-		return (OK);
-	}
-	ft_fprintf(2, "exit\n");
+	if (lst_size(mshell->all_cmds) == 1)
+		ft_fprintf(2, "exit\n");
 	if (lst_len > 1)
-		code = (t_uchar)ft_atoi((char *)args->next->val);
+		code = (t_uchar)ft_atoi(args->next->val);
 	if (lst_len > 2)
 	{
 		ft_fprintf(2, "exit: too many arguments\n");
 		*mshell->status_code = code;
 		return (OK);
 	}
-	lst_free(&args, free);
-	freeallcmds(mshell->all_cmds);
+	freeallcmds(mshell->all_cmds, true);
 	mshell->all_cmds = NULL;
 	if (lst_len == 1)
 		cleanup(mshell, true, *mshell->status_code);
