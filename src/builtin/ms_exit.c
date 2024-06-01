@@ -6,32 +6,44 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:21:48 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/31 20:59:41 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/01 16:33:22 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
+static int	ms_exit_parsecode(t_var *mshell, t_list *args, t_uchar *code)
+{
+	int			*orig_code;
+
+	orig_code = strict_atoi(args->next->val);
+	if (!orig_code)
+	{
+		*code = 2;
+		ft_perror("exit: %s: numeric argument required\n", args->next->val);
+		cleanup(mshell, true, *code);
+		return (KO);
+	}
+	else
+		*code = (t_uchar)(*orig_code);
+	return (free(orig_code), OK);
+}
+
 int	ms_exit(t_var *mshell, t_list *args)
 {
-	t_uchar		code;
 	const int	lst_len = lst_size(args);
 
 	if (lst_size(mshell->all_cmds) == 1)
-		ft_fprintf(2, "exit\n");
+		ft_perror("exit\n");
 	if (lst_len > 1)
-		code = (t_uchar)ft_atoi(args->next->val);
+		ms_exit_parsecode(mshell, args, mshell->status_code);
 	if (lst_len > 2)
 	{
-		ft_fprintf(2, "exit: too many arguments\n");
-		*mshell->status_code = code;
+		ft_perror("exit: too many arguments\n");
+		*mshell->status_code = 1;
 		return (OK);
 	}
-	lst_free(&args, free);
-	freeallcmds(mshell->all_cmds, false);
-	if (lst_len == 1)
-		cleanup(mshell, true, *mshell->status_code);
-	cleanup(mshell, true, code);
+	cleanup(mshell, true, *mshell->status_code);
 	return (OK);
 }
 

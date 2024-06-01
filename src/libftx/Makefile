@@ -102,6 +102,7 @@ SRC = ./src/char/chr_closequote_idx.c \
 	./src/str/str_toupper.c \
 	./src/str/str_trim.c \
 	./src/str/str_ulen.c \
+	./src/strict/strict_atoi.c \
 	./src/sys/cleanup.c \
 	./src/sys/sys_cmd.c \
 	./src/sys/sys_time.c \
