@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/31 20:52:26 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/01 16:02:18 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	ms_run_builtin(t_var *mshell, t_list *args)
 	return (KO);
 }
 
-int	ms_exec_command(t_var *mshell, t_list *args, bool tofork)
+static int	ms_exec_command(t_var *mshell, t_list *args, bool tofork)
 {
 	pid_t	pid;
 
@@ -47,8 +47,7 @@ int	ms_exec_command(t_var *mshell, t_list *args, bool tofork)
 		else if (!pid)
 		{
 			ms_run_builtin(mshell, args);
-			lst_free(&args, free);
-			freeallcmds(mshell->all_cmds, false);
+			freeallcmds(mshell->all_cmds, true);
 			cleanup(mshell, true, *mshell->status_code);
 		}
 	}
@@ -85,7 +84,7 @@ t_list	*lst_split_bystrval(t_list *all, char *val)
 	return (split);
 }
 
-void	*ms_run_commands(t_var *mshell, t_list *all)
+void	*ms_exec_commands(t_var *mshell, t_list *all)
 {
 	t_list	*cmds_list;
 	int		size;
@@ -96,16 +95,12 @@ void	*ms_run_commands(t_var *mshell, t_list *all)
 		return (NULL);
 	cmds_list = mshell->all_cmds;
 	size = lst_size(cmds_list);
-	dbg_printf("TOTAL LIST SIZE: %d\n", size);
+	dbg_printf(CCYAN"TOTAL COMMANDS TO EXECUTE: %d\n"CR, size);
 	while (cmds_list)
 	{
 		command = cmds_list->val;
 		ms_exec_command(mshell, command, size > 1);
-		lst_free(&command, free);
-		mshell->all_cmds = mshell->all_cmds->next;
-		free(cmds_list);
-		cmds_list = mshell->all_cmds;
+		cmds_list = cmds_list->next;
 	}
-	free(cmds_list);
-	return (lst_free(&mshell->all_cmds, free), NULL);
+	return (freeallcmds(mshell->all_cmds, true), NULL);
 }

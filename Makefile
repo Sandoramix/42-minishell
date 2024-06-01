@@ -25,10 +25,10 @@ SRC = ./main.c \
 	./src/builtin/ms_history.c \
 	./src/builtin/ms_pwd.c \
 	./src/builtin/ms_unset.c \
-	./src/ms_execute.c \
+	./src/ms_exec.c \
+	./src/ms_exec_cmd.c \
 	./src/ms_init.c \
 	./src/ms_prompt.c \
-	./src/ms_run_builtin.c \
 	./src/parsing/args_expand_clear.c \
 	./src/parsing/cmd_parse.c \
 	./src/parsing/str_clearquotes.c \

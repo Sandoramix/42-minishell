@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:02:15 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/31 15:54:15 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/01 16:28:46 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,6 @@ int	ms_exec_cmd(t_var *mshell, t_list *cmd)
 		ft_perror("Command not found: %s\n", cmd->val);
 		str_freemtx(args);
 		free(cmd_path);
-		lst_free(&cmd, free);
-		freeallcmds(mshell->all_cmds, false);
 		cleanup(mshell, true, *mshell->status_code);
 	}
 	str_freemtx(args);
