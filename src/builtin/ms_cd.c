@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 17:37:44 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/29 16:36:32 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/02 18:41:47 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ int	ms_cd(t_var *mshell, t_list *args)
 		return (ms_cd_home(mshell));
 	if (stat(args->next->val, &buf) != 0)
 	{
-		ft_fprintf(2, "%s: No such file or directory\n", args->val);
+		ft_perror("%s: %s: No such file or directory\n", args->val,
+			args->next->val);
 		*mshell->status_code = 1;
 		return (KO);
 	}
