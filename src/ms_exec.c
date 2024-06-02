@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_run_builtin.c                                   :+:      :+:    :+:   */
+/*   ms_exec.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/01 16:02:18 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/02 18:34:23 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ static int	ms_exec_command(t_var *mshell, t_list *args, bool tofork)
 		else if (!pid)
 		{
 			ms_run_builtin(mshell, args);
-			freeallcmds(mshell->all_cmds, true);
 			cleanup(mshell, true, *mshell->status_code);
 		}
 	}
