@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 12:40:27 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/03 12:45:27 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/05 12:36:27 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,19 @@ void	ms_prompt(t_var *mshell)
 	while (42)
 	{
 		input = readline(PROMPT " ");
-		mshell->last_input = input;
 		if (!input)
 			break ;
-		if (str_ilen(input) > 0)
+		mshell->last_input = str_trim(input, " \t\v\r\n");
+		if (str_ilen(mshell->last_input) > 0)
 		{
+			free(mshell->last_input);
+			mshell->last_input = input;
 			add_history(input);
 			add_cmd_history(mshell, input);
 			ms_handleinput(mshell, input);
 		}
+		else
+			free(mshell->last_input);
 		free(input);
 		mshell->last_input = NULL;
 		mshell->all_cmds = NULL;
