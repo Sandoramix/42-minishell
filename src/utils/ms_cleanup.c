@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 16:38:19 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/01 16:05:04 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/05 10:34:36 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,21 @@
 // TODO refactor
 void	*freeallcmds(t_list *cmds, bool free_val)
 {
-	t_list	*next;
-	t_list	*cmd;
+	t_list		*next;
+	t_command	*cmd;
 
 	while (cmds)
 	{
 		next = cmds->next;
 		cmd = cmds->val;
 		if (free_val)
-			lst_free(&cmd, free);
+		{
+			lst_free(&cmd->args, free);
+			lst_free(&cmd->heredocs, free);
+			lst_free(&cmd->in_redirects, free);
+			lst_free(&cmd->out_redirects, free);
+			free(cmd);
+		}
 		free(cmds);
 		cmds = next;
 	}

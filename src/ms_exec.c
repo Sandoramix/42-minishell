@@ -6,14 +6,17 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/02 18:34:23 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/05 10:29:03 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	ms_run_builtin(t_var *mshell, t_list *args)
+int	ms_run_builtin(t_var *mshell, t_command *command)
 {
+	t_list	*args;
+
+	args = command->args;
 	if (str_equals(args->val, "export"))
 		return (ms_export(mshell, args));
 	else if (str_equals(args->val, "unset"))
@@ -33,64 +36,73 @@ int	ms_run_builtin(t_var *mshell, t_list *args)
 	return (KO);
 }
 
-static int	ms_exec_command(t_var *mshell, t_list *args, bool tofork)
+/// TODO refactor: need to handle the redirects/heredocs
+static int	ms_exec_command(t_var *mshell, t_command *command, bool tofork)
 {
 	pid_t	pid;
 
-	if (ms_is_builtin(args->val) && !tofork)
-		ms_run_builtin(mshell, args);
-	else if (ms_is_builtin(args->val) && tofork)
+	if (ms_is_builtin(command->args->val) && !tofork)
+		ms_run_builtin(mshell, command);
+	else if (ms_is_builtin(command->args->val) && tofork)
 	{
 		pid = fork();
 		if (pid < 0)
 			return (pf_errcode(ERR_FORK), KO);
 		else if (!pid)
 		{
-			ms_run_builtin(mshell, args);
+			ms_run_builtin(mshell, command);
 			cleanup(mshell, true, *mshell->status_code);
 		}
 	}
 	else
-		ms_exec_cmd(mshell, args);
+		ms_exec_cmd(mshell, command->args);
 	return (OK);
 }
 
-// Ritorna una lista di liste in `val`
-t_list	*lst_split_bystrval(t_list *all, char *val)
+static void	ms_wrap_cleanup(t_var *mshell, t_list *cmds_without_command)
 {
-	t_list	*split;
-	t_list	*tmp;
 	t_list	*next;
+	t_list	*cmd;
 
-	split = NULL;
-	tmp = all;
-	while (all)
+	if (cmds_without_command->prev)
+		cmds_without_command->prev->next = NULL;
+	freeallcmds(mshell->all_cmds, true);
+	while (cmds_without_command)
 	{
-		next = all->next;
-		if (next && str_equals(next->val, val))
-		{
-			next = all->next->next;
-			lst_delnode(&all->next, free);
-			all->next = NULL;
-			if (!lst_addnew_tail(&split, tmp, NULL))
-				return (lst_free(&split, free), lst_free(&next, free));
-			tmp = next;
-		}
-		all = next;
+		cmd = cmds_without_command->val;
+		next = cmds_without_command->next;
+		lst_free(&cmd, free);
+		free(cmds_without_command);
+		cmds_without_command = next->prev;
 	}
-	if (!split || tmp)
-		lst_addnew_tail(&split, tmp, NULL);
-	return (split);
+}
+
+static bool	ms_wrap_commands(t_var *mshell)
+{
+	t_list		*cmds;
+	t_command	*cmd_container;
+
+	cmds = mshell->all_cmds;
+	while (cmds)
+	{
+		cmd_container = ft_calloc(1, sizeof(t_command));
+		if (!cmd_container)
+			return (ms_wrap_cleanup(mshell, cmds), false);
+		cmd_container->args = cmds->val;
+		cmds->val = cmd_container;
+		cmds = cmds->next;
+	}
+	return (true);
 }
 
 void	*ms_exec_commands(t_var *mshell, t_list *all)
 {
-	t_list	*cmds_list;
-	int		size;
-	t_list	*command;
+	t_list		*cmds_list;
+	int			size;
+	t_command	*command;
 
 	mshell->all_cmds = lst_split_bystrval(all, "|");
-	if (!mshell->all_cmds)
+	if (!ms_wrap_commands(mshell) || !mshell->all_cmds)
 		return (NULL);
 	cmds_list = mshell->all_cmds;
 	size = lst_size(cmds_list);
