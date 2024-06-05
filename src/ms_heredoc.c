@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 20:32:32 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/05 09:44:59 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/05 10:38:17 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,21 @@
 
 // cat << EOF
 
-static t_list *heredoc_read(t_var *mshell, char *delimiter)
+static char *heredoc_read(t_var *mshell, char *delimiter)
 {
 	char	*line;
-	//char *heredoc_content;
+	int heredoc_fd;
+	char *heredoc_file;
 
-
+	heredoc_file = file_gen_name("heredoc", R_OK | W_OK);
+	if (!heredoc_file)
+		return (ft_perror("file_gen_name"), NULL);
+	heredoc_fd = open(heredoc_file, O_CREAT | O_RDWR | O_TRUNC, 0600);
+	//printf("heredoc fs: %d\n", heredoc_fd);
+	if (heredoc_fd == -1)
+		return (ft_perror("open"), free(mshell->heredoc_file), NULL);
+	free(mshell->heredoc_file);
+	mshell->heredoc_file = heredoc_file;
 	while (42)
 	{
 		line = readline("heredoc > ");
@@ -28,142 +37,100 @@ static t_list *heredoc_read(t_var *mshell, char *delimiter)
 			free(line);
 			break ;
 		}
-		//lst_addnew_tail(&mshell->heredoc, lst_addnew_head(&mshell->heredoc, line, NULL), NULL);
-		lst_addnode_tail(&mshell->heredoc, lst_addnew_head(&mshell->heredoc, line, NULL));
-		// printf("list heredoc: %s\n", (char *)mshell->heredoc->val);
-		// printf("heredoc: %s\n", line);
+		write(heredoc_fd, line, str_ilen(line));
+		write(heredoc_fd, "\n", 1);
+		free(line);
 	}
-	//print_history(mshell->heredoc);
-	return (mshell->heredoc);
+	close(heredoc_fd);
+	printf("heredoc file: %s\n", heredoc_file);
+	return (heredoc_file);
 }
 
-// static void heredoc_child(t_var *mshell, t_list *args, int *fd)
-// {
-// 	char *line;
 
-// 	close(fd[0]);
+char **ft_lst_to_cmd_array(t_list *cmd)
+{
+    int count;
+    t_list *current; 
+    int skip_next;
 
-// 	while (42)
-// 	{
-// 		line = readline("heredoc > ");
-// 		if (!line || !str_cmp(line, args->next->val))
-// 		{
-// 			free(line);
-// 			break ;
-// 		}
-// 		write(fd[1], line, str_ilen(line));
-// 		write(fd[1], "\n", 1);
-// 		free(line);
-	
-// 	}
-// 	close(fd[1]);
-// }
+	count = 0;
+	current = cmd;
+	skip_next = 0;
+    while (current)
+    {
+        if (skip_next)
+            skip_next = 0;
+        else if (str_equals(current->val, "<<"))
+            skip_next = 1;
+        else
+            count++;
+        current = current->next;
+    }
 
-// static int heredoc_parent(t_list *args, int *fd)
-// {
-// 	int exit_code;
+    char **argv = malloc((count + 1) * sizeof(char *));
+    if (!argv)
+        return NULL;
 
-// 	wait(&exit_code);
-// 	close(fd[1]);
-// 	if (WIFEXITED(exit_code))
-// 	{
-// 		exit_code = WEXITSTATUS(exit_code);
-// 		if (exit_code == 1)
-// 			pf_errcode(ERR_EXECVE);
-// 		else
-// 			dup2(fd[0], STDIN_FILENO);
-// 		close(fd[0]);
-// 	}
-// 	return (exit_code);
-// }
-
-// int exec_heredoc_cmd(t_var *mshell, t_list *args)
-// {
-// 	pid_t	pid;
-// 	int		fd[2];
-// 	t_list *current;
-// 	char *cmd_path;
-
-// 	cmd_path = sys_findcmdpath(mshell->cmds_paths, args->val);
-// 	if (pipe(fd) == -1)
-// 		return (pf_errcode(ERR_PIPE), KO);
-// 	pid = fork();
-// 	if (pid == -1)
-// 		return (pf_errcode(ERR_FORK), KO);
-// 	if (pid == 0)
-// 	{
-// 		close(fd[1]);
-// 		dup2(fd[0], STDIN_FILENO);
-// 		close(fd[0]);
-// 		if (!execve(cmd_path, (char **)args->next->val, mshell->_main.envp))
-// 			return (pf_errcode(ERR_EXECVE), KO);
-// 	}
-// 	else
-// 	{
-// 		close(fd[0]);
-// 		current = mshell->heredoc;
-// 		while (current)
-// 		{
-// 			write(fd[1], current->val, str_ilen(current->val));
-// 			write(fd[1], "\n", 1);
-// 			current = current->next;
-// 		}
-// 		close(fd[1]);
-// 		waitpid(pid, NULL, 0);
-// 	}
-// 	return (OK);
-// }
+    current = cmd;
+    int i = 0;
+    skip_next = 0;
+    while (current)
+    {
+        if (skip_next)
+            skip_next = 0;
+        else if (str_equals(current->val, "<<"))
+            skip_next = 1;
+        else
+            argv[i++] = current->val;
+        current = current->next;
+    }
+    argv[count] = NULL;
+    return argv;
+}
 
 int exec_heredoc_cmd(t_var *mshell, t_list *args)
 {
-	int fd[2];
+	int fd;
 	pid_t pid;
-	t_list *current;
 	char **cmd;
 	char *cmd_path;
 
-	if (pipe(fd) == -1)
-		return (pf_errcode(ERR_PIPE), KO);
+	fd = open(mshell->heredoc_file, O_RDONLY);
+	if (fd == -1)
+		return (pf_errcode(ERR_SYNTAX), KO);
 	pid = fork();
 	if (pid == -1)
+	{
+		close(fd);
 		return (pf_errcode(ERR_FORK), KO);
+	}
 	if (pid == 0)
 	{
-		close(fd[1]);
-		//dup2(fd[0], STDIN_FILENO);
-		close(fd[0]);
-		cmd = ft_lst_to_array(args);
+		dup2(fd, STDIN_FILENO);
+		close(fd);
+		cmd = ft_lst_to_cmd_array(args);
 		cmd_path = sys_findcmdpath(mshell->cmds_paths, cmd[0]);
-		
-		// if (!ms_exec_cmd(mshell, args))
-		// 	return (pf_errcode(ERR_EXECVE), KO);
+		if (!cmd_path)
+			return (ft_perror("Command not found"), KO);
 		execve(cmd_path, cmd, mshell->_main.envp);
+		ft_perror("execve");
+		exit(KO);
 	}
 	else
 	{
-		close(fd[0]);
-		printf("loooô	\n");
-		current = mshell->heredoc;
-		print_history(current);
-		while (current)
-		{
-			write(fd[1], current->val, str_ilen(current->val) + 1);
-			write(fd[1], "\n", 1);
-			current = current->next;
-		}
-		close(fd[1]);
+		close(fd);
 		wait(NULL);
 	}
 	return (OK);
 }
 
-// need to execute the input with the heredoc
-
 int ms_heredoc(t_var *mshell, t_list *args)
 {
 	t_list	*current;
 	char *delimiter;
+	//char *heredoc_name;
 
+	//heredoc_name = NULL;
 	current = args;
 	while (current)
 	{
@@ -175,33 +142,19 @@ int ms_heredoc(t_var *mshell, t_list *args)
 		}
 		current = current->next;
 	}
-	if (mshell->heredoc)
+	if (mshell->heredoc_file)
 	{
 		exec_heredoc_cmd(mshell, args);
-		lst_free(&mshell->heredoc, free);
+		unlink(mshell->heredoc_file);
+		free(mshell->heredoc_file);
+		mshell->heredoc_file = NULL;
 	}
 	//printf("arg 0: %s\n", (char *)args->val);
 	return (OK);
 }
 
-// int exec_here_cmd(t_var *mshell, t_list *args)
-// {
-// 	int pid;
-// 	int fd[2];
-	
-// 	if (pipe(fd) == -1)
-// 		return (pf_errcode(ERR_PIPE), KO);
-// 	pid = fork();
-// 	if (pid == 0)
-// 		heredoc_child(mshell, args, fd);
-// 	else
-// 		heredoc_parent(args, fd);
-// 	return (OK);
-// }
-
 /*
 cat << EOF
-1. generare il o i file heredoc e aprirli in lettura
-2. appena trovi >> allora leggi l'input e lo salvi
+- se viene eseguito come primo comando, fallisce sempre. altrimenti funzia quando abbiamo un solo fd.
 
 */
