@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/05 00:20:51 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/05 12:53:20 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,15 @@ typedef struct s_main
 {
 	char	**envp;
 }			t_main;
+
+typedef struct s_command
+{
+	t_list		*args;
+
+	t_list		*in_redirects;
+	t_list		*out_redirects;
+	t_list		*heredocs;
+}	t_command;
 
 /**
  * @brief "GLOBAL" VARIABLE FOR THE CURRENT PROJECT.

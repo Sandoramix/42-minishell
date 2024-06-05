@@ -46,6 +46,7 @@ SRC = ./src/char/chr_closequote_idx.c \
 	./src/lists/lst_get.c \
 	./src/lists/lst_print.c \
 	./src/lists/lst_search.c \
+	./src/lists/lst_split.c \
 	./src/math/ft_iabs.c \
 	./src/math/ft_ipow.c \
 	./src/math/ft_nbr_len.c \
