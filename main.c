@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:41:06 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/01 15:57:39 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/04 20:56:14 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	handle_sig(int signal)
 	if (signal == SIGINT)
 	{
 		g_status = 130;
-		rl_replace_line("", 0);
+		//rl_replace_line("", 0);
 		ioctl(STDIN_FILENO, TIOCSTI,"\n");
 		rl_on_new_line();
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_exec.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/02 18:34:23 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/05 00:16:37 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,17 @@ static int	ms_exec_command(t_var *mshell, t_list *args, bool tofork)
 	pid_t	pid;
 
 	if (ms_is_builtin(args->val) && !tofork)
+	{
 		ms_run_builtin(mshell, args);
+		return (OK);
+	}
+	else if (has_heredoc(args))
+	{
+
+		if (!ms_heredoc(mshell, args))
+			return (KO);
+	}
+	//ms_heredoc(mshell, args);
 	else if (ms_is_builtin(args->val) && tofork)
 	{
 		pid = fork();

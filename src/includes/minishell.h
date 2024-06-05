@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/01 16:03:21 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/05 00:20:51 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ typedef struct s_var
 
 	char				*last_input;
 	t_list				*all_cmds;
+	t_list 				*heredoc;
+	char *heredoc_file;
 }			t_var;
 
 int		ms_loadenv(t_var *mshell);
@@ -78,4 +80,8 @@ int		ms_exec_cmd(t_var *mshell, t_list *args);
 void	*freeallcmds(t_list *cmds, bool free_content);
 
 bool	ms_is_builtin(char *cmd);
+
+int ms_heredoc(t_var *mshell, t_list *args);
+char	**ft_lst_to_array(t_list *lst);
+bool	has_heredoc(t_list *cmd_list);
 #endif
