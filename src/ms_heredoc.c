@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 20:32:32 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/06 13:06:52 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/06 15:36:04 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ void unlink_heredocs(t_command *cmd)
 	current = cmd->heredocs;
 	while (current)
 	{
-		if (current->val && current->next != NULL)
+		if (current->val)
 		{
 			printf("unlinking %s\n", (char *)current->val);
 			unlink((char *)current->val);
