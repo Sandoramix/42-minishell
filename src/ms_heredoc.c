@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 20:32:32 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/06 10:02:47 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/06 12:20:28 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,25 @@
 
 /*
 	<< EOF << lol
-TODO: aggiungere espansione
-TODO: aggiungere controllo su quotes x capire se espandere (?)
+TODO: aggiungere controllo su double quotes 
 TODO: refactor che così fa schif
 TODO: Leakssss
 */
+char	*heredoc_expand(t_var *mshell, char **arg)
+{
+	int		dollar_idx;
+	char	*res;
+
+	dollar_idx = str_idxofchar(*arg, '$');
+	while (dollar_idx != -1)
+	{
+		res = arg_update(mshell, arg, &dollar_idx, true);
+		if (!res)
+			return (NULL);
+		//printf("dollar_idx: %d\n", dollar_idx);
+	}
+	return (*arg);
+}
 
 void add_heredoc(t_command *cmd, char *delimiter, char *heredoc_name)
 {
@@ -43,7 +57,7 @@ void add_heredoc(t_command *cmd, char *delimiter, char *heredoc_name)
 		}
 }
 
-static char *heredoc_read(const char *delimiter)
+static char *heredoc_read(t_var *mshell, const char *delimiter, t_command *cmd)
 {
 	char	*line;
 	int heredoc_fd;
@@ -72,6 +86,15 @@ static char *heredoc_read(const char *delimiter)
 			free(line);
 			break ;
 		}
+		if (cmd->args->_prevent_expansion == false)
+		{
+			while (str_idxofchar(line, '$') != -1)
+			{
+				line = heredoc_expand(mshell, &line);
+				printf("line: %s\n", line);
+				cmd->args->_prevent_expansion = false;
+			}
+		}
 		write(heredoc_fd, line, str_ilen(line));
 		write(heredoc_fd, "\n", 1);
 		free(line);
@@ -80,6 +103,7 @@ static char *heredoc_read(const char *delimiter)
 	return (prefixed_name);
 }
 
+// TODO: salvarsi ultimo heredoc che non deve essere cancellato, quindi se il nodo dopo << del e' NULL, allora quello e' l'ultimo heredoc e non va chiuso
 void unlink_heredocs(t_command *cmd)
 {
 	t_list *current;
@@ -116,7 +140,6 @@ int ms_heredoc(t_var *mshell, t_command *cmds)
 	char *delimiter;
 	char *heredoc_name;
 	//t_list *temp;
-	(void)mshell;
 
 
 	cleanup_heredocs(cmds);
@@ -126,8 +149,8 @@ int ms_heredoc(t_var *mshell, t_command *cmds)
 		if (str_cmp(current->val, "<<") == 0 && current->next)
 		{
 			delimiter = current->next->val;
-			heredoc_name = heredoc_read(delimiter);
-
+			heredoc_name = heredoc_read(mshell, delimiter, cmds);
+			//printf("expansion: %s\n", heredoc_name);
 			if (heredoc_name)
 				add_heredoc(cmds, delimiter, heredoc_name);
 			current = current->next;

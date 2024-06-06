@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:41:06 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/04 20:56:14 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/06 11:03:03 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	handle_sig(int signal)
 	if (signal == SIGINT)
 	{
 		g_status = 130;
-		//rl_replace_line("", 0);
+		rl_replace_line("", 0);
 		ioctl(STDIN_FILENO, TIOCSTI,"\n");
 		rl_on_new_line();
 	}

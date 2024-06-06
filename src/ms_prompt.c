@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 12:40:27 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/05 22:15:08 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/06 11:38:41 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,6 @@ void	*ms_handleinput(t_var *mshell, char *input)
 		return (lst_free(&cmd_list, free), input);
 	if (!ms_closing_quotes_check(input) || !ms_token_syntax_check(cmd_list))
 		return (pf_errcode(ERR_SYNTAX), lst_free(&cmd_list, free), NULL);
-	// if (has_heredoc(cmd_list))
-	// {
-	// 	if (!ms_heredoc(mshell, cmd_list))
-	// 		return (lst_free(&cmd_list, free), NULL);
-	// }
 	ms_exec_commands(mshell, cmd_list);
 	while (wait(&status_code) != -1)
 		*(mshell->status_code) = (t_uchar)status_code;
