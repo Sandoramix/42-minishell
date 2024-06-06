@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 20:32:32 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/06 12:42:40 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/06 13:06:52 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,30 @@
 
 /*
 	<< EOF << lol
-TODO: aggiungere controllo su double quotes 
+TODO: unlink per bene dei file heredoc, considerando che puo essercene piu di uno, che dopo l' ultimo
+ci puo essere un altro comando o token (es. > file) che non ha bisogno di heredoc e quindi in quel caso non va chiuso (?)
+TODO: salvarsi ultimo heredoc che non deve essere cancellato, quindi se il nodo dopo << del e' NULL, allora quello e' l'ultimo heredoc e non va chiuso
+minishell> << l << m << n << o
+heredoc > l
+Added heredoc: l heredoc_0
+heredoc > m
+Added heredoc: m heredoc_1
+heredoc > n
+Added heredoc: n heredoc_2
+heredoc > o
+Added heredoc: o heredoc_3
+unlinking heredoc_0
+unlinking heredoc_1
+unlinking heredoc_2
+last heredoc: heredoc_3
+minishell> << l < file
+heredoc > ciao
+heredoc > l
+Added heredoc: l heredoc_4
+last heredoc: heredoc_4
+minishell> exit
+
+TODO: creare gen_heredocs x generare i file heredoc in modo incrementale e ritornare il nome del file
 TODO: refactor che così fa schif
 TODO: Leakssss
 */
@@ -103,7 +126,6 @@ static char *heredoc_read(t_var *mshell, const char *delimiter, t_command *cmd)
 	return (prefixed_name);
 }
 
-// TODO: salvarsi ultimo heredoc che non deve essere cancellato, quindi se il nodo dopo << del e' NULL, allora quello e' l'ultimo heredoc e non va chiuso
 void unlink_heredocs(t_command *cmd)
 {
 	t_list *current;
@@ -147,25 +169,26 @@ int ms_heredoc(t_var *mshell, t_command *cmds)
 	t_list	*current;
 	char *delimiter;
 	char *heredoc_name;
-	//t_list *temp;
 
 
 	cleanup_heredocs(cmds);
 	current = cmds->args;
 	while (current)
 	{
-		if (str_cmp(current->val, "<<") == 0 && current->next)
+		if (str_cmp(current->val, "<<") == 0)
 		{
 			delimiter = current->next->val;
 			heredoc_name = heredoc_read(mshell, delimiter, cmds);
 			if (heredoc_name)
 				add_heredoc(cmds, delimiter, heredoc_name);
+			if (current->next->next != NULL)
+				unlink_heredocs(cmds);
 			current = current->next;
 		}
 		current = current->next;
 	}
+	// unlink heredocs(cmds);
 	// 	exec_heredoc_cmd(mshell, args);
-	unlink_heredocs(cmds);
 	return (OK);
 }
 
