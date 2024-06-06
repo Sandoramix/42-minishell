@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 20:32:32 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/06 12:20:28 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/06 12:42:40 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ char	*heredoc_expand(t_var *mshell, char **arg)
 		res = arg_update(mshell, arg, &dollar_idx, true);
 		if (!res)
 			return (NULL);
-		//printf("dollar_idx: %d\n", dollar_idx);
 	}
 	return (*arg);
 }
@@ -55,6 +54,7 @@ void add_heredoc(t_command *cmd, char *delimiter, char *heredoc_name)
 			current->next = heredoc;
 			heredoc->prev = current;
 		}
+		printf("Added heredoc: %s %s\n", (char *)heredoc->key, (char *)heredoc->val);
 }
 
 static char *heredoc_read(t_var *mshell, const char *delimiter, t_command *cmd)
@@ -111,8 +111,16 @@ void unlink_heredocs(t_command *cmd)
 	current = cmd->heredocs;
 	while (current)
 	{
-		if (current->val)
+		if (current->val && current->next != NULL)
+		{
+			printf("unlinking %s\n", (char *)current->val);
 			unlink((char *)current->val);
+		}
+		else if (current->val && !current->next)
+		{
+			printf("last heredoc: %s\n", (char *)current->val);
+			break ;
+		}
 		current = current->next;
 	}
 	cmd->heredocs = NULL;
@@ -150,19 +158,12 @@ int ms_heredoc(t_var *mshell, t_command *cmds)
 		{
 			delimiter = current->next->val;
 			heredoc_name = heredoc_read(mshell, delimiter, cmds);
-			//printf("expansion: %s\n", heredoc_name);
 			if (heredoc_name)
 				add_heredoc(cmds, delimiter, heredoc_name);
 			current = current->next;
 		}
 		current = current->next;
 	}
-	// current = cmds->heredocs;
-	// while (current)
-    // {
-    //     printf("Delimiter: %s, File: %s\n", (char *)current->key, (char *)current->val);
-    //     current = current->next;
-    // }
 	// 	exec_heredoc_cmd(mshell, args);
 	unlink_heredocs(cmds);
 	return (OK);
