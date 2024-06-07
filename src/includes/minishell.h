@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/07 10:52:10 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/07 16:08:33 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef struct s_command
 
 	t_list		*in_redirects;
 	t_list		*out_redirects;
-	t_list		*heredocs;
+	char 		*in_file;
 }	t_command;
 
 /**

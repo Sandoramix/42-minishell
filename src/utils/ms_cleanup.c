@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_cleanup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 16:38:19 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/05 10:34:36 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/07 16:10:25 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	*freeallcmds(t_list *cmds, bool free_val)
 		if (free_val)
 		{
 			lst_free(&cmd->args, free);
-			lst_free(&cmd->heredocs, free);
+			free(cmd->in_file);
 			lst_free(&cmd->in_redirects, free);
 			lst_free(&cmd->out_redirects, free);
 			free(cmd);
