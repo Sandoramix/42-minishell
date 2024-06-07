@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/05 22:12:21 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/07 17:46:41 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,10 @@ static int	ms_exec_command(t_var *mshell, t_command *command, bool tofork)
 {
 	pid_t	pid;
 
-	if (has_heredoc(command->args))
-	{
-		if (!ms_heredoc(mshell, command))
-			return (KO);
-	}
-	else if (ms_is_builtin(command->args->val) && !tofork)
+
+	ms_heredoc(mshell, command);
+	//ms_rediout(mshell, command);
+	if (ms_is_builtin(command->args->val) && !tofork)
 		ms_run_builtin(mshell, command);
 	else if (ms_is_builtin(command->args->val) && tofork)
 	{

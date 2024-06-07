@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 20:32:32 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/07 17:15:19 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/07 17:44:20 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 TODO: refactor che così fa schif
 TODO: Leakssss
 */
+
 static char *heredoc_read(t_var *mshell, t_list *token, int count)
 {
 	char	*line;
@@ -46,7 +47,6 @@ static char *heredoc_read(t_var *mshell, t_list *token, int count)
 		if (token->_prevent_expansion == false)
 		{
 			line = heredoc_expand(mshell, &line);
-			printf("line: %s\n", line);
 			token->_prevent_expansion = false;
 		}
 		write(heredoc_fd, line, str_ilen(line));
@@ -57,7 +57,7 @@ static char *heredoc_read(t_var *mshell, t_list *token, int count)
 	return (heredoc_file);
 }
 
-int ms_heredoc(t_var *mshell, t_command *cmds)
+void ms_heredoc(t_var *mshell, t_command *cmds)
 {
 	t_list	*current;
 	char *delimiter;
@@ -83,12 +83,7 @@ int ms_heredoc(t_var *mshell, t_command *cmds)
 		current = current->next;
 	}
 	if (heredoc_name != NULL)
-	{
 		cmds->in_file = heredoc_name;
-		printf("heredoc_name: %s\n", cmds->in_file);
-	}
-	// 	exec_heredoc_cmd(mshell, args);
-	return (OK);
 }
 
 // char **ft_lst_to_cmd_array(t_list *cmd)
