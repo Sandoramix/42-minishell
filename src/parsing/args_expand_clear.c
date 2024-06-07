@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:24:26 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/31 11:17:07 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/06 21:37:49 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char	*arg_update(t_var *mshell, char **arg, int *d_idx, bool in_heredoc)
 	const int		len = str_ilen((*arg));
 	int				end;
 
-	if (*d_idx == -1)
+	if (*d_idx == -1) // EXTRA 2 lines; but need to be careful of it's usage if removed
 		return (*arg);
 	end = str_var_ending_idx((*arg), (*d_idx));
 	dbg_printf("\tFound a $ at [%3d] - [%3d]\n", (*d_idx), end, len);
@@ -76,9 +76,10 @@ char	*arg_update(t_var *mshell, char **arg, int *d_idx, bool in_heredoc)
 		(*d_idx) = str_idxofchar_from((*arg), (*d_idx) + 1, '$');
 		return (dbg_printf(CMAGENTA"\t\tIt's inside single quote.\n"), *arg);
 	}
-	if (end == *d_idx && chr_isquote(((*arg))[*d_idx + 1]) && !in_heredoc)
+	if (end == *d_idx && chr_isquote(((*arg))[*d_idx + 1]))
 	{
-		(*arg) = str_replace_from_to((*arg), (*d_idx), (end), "");
+		if (!in_heredoc)
+			(*arg) = str_replace_from_to((*arg), (*d_idx), (end), "");
 		(*d_idx) = str_idxofchar_from((*arg), (*d_idx) + 1, '$');
 		return (*arg);
 	}
@@ -102,7 +103,7 @@ t_list	*arg_expand(t_var *mshell, t_list *arg)
 	dbg_printf(CYELLOW"[arg_expand] of [%s]\n", argument);
 	if (arg->prev && arg->prev->type == A_TOKEN)
 	{
-		if (argument && str_chr(arg->val, '\''))
+		if (argument && str_includesset(arg->val, "'\""))
 			arg->prev->_prevent_expansion = true;
 		if (str_equals(arg->val, "<<"))
 			return (arg);

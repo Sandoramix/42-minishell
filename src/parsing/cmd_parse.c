@@ -24,9 +24,10 @@ static void	cmd_dbgparse(t_cmdp_switch type, char *s, int i, int edge)
 	dbg_printf(CGRAY);
 	if (type == CMDP_QUOTE)
 		dbg_printf("Found a quote {%c} at:\t[%3d] - [%3d]:\t", s[i], i, edge);
-	else if (type == CMDP_TOKEN && chr_istoken(s[i]) && common_part)
+	else if (type == CMDP_TOKEN && chr_istoken(s[i])
+		&& (common_part || !chr_istoken(s[i + 1])))
 		dbg_printf("Found unquoted TOKEN at:\t[%3d] - [%3d]:\t", edge, i);
-	else if (type == CMDP_WORD && common_part)
+	else if (type == CMDP_WORD && (common_part || chr_istoken(s[i + 1])))
 		dbg_printf("Found unquoted WORD at:\t[%3d] - [%3d]:\t", edge, i);
 	else
 	{
@@ -72,7 +73,7 @@ static bool	cmdp_switch(t_cmdp_switch type, t_cmdp_arg *var)
 	if (type == CMDP_QUOTE)
 		return (chr_isquote(var->str[i]));
 	if (type == CMDP_TOKEN)
-		return (curr_token && (next_space_or_end || next_quote));
+		return (curr_token && (next_space_or_end || !next_token || next_quote));
 	if (type == CMDP_WORD)
 		return ((!chr_isspace(var->str[i]) && !curr_token)
 			&& (next_space_or_end || next_quote || next_token));
@@ -127,6 +128,7 @@ static t_list	*cmdp_handlequote(t_cmdp_arg *var)
 
 static t_list	*cmdp_handletoken(t_cmdp_arg *var)
 {
+	cmd_dbgparse(CMDP_TOKEN, var->str, var->i, var->edge);
 	var->tmp = str_substr(var->str, var->edge, var->i);
 	if (!var->tmp || !lst_addnew_tail(&var->res, var->tmp, NULL))
 		return (lst_free(&var->res, free), free(var->tmp), NULL);
