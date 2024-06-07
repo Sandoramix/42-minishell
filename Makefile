@@ -37,7 +37,8 @@ SRC = ./main.c \
 	./src/utils/history_utils.c \
 	./src/utils/ms_cleanup.c \
 	./src/utils/parsing_utils.c \
-	./src/ms_heredoc.c
+	./src/ms_heredoc.c \
+	./src/utils/heredoc_utils.c
 
 # ----RULES-----
 

@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/05 17:56:35 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/07 10:52:10 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,10 @@ void	*freeallcmds(t_list *cmds, bool free_content);
 bool	ms_is_builtin(char *cmd);
 
 int ms_heredoc(t_var *mshell, t_command *cmds);
-char	**ft_lst_to_array(t_list *lst);
+//char	**ft_lst_to_array(t_list *lst);
 bool	has_heredoc(t_list *cmd_list);
+void cleanup_heredocs(t_command *cmd);
+void unlink_heredocs(t_command *cmd);
+char	*heredoc_expand(t_var *mshell, char **arg);
+char *gen_heredocs(int count);
 #endif

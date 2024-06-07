@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 20:32:32 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/06 15:36:04 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/07 10:51:54 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*
 	<< EOF << lol
 TODO: unlink per bene dei file heredoc, considerando che puo essercene piu di uno, che dopo l' ultimo
-ci puo essere un altro comando o token (es. > file) che non ha bisogno di heredoc e quindi in quel caso non va chiuso (?)
+ci puo essere un altro comando o token (es. > file) che non ha bisogno di heredoc e quindi in quel caso va chiuso (?)
 TODO: salvarsi ultimo heredoc che non deve essere cancellato, quindi se il nodo dopo << del e' NULL, allora quello e' l'ultimo heredoc e non va chiuso
 minishell> << l << m << n << o
 heredoc > l
@@ -37,27 +37,27 @@ Added heredoc: l heredoc_4
 last heredoc: heredoc_4
 minishell> exit
 
-TODO: creare gen_heredocs x generare i file heredoc in modo incrementale e ritornare il nome del file
+TODO: risolvere no espansione se "" nel 2nd heredoc
 TODO: refactor che così fa schif
 TODO: Leakssss
 */
-char	*heredoc_expand(t_var *mshell, char **arg)
-{
-	int		dollar_idx;
-	char	*res;
-
-	dollar_idx = str_idxofchar(*arg, '$');
-	while (dollar_idx != -1)
-	{
-		res = arg_update(mshell, arg, &dollar_idx, true);
-		if (!res)
-			return (NULL);
-	}
-	return (*arg);
-}
 
 void add_heredoc(t_command *cmd, char *delimiter, char *heredoc_name)
 {
+	// char *heredoc_file;
+	// char *delimiter_copy;
+	// char *
+
+	// heredoc_file = str_dup(heredoc_name);
+	// if (!heredoc_file)
+	// 	return ;
+	// delimiter_copy = str_dup(delimiter);
+	// if (!delimiter_copy)
+	// 	return ;
+	// heredoc_file = str_join(delimiter_copy, heredoc_file);
+	// if (!heredoc_file)
+	// 	return ;
+	// return (heredoc_file);
 	t_list *heredoc;
 
 	heredoc = malloc(sizeof(t_list));
@@ -77,30 +77,21 @@ void add_heredoc(t_command *cmd, char *delimiter, char *heredoc_name)
 			current->next = heredoc;
 			heredoc->prev = current;
 		}
-		printf("Added heredoc: %s %s\n", (char *)heredoc->key, (char *)heredoc->val);
+	// 	printf("Added heredoc: %s %s\n", (char *)heredoc->key, (char *)heredoc->val);
 }
 
-static char *heredoc_read(t_var *mshell, const char *delimiter, t_command *cmd)
+static char *heredoc_read(t_var *mshell, const char *delimiter, t_command *cmd, int count)
 {
 	char	*line;
 	int heredoc_fd;
 	char *heredoc_file;
-	static int count = 0;
-	char *suffix;
-	char *prefixed_name;
 
-	suffix = ft_itoa(count++);
-	heredoc_file = file_gen_name("heredoc_", R_OK | W_OK);
-	prefixed_name = str_join(heredoc_file, suffix);
-	if (!prefixed_name)
-		return (ft_perror("file_gen_name"), NULL);
-	heredoc_fd = open(prefixed_name, O_CREAT | O_RDWR | O_TRUNC, 0660);
+	heredoc_file = gen_heredocs(count);
+	if (!heredoc_file)
+		return (ft_perror("gen_heredocs"), NULL);
+	heredoc_fd = open(heredoc_file, O_CREAT | O_RDWR | O_TRUNC, 0660);
 	if (heredoc_fd == -1)
-		return (ft_perror("open"), free(prefixed_name), NULL);
-	// heredoc_file = gen_heredocs(heredoc_file, heredoc_fd);
-	// heredoc_fd = open(prefixed_name, O_CREAT | O_RDWR | O_TRUNC, 0660);
-	// if (heredoc_fd == -1)
-	// 	return (ft_perror("open"), free(prefixed_name), NULL);
+		return (ft_perror("open"), free(heredoc_file), NULL);
 	while (42)
 	{
 		line = readline("heredoc > ");
@@ -123,45 +114,7 @@ static char *heredoc_read(t_var *mshell, const char *delimiter, t_command *cmd)
 		free(line);
 	}
 	close(heredoc_fd);
-	return (prefixed_name);
-}
-
-void unlink_heredocs(t_command *cmd)
-{
-	t_list *current;
-
-	current = cmd->heredocs;
-	while (current)
-	{
-		if (current->val)
-		{
-			printf("unlinking %s\n", (char *)current->val);
-			unlink((char *)current->val);
-		}
-		else if (current->val && !current->next)
-		{
-			printf("last heredoc: %s\n", (char *)current->val);
-			break ;
-		}
-		current = current->next;
-	}
-	cmd->heredocs = NULL;
-}
-
-void cleanup_heredocs(t_command *cmd)
-{
-	t_list *current;
-	t_list *temp;
-
-	current = cmd->heredocs;
-	while (current)
-	{
-		temp = current;
-		current = current->next;
-		free(temp->key);
-		free(temp->val);
-		free(temp);
-	}
+	return (heredoc_file);
 }
 
 int ms_heredoc(t_var *mshell, t_command *cmds)
@@ -169,8 +122,9 @@ int ms_heredoc(t_var *mshell, t_command *cmds)
 	t_list	*current;
 	char *delimiter;
 	char *heredoc_name;
+	int count;
 
-
+	count = 1;
 	cleanup_heredocs(cmds);
 	current = cmds->args;
 	while (current)
@@ -178,7 +132,7 @@ int ms_heredoc(t_var *mshell, t_command *cmds)
 		if (str_cmp(current->val, "<<") == 0)
 		{
 			delimiter = current->next->val;
-			heredoc_name = heredoc_read(mshell, delimiter, cmds);
+			heredoc_name = heredoc_read(mshell, delimiter, cmds, count++);
 			if (heredoc_name)
 				add_heredoc(cmds, delimiter, heredoc_name);
 			if (current->next->next != NULL)
@@ -187,30 +141,9 @@ int ms_heredoc(t_var *mshell, t_command *cmds)
 		}
 		current = current->next;
 	}
-	// unlink heredocs(cmds);
 	// 	exec_heredoc_cmd(mshell, args);
 	return (OK);
 }
-
-// int *gen_heredocs(char *heredoc_file, int count)
-// {
-// 	char *suffix;
-// 	char *prefixed_name;
-// 	int fd;
-// 	char *base_name;
-
-// 	count = 0;
-// 	suffix = ft_itoa(count);
-// 	base_name = file_gen_name("heredoc_", R_OK | W_OK);
-// 	prefixed_name = str_join(base_name, suffix);
-// 	if (!prefixed_name)
-// 		return (ft_perror("file_gen_name"), NULL);
-// 	fd = open(prefixed_name, O_CREAT | O_RDWR | O_TRUNC, 0660);
-// 	if (fd == -1)
-// 		return (ft_perror("open"), free(prefixed_name), NULL);
-// 	heredoc_file = prefixed_name;
-// 	return (fd);
-// }
 
 // char **ft_lst_to_cmd_array(t_list *cmd)
 // {
