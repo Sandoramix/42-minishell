@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/09 14:29:39 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/09 14:30:13 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,6 @@ typedef struct s_var
 
 	char				*last_input;
 	t_list				*all_cmds;
-	t_list 				*heredoc;
-	char *heredoc_file;
 }			t_var;
 
 int		ms_loadenv(t_var *mshell);
