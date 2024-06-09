@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/09 14:26:09 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/09 14:29:39 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,20 @@
 # include <ms_parsing.h>
 # include <ms_exec.h>
 
-# define PROGNAME "minishell"
-# define PROMPT "minishell>"
-# define CWD_INITIAL_SIZE 4096
-
 extern t_uchar	g_status;
+
+# ifndef PROGNAME
+#  define PROGNAME "minishell"
+# endif
+
+# ifndef PROMPT
+#  define PROMPT "minishell>"
+# endif
+
+# ifndef CWD_INITIAL_SIZE
+#  define CWD_INITIAL_SIZE 4096
+# endif
+
 
 typedef struct s_main
 {
@@ -34,7 +43,10 @@ typedef struct s_command
 
 	t_list		*in_redirects;
 	t_list		*out_redirects;
-	char 		*in_file;
+
+	char		*in_file;
+	char		*out_file;
+
 }	t_command;
 
 /**
@@ -90,7 +102,8 @@ void	*freeallcmds(t_list *cmds, bool free_content);
 
 bool	ms_is_builtin(char *cmd);
 
-void ms_heredoc(t_var *mshell, t_command *cmds);
+void	ms_heredoc(t_var *mshell, t_command *cmds);
 char	*heredoc_expand(t_var *mshell, char **arg);
-char *gen_heredocs(int count);
+char	*gen_heredocs(int count);
+
 #endif

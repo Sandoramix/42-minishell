@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:47:35 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/09 14:01:51 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/09 14:27:26 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,6 @@ t_list		*lst_split_bystrval(t_list *all, char *val);
  * @brief Convert the given list's values to an array of strings (`char **`).
  * The original list is not modified.
  * @attention uses malloc, free
- * 
  * @param lst list to convert
  * @return char** pointer to the newly allocated matrix, or `NULL` in case of
  * errors.
