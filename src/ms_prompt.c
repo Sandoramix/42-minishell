@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_prompt.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 12:40:27 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/07 17:53:56 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/09 14:53:46 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void	ms_prompt(t_var *mshell)
 		free(input);
 		mshell->last_input = NULL;
 		mshell->all_cmds = NULL;
-		mshell->heredoc = NULL;
 	}
 	cleanup(mshell, true, *mshell->status_code);
 }
