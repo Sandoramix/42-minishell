@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 12:33:15 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/01 15:59:42 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/09 14:22:01 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,5 @@ void	ms_init(t_var *mshell)
 		pf_errcode(ERR_MALLOC);
 		cleanup(mshell, true, 1);
 	}
-	sys_update_cwd(mshell);
+	ms_update_cwd(mshell);
 }

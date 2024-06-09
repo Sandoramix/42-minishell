@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/07 17:54:12 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/09 14:22:01 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <libft.h>
 # include <ms_parsing.h>
+# include <ms_exec.h>
 
 # define PROGNAME "minishell"
 # define PROMPT "minishell>"
@@ -77,13 +78,12 @@ int		ms_history(t_var *mshell, t_list *args);
 int		ms_echo(t_var *mshell, t_list *args);
 
 
-void	*ms_exec_commands(t_var *mshell, t_list *all);
 
 void	add_cmd_history(t_var *mshell, char *cmd);
 
 void	print_history(t_list *history);
 //-----------------------------------------------------------------------------
-void	*sys_update_cwd(t_var *mshell);
+void	*ms_update_cwd(t_var *mshell);
 int		ms_exec_cmd(t_var *mshell, t_list *args);
 
 void	*freeallcmds(t_list *cmds, bool free_content);

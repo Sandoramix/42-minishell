@@ -1,40 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_execute.c                                       :+:      :+:    :+:   */
+/*   ms_exec_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:02:15 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/01 16:28:46 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/09 14:19:55 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-char	**ft_lst_to_array(t_list *lst)
-{
-	char	**arr;
-	int		i;
-
-	arr = ft_calloc(lst_size(lst) + 1, sizeof(char *));
-	if (!arr)
-		return (NULL);
-	i = 0;
-	while (lst)
-	{
-		arr[i] = str_dup(lst->val);
-		if (!arr[i])
-		{
-			pf_errcode(ERR_MALLOC);
-			str_freemtx(arr);
-			return (NULL);
-		}
-		lst = lst->next;
-		i++;
-	}
-	return (arr);
-}
 
 int	ms_exec_cmd(t_var *mshell, t_list *cmd)
 {
@@ -47,7 +24,7 @@ int	ms_exec_cmd(t_var *mshell, t_list *cmd)
 	if (!mshell->cmds_paths && lst_findbykey_str(mshell->env, "PATH"))
 		return (pf_errcode(ERR_MALLOC), KO);
 	cmd_path = sys_findcmdpath(mshell->cmds_paths, cmd->val);
-	args = ft_lst_to_array(cmd);
+	args = lst_to_strmtx(cmd);
 	if (!args)
 	{
 		pf_errcode(ERR_MALLOC);

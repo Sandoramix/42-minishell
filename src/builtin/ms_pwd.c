@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 14:36:35 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/22 15:39:35 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/09 14:22:01 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	*ms_pwd(t_var *mshell, t_list *args)
 		*mshell->status_code = 1;
 		return (NULL);
 	}
-	sys_update_cwd(mshell);
+	ms_update_cwd(mshell);
 	if (str_cmp((char *)args->val, "pwd") == 0)
 		printf("%s\n", mshell->curr_path);
 	else

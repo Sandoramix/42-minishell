@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 10:36:40 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/07 16:12:51 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/09 14:24:41 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
 
 char	*heredoc_expand(t_var *mshell, char **arg)
 {
@@ -28,11 +27,11 @@ char	*heredoc_expand(t_var *mshell, char **arg)
 	return (*arg);
 }
 
-char *gen_heredocs(int count)
+char	*gen_heredocs(int count)
 {
-	char *suffix;
-	char *prefixed_name;
-	char *heredoc_file;
+	char	*suffix;
+	char	*prefixed_name;
+	char	*heredoc_file;
 
 	suffix = ft_itoa(count);
 	heredoc_file = file_gen_name(".heredoc_", R_OK | W_OK);

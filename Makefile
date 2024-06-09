@@ -15,7 +15,6 @@ CFLAGS = -Wall -Wextra -Werror -g $(INCLUDES) -DDEBUG=$(DEBUG_VALUE)
 RM = rm -rf
 
 # ----SOURCE-FILES----
-
 SRC = ./main.c \
 	./src/builtin/ms_cd.c \
 	./src/builtin/ms_echo.c \
@@ -25,20 +24,22 @@ SRC = ./main.c \
 	./src/builtin/ms_history.c \
 	./src/builtin/ms_pwd.c \
 	./src/builtin/ms_unset.c \
-	./src/ms_exec.c \
-	./src/ms_exec_cmd.c \
+	./src/execute/ms_exec.c \
+	./src/execute/ms_exec_cmd.c \
+	./src/execute/ms_wrap_commands.c \
+	./src/ms_heredoc.c \
 	./src/ms_init.c \
 	./src/ms_prompt.c \
 	./src/parsing/args_expand_clear.c \
 	./src/parsing/cmd_parse.c \
 	./src/parsing/str_clearquotes.c \
 	./src/parsing/str_env_variable.c \
-	./src/sys/sys_update_cwd.c \
+	./src/utils/heredoc_utils.c \
 	./src/utils/history_utils.c \
 	./src/utils/ms_cleanup.c \
-	./src/utils/parsing_utils.c \
-	./src/ms_heredoc.c \
-	./src/utils/heredoc_utils.c
+	./src/utils/ms_update_cwd.c \
+	./src/utils/parsing_utils.c
+
 
 # ----RULES-----
 

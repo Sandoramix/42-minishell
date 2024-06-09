@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_exec.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/07 17:46:41 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/09 14:24:55 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ static int	ms_exec_command(t_var *mshell, t_command *command, bool tofork)
 {
 	pid_t	pid;
 
-
 	ms_heredoc(mshell, command);
 	//ms_rediout(mshell, command);
 	if (ms_is_builtin(command->args->val) && !tofork)
@@ -60,42 +59,6 @@ static int	ms_exec_command(t_var *mshell, t_command *command, bool tofork)
 	else
 		ms_exec_cmd(mshell, command->args);
 	return (OK);
-}
-
-static void	ms_wrap_cleanup(t_var *mshell, t_list *cmds_without_command)
-{
-	t_list	*next;
-	t_list	*cmd;
-
-	if (cmds_without_command->prev)
-		cmds_without_command->prev->next = NULL;
-	freeallcmds(mshell->all_cmds, true);
-	while (cmds_without_command)
-	{
-		cmd = cmds_without_command->val;
-		next = cmds_without_command->next;
-		lst_free(&cmd, free);
-		free(cmds_without_command);
-		cmds_without_command = next->prev;
-	}
-}
-
-static bool	ms_wrap_commands(t_var *mshell)
-{
-	t_list		*cmds;
-	t_command	*cmd_container;
-
-	cmds = mshell->all_cmds;
-	while (cmds)
-	{
-		cmd_container = ft_calloc(1, sizeof(t_command));
-		if (!cmd_container)
-			return (ms_wrap_cleanup(mshell, cmds), false);
-		cmd_container->args = cmds->val;
-		cmds->val = cmd_container;
-		cmds = cmds->next;
-	}
-	return (true);
 }
 
 void	*ms_exec_commands(t_var *mshell, t_list *all)

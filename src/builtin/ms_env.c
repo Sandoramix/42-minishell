@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:44:22 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/22 15:46:18 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/08 17:53:40 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,6 @@ void	ms_env(t_var *mshell, t_list *args)
 {
 	if (!args)
 		return ;
-	if (str_cmp((char *)args->val, "env") != 0)
-	{
-		ft_perror("command not found: %s\n", (char *)args->val);
-		*(mshell->status_code) = 127;
-		return ;
-	}
 	if (lst_size(args) > 1)
 	{
 		ft_perror("env: '%s': No such file or directory\n", args->next->val);

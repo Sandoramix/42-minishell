@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:04:40 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/29 20:07:05 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/09 14:23:31 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ static int	ms_export_error(t_var *mshell, t_list *args, char **split)
 	cleanup(mshell, true, 1);
 	return (KO);
 }
-
 
 int	ms_export_checkarg(char *val)
 {
