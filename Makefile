@@ -9,7 +9,7 @@ DEBUG_VALUE=0
 LIBFTX_DIR=src/libftx
 
 CC = cc
-INCLUDES = -Isrc/includes -I$(LIBFTX_DIR)/includes
+INCLUDES = -Iincludes -I$(LIBFTX_DIR)/includes
 CFLAGS = -Wall -Wextra -Werror -g $(INCLUDES) -DDEBUG=$(DEBUG_VALUE)
 
 RM = rm -rf
