@@ -149,7 +149,7 @@ t_list	*cmd_parse(t_var *mshell, char *s)
 	{
 		if (chr_isspace(s[var.i]) && !chr_isspace(s[var.i + 1]))
 			var.edge = var.i + 1;
-		else if (!cmdp_switch(CMDP_TOKEN, &var)
+		if (!cmdp_switch(CMDP_TOKEN, &var)
 			&& !cmdp_switch(CMDP_QUOTE, &var) && !cmdp_switch(CMDP_WORD, &var))
 			continue ;
 		if (cmdp_switch(CMDP_TOKEN, &var))

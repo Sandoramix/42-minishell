@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 14:17:16 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/09 15:07:02 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/09 15:39:17 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,22 @@ static void	ms_wrap_cleanup(t_var *mshell, t_list *cmds_without_command)
 	}
 }
 
-static t_list	*extract_in_redirs(t_list **args, t_list **res)
+static bool	is_known_redir(t_list *node, const char **whitelist)
+{
+	int	i;
+
+	i = -1;
+	if (!node || node->type != A_TOKEN)
+		return (false);
+	while (whitelist && whitelist[++i])
+	{
+		if (str_equals(node->val, (char *)whitelist[i]))
+			return (true);
+	}
+	return (false);
+}
+
+static t_list	*extract_redirs(t_list **args, t_list **res, const char **tkns)
 {
 	t_list	*tmp;
 	t_list	*node;
@@ -38,8 +53,7 @@ static t_list	*extract_in_redirs(t_list **args, t_list **res)
 	tmp = *args;
 	while (tmp)
 	{
-		if (*args && tmp->type == A_TOKEN && (str_equals(tmp->val, "<")
-				|| str_equals(tmp->val, "<<")))
+		if (is_known_redir(tmp, tkns))
 		{
 			node = tmp;
 			if (!node->prev)
@@ -51,10 +65,7 @@ static t_list	*extract_in_redirs(t_list **args, t_list **res)
 			node->prev = lst_gettail(*res);
 			tmp = node->next->next;
 			node->next->next = NULL;
-			if (!*res)
-				*res = node;
-			else
-				lst_gettail(*res)->next = node;
+			lst_addnode_tail(res, node);
 		}
 		else
 			tmp = tmp->next;
@@ -65,19 +76,31 @@ static t_list	*extract_in_redirs(t_list **args, t_list **res)
 
 bool	ms_wrap_commands(t_var *mshell)
 {
+	const char	*in_redirs[] = {"<", "<<", NULL};
+	const char	*out_redirs[] = {">", ">>", NULL};
 	t_list		*cmds;
-	t_command	*cmd_container;
+	t_command	*container;
 
 	cmds = mshell->all_cmds;
 	while (cmds)
 	{
-		cmd_container = ft_calloc(1, sizeof(t_command));
-		if (!cmd_container)
+		container = ft_calloc(1, sizeof(t_command));
+		if (!container)
 			return (ms_wrap_cleanup(mshell, cmds), false);
-		cmd_container->args = cmds->val;
-		extract_in_redirs(&cmd_container->args, &cmd_container->in_redirects);
-		cmds->val = cmd_container;
+		container->args = cmds->val;
+		extract_redirs(&container->args, &container->in_redirects, in_redirs);
+		dbg_printf("args after in redirs extraction:\n");
+		lst_printstr(container->args);
+		extract_redirs(&container->args, &container->out_redirects, out_redirs);
+		dbg_printf("args after out redirs extraction:\n");
+		cmds->val = container;
 		cmds = cmds->next;
+		if (dbg_printf("") == -1)
+			continue ;
+		dbg_printf("Input redirects:\n");
+		lst_printstr(container->in_redirects);
+		dbg_printf("Output redirects:\n");
+		lst_printstr(container->out_redirects);
 	}
 	return (true);
 }

@@ -3,35 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   ms_cleanup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 16:38:19 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/07 16:10:25 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/09 15:26:39 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
 // TODO refactor
-void	*freeallcmds(t_list *cmds, bool free_val)
+void	*freeallcmds(t_list *commands_wrapper, bool free_val)
 {
 	t_list		*next;
-	t_command	*cmd;
+	t_command	*command;
 
-	while (cmds)
+	while (commands_wrapper)
 	{
-		next = cmds->next;
-		cmd = cmds->val;
+		next = commands_wrapper->next;
+		command = commands_wrapper->val;
 		if (free_val)
 		{
-			lst_free(&cmd->args, free);
-			free(cmd->in_file);
-			lst_free(&cmd->in_redirects, free);
-			lst_free(&cmd->out_redirects, free);
-			free(cmd);
+			free(command->in_file);
+			free(command->out_file);
+			lst_free(&command->args, free);
+			lst_free(&command->in_redirects, free);
+			lst_free(&command->out_redirects, free);
+			free(command);
 		}
-		free(cmds);
-		cmds = next;
+		free(commands_wrapper);
+		commands_wrapper = next;
 	}
 	return (NULL);
 }

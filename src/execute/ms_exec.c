@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/09 15:05:30 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/09 15:28:54 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ static int	ms_exec_command(t_var *mshell, t_command *command, bool tofork)
 {
 	pid_t	pid;
 
+	ms_heredoc(mshell, command);
 	if (!command->args)
 	{
 		g_status = 0;
 		return (OK);
 	}
-	ms_heredoc(mshell, command);
 	//ms_rediout(mshell, command);
 	if (ms_is_builtin(command->args->val) && !tofork)
 		ms_run_builtin(mshell, command);
