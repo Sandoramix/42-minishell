@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 20:32:32 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/09 15:37:32 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/09 16:20:06 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,79 +93,3 @@ void ms_heredoc(t_var *mshell, t_command *cmds)
 		cmds->in_file = heredoc_name;
 }
 
-// char **ft_lst_to_cmd_array(t_list *cmd)
-// {
-//     int count;
-//     t_list *current; 
-//     int skip_next;
-
-// 	count = 0;
-// 	current = cmd;
-// 	skip_next = 0;
-//     while (current)
-//     {
-//         if (skip_next)
-//             skip_next = 0;
-//         else if (str_equals(current->val, "<<"))
-//             skip_next = 1;
-//         else
-//             count++;
-//         current = current->next;
-//     }
-
-//     char **argv = malloc((count + 1) * sizeof(char *));
-//     if (!argv)
-//         return NULL;
-
-//     current = cmd;
-//     int i = 0;
-//     skip_next = 0;
-//     while (current)
-//     {
-//         if (skip_next)
-//             skip_next = 0;
-//         else if (str_equals(current->val, "<<"))
-//             skip_next = 1;
-//         else
-//             argv[i++] = current->val;
-//         current = current->next;
-//     }
-//     argv[count] = NULL;
-//     return argv;
-// }
-
-// int exec_heredoc_cmd(t_var *mshell, t_list *args)
-// {
-// 	int fd;
-// 	pid_t pid;
-// 	char **cmd;
-// 	char *cmd_path;
-
-// 	fd = open(mshell->heredoc_file, O_RDONLY);
-// 	if (fd == -1)
-// 		return (pf_errcode(ERR_SYNTAX), KO);
-// 	pid = fork();
-// 	if (pid == -1)
-// 	{
-// 		close(fd);
-// 		return (pf_errcode(ERR_FORK), KO);
-// 	}
-// 	if (pid == 0)
-// 	{
-// 		dup2(fd, STDIN_FILENO);
-// 		close(fd);
-// 		cmd = ft_lst_to_cmd_array(args);
-// 		cmd_path = sys_findcmdpath(mshell->cmds_paths, cmd[0]);
-// 		if (!cmd_path)
-// 			return (ft_perror("Command not found"), KO);
-// 		execve(cmd_path, cmd, mshell->_main.envp);
-// 		ft_perror("execve");
-// 		exit(KO);
-// 	}
-// 	else
-// 	{
-// 		close(fd);
-// 		wait(NULL);
-// 	}
-// 	return (OK);
-// }
