@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 20:32:32 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/07 17:44:20 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/09 15:37:32 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,19 +66,26 @@ void ms_heredoc(t_var *mshell, t_command *cmds)
 
 	count = 1;
 	heredoc_name = NULL;
-	current = cmds->args;
-	while (current)
+	current = cmds->in_redirects;
+	while (current != NULL)
 	{
-		if (str_cmp(current->val, "<<") == 0)
+		if (str_equals(current->val, "<<"))
 		{
 			delimiter = current->next->val;
 			heredoc_name = heredoc_read(mshell, current, count++);
 			if (current->next->next != NULL)
 			{
 				unlink(heredoc_name);
-				heredoc_name = ft_free(heredoc_name);
+				//heredoc_name = ft_free(heredoc_name);
 			}
 			current = current->next;
+		}
+		if (str_equals(current->val, "<"))
+		{
+			cmds->in_file = current->next->val;
+			printf("in_file: %s\n", cmds->in_file);
+			//current = current->next;
+			//if (cmds)
 		}
 		current = current->next;
 	}
