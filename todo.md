@@ -2,11 +2,11 @@
 
 Trascrivere le issue dal subject:
 
-- [ ] Display a prompt when waiting for a new command.
+- [x] Display a prompt when waiting for a new command.
 - [x] Have a working history.
-- [ ] Search and launch the right executable (based on the PATH variable or using a
+- [x] Search and launch the right executable (based on the PATH variable or using a
 relative or an absolute path).
-- [ ] Avoid using more than one global variable to indicate a received signal. Consider
+- [x] Avoid using more than one global variable to indicate a received signal. Consider
 the implications: this approach ensures that your signal handler will not access your
 main data structures.
 - [x] Not interpret unclosed quotes or special characters which are not required by the
@@ -23,7 +23,7 @@ delimiter is seen. However, it doesn’t have to update the history!
 connected to the input of the next command via a pipe.
 - [x] Handle environment variables ($ followed by a sequence of characters) which
 should expand to their values.
-- [ ] Handle $? which should expand to the exit status of the most recently executed
+- [x] Handle $? which should expand to the exit status of the most recently executed
 foreground pipeline.
 - [ ] Handle ctrl-C, ctrl-D and ctrl-\ which should behave like in bash.
 - [ ] In interactive mode:
