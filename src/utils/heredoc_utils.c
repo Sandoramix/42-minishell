@@ -5,10 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/07 10:36:40 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/10 17:11:23 by marboccu         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2024/06/10 18:30:55 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
 
 #include <minishell.h>
 
@@ -34,10 +36,11 @@ char	*gen_heredocs(int count)
 	char	*heredoc_file;
 
 	suffix = ft_itoa(count);
-	heredoc_file = file_gen_name(".heredoc_", R_OK | W_OK);
-	prefixed_name = str_freejoin(heredoc_file, suffix);
-	if (!prefixed_name)
-		return (ft_perror("file_gen_name"), NULL);
+	prefixed_name = str_join(".heredoc_", suffix);
 	free(suffix);
-	return (prefixed_name);
+	heredoc_file = file_gen_name(prefixed_name, R_OK | W_OK);
+	free(prefixed_name);
+	if (!heredoc_file)
+		return (pf_errcode(ERR_MALLOC), NULL);
+	return (heredoc_file);
 }

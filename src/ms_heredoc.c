@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 20:32:32 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/10 17:53:31 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/10 18:32:36 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ TODO: refactor che così fa schif
 TODO: Leakssss
 */
 
-static char *heredoc_read(t_var *mshell, t_list *token, int count)
+static char	*heredoc_read(t_var *mshell, t_list *token, int count)
 {
 	char	*line;
-	int heredoc_fd;
-	char *heredoc_file;
-	char *temp;
+	int		heredoc_fd;
+	char	*heredoc_file;
+	char	*temp;
 
 	heredoc_file = gen_heredocs(count);
 	if (!heredoc_file)
@@ -57,13 +57,13 @@ static char *heredoc_read(t_var *mshell, t_list *token, int count)
 	return (heredoc_file);
 }
 
-int ms_heredoc(t_var *mshell, t_command *cmds)
+int	ms_heredoc(t_var *mshell, t_command *cmds)
 {
 	t_list	*current;
-	char *heredoc_name;
-	char *filein_name;
-	int fd;
-	int count;
+	char	*heredoc_name;
+	char	*filein_name;
+	int		count;
+	int		fd;
 
 	count = 1;
 	heredoc_name = NULL;
@@ -89,32 +89,23 @@ int ms_heredoc(t_var *mshell, t_command *cmds)
 		current = current->next;
 	}
 	if (heredoc_name != NULL)
-	{
 		cmds->in_file = heredoc_name;
-	}
 	current = cmds->in_redirects;
 	while (current != NULL)
 	{
 		if (str_equals(current->val, "<"))
 		{
-			filein_name = current->next->val;
+			filein_name = ft_free(filein_name);
+			filein_name = str_dup(current->next->val);
+			cmds->in_file = filein_name;
 			if (access(filein_name, F_OK) != 0)
+				return (ft_perror("minishell: %s: No such file or directory\n",
+						filein_name), KO);
+			else if (current->next->next == NULL)
 			{
-				ft_perror("minishell: %s: No such file or directory\n", filein_name);
-				cmds->in_file = NULL;
-				return (KO);
-			}
-			if (current->next->next == NULL)
-			{
-				//printf("filein_name: %s\n", filein_name);
-				cmds->in_file = str_dup(filein_name);
 				fd = open(filein_name, O_RDONLY);
 				if (fd == -1)
-				{
-					pf_errcode(ERR_FILE_PERMISSION_DENIED);
-					cmds->in_file = NULL;
-					return (OK);
-				}
+					return (ft_perror("open"), KO);
 				close(fd);
 			}
 			current = current->next;
@@ -122,6 +113,5 @@ int ms_heredoc(t_var *mshell, t_command *cmds)
 		current = current->next;
 	}
 	return (OK);
-	//printf("cmds->in_file: %s\n", cmds->in_file);
+	// printf("cmds->in_file: %s\n", cmds->in_file);
 }
-
