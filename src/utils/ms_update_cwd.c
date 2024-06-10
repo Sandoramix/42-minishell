@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_update_cwd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 09:15:20 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/09 14:22:03 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/10 18:55:41 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,12 @@ void	*ms_update_cwd(t_var *mshell)
 		return (ms_update_cwd(mshell), NULL);
 	}
 	return (NULL);
+}
+
+void *ms_update_oldpwd(t_var *mshell)
+{
+	t_list *oldpwd;
+
+	oldpwd = lst_findbykey_str(mshell->env, "PWD");
+	return NULL;
 }

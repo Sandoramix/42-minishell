@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 20:32:32 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/10 18:32:36 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/10 18:56:43 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 	<< EOF << lol
 
 TODO: refactor che così fa schif
-TODO: Leakssss
 */
 
 static char	*heredoc_read(t_var *mshell, t_list *token, int count)
@@ -113,5 +112,4 @@ int	ms_heredoc(t_var *mshell, t_command *cmds)
 		current = current->next;
 	}
 	return (OK);
-	// printf("cmds->in_file: %s\n", cmds->in_file);
 }
