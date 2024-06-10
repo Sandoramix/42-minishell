@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/09 14:30:13 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/10 09:14:28 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,18 @@ typedef struct s_command
 typedef struct s_var
 {
 	t_list				*env;
-	t_list				*history;
-	t_main				_main;
-	char				**cmds_paths;
-	char				*curr_path;
 	char				*home_path;
+	char				*curr_path;
 	uint64_t			curpath_len;
 	t_uchar				*status_code;
 
 	char				*last_input;
+	t_list				*history;
+	// ---- START	- INPUT & EXECUTION ----
 	t_list				*all_cmds;
+	// ---- END		- INPUT & EXECUTION ----
+
+	t_main				_main;
 }			t_var;
 
 int		ms_loadenv(t_var *mshell);
@@ -86,8 +88,6 @@ void	ms_env(t_var *mshell, t_list *args);
 int		ms_cd(t_var *mshell, t_list *args);
 int		ms_history(t_var *mshell, t_list *args);
 int		ms_echo(t_var *mshell, t_list *args);
-
-
 
 void	add_cmd_history(t_var *mshell, char *cmd);
 

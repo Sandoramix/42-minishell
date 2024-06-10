@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 16:38:19 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/09 15:26:39 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/10 09:17:06 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int	cleanup(t_var *g, bool shouldexit, int status)
 	free(g->last_input);
 	lst_free(&g->history, free);
 	free(g->home_path);
-	str_freemtx(g->cmds_paths);
 	lst_free(&g->env, free);
 	free(g->curr_path);
 	freeallcmds(g->all_cmds, true);

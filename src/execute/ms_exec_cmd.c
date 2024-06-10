@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:02:15 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/09 14:19:55 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/10 09:16:59 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ int	ms_exec_cmd(t_var *mshell, t_list *cmd)
 {
 	char	*cmd_path;
 	char	**args;
+	char	**paths;
 	pid_t	pid;
 
-	str_freemtx(mshell->cmds_paths);
-	mshell->cmds_paths = env_load_paths(mshell->env);
-	if (!mshell->cmds_paths && lst_findbykey_str(mshell->env, "PATH"))
+	paths = env_load_paths(mshell->env);
+	if (!paths && lst_findbykey_str(mshell->env, "PATH"))
 		return (pf_errcode(ERR_MALLOC), KO);
-	cmd_path = sys_findcmdpath(mshell->cmds_paths, cmd->val);
+	cmd_path = sys_findcmdpath(paths, cmd->val);
 	args = lst_to_strmtx(cmd);
 	if (!args)
 	{
@@ -37,6 +37,7 @@ int	ms_exec_cmd(t_var *mshell, t_list *cmd)
 	{
 		pf_errcode(ERR_FORK);
 		str_freemtx(args);
+		str_freemtx(paths);
 		free(cmd_path);
 		lst_free(&cmd, free);
 		return (KO);
@@ -49,9 +50,11 @@ int	ms_exec_cmd(t_var *mshell, t_list *cmd)
 		*mshell->status_code = 131;
 		ft_perror("Command not found: %s\n", cmd->val);
 		str_freemtx(args);
+		str_freemtx(paths);
 		free(cmd_path);
 		cleanup(mshell, true, *mshell->status_code);
 	}
+	str_freemtx(paths);
 	str_freemtx(args);
 	free(cmd_path);
 	return (OK);

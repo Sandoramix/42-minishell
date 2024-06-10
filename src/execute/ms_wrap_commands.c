@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 14:17:16 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/09 15:39:17 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/10 09:10:35 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ static t_list	*extract_redirs(t_list **args, t_list **res, const char **tkns)
 			tmp = tmp->next;
 	}
 	return (*res);
-
 }
 
 bool	ms_wrap_commands(t_var *mshell)
@@ -89,10 +88,7 @@ bool	ms_wrap_commands(t_var *mshell)
 			return (ms_wrap_cleanup(mshell, cmds), false);
 		container->args = cmds->val;
 		extract_redirs(&container->args, &container->in_redirects, in_redirs);
-		dbg_printf("args after in redirs extraction:\n");
-		lst_printstr(container->args);
 		extract_redirs(&container->args, &container->out_redirects, out_redirs);
-		dbg_printf("args after out redirs extraction:\n");
 		cmds->val = container;
 		cmds = cmds->next;
 		if (dbg_printf("") == -1)
