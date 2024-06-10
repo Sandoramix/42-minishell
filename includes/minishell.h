@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/10 09:14:28 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/10 09:22:15 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,17 +57,25 @@ typedef struct s_command
  */
 typedef struct s_var
 {
-	t_list				*env;
-	char				*home_path;
-	char				*curr_path;
-	uint64_t			curpath_len;
 	t_uchar				*status_code;
 
+	t_list				*env;
+	char				*home_path;
+
+	// ----START----PWD-------------
+	char				*curr_path;
+	uint64_t			curpath_len;
+	// -----END-----PWD-------------
+
+
+	// ----START----INPUT-----------
 	char				*last_input;
 	t_list				*history;
-	// ---- START	- INPUT & EXECUTION ----
+	// ----END------INPUT-----------
+
+	// ----START----EXECUTION-------
 	t_list				*all_cmds;
-	// ---- END		- INPUT & EXECUTION ----
+	// ----END------EXECUTION-------
 
 	t_main				_main;
 }			t_var;
