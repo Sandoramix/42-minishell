@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 20:32:32 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/09 16:20:06 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/10 11:33:04 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,9 @@ static char *heredoc_read(t_var *mshell, t_list *token, int count)
 void ms_heredoc(t_var *mshell, t_command *cmds)
 {
 	t_list	*current;
-	char *delimiter;
 	char *heredoc_name;
+	char *filein_name;
+	int fd;
 	int count;
 
 	count = 1;
@@ -71,25 +72,76 @@ void ms_heredoc(t_var *mshell, t_command *cmds)
 	{
 		if (str_equals(current->val, "<<"))
 		{
-			delimiter = current->next->val;
 			heredoc_name = heredoc_read(mshell, current, count++);
 			if (current->next->next != NULL)
 			{
 				unlink(heredoc_name);
-				//heredoc_name = ft_free(heredoc_name);
+				heredoc_name = ft_free(heredoc_name);
 			}
 			current = current->next;
 		}
-		if (str_equals(current->val, "<"))
+		else if (str_equals(current->val, "<"))
 		{
-			cmds->in_file = current->next->val;
-			printf("in_file: %s\n", cmds->in_file);
-			//current = current->next;
-			//if (cmds)
+			filein_name = current->next->val;
+			if (access(filein_name, F_OK) != 0)
+			{
+				ft_perror("minishell: %s No such file or directory\n", filein_name);
+				filein_name = ft_free(filein_name);
+				//printf("filein_name: %s\n", filein_name);
+			}
+			else if (current->next->next == NULL)
+			{
+				//cmds->in_file = filein_name;
+				fd = open(filein_name, O_RDONLY);
+				if (fd == -1)
+				{
+					ft_perror("open");
+					cmds->in_file = NULL;
+				}
+				dup2(fd, STDIN_FILENO);
+				close(fd);
+			}
+			current = current->next;
+			printf("filein_nameee: %s\n", filein_name);
 		}
 		current = current->next;
 	}
+	printf("heredoc_name: %s\n", heredoc_name);
 	if (heredoc_name != NULL)
 		cmds->in_file = heredoc_name;
+	else if (filein_name != NULL)
+		cmds->in_file = filein_name;
+	else
+		cmds->in_file = NULL;
+	printf("cmds->in_file: %s\n", cmds->in_file);
+	// current = cmds->in_redirects;
+	// while (current != NULL)
+	// {
+	// 	if (str_equals(current->val, "<"))
+	// 	{
+	// 		filein_name = current->next->val;
+	// 		if (access(filein_name, F_OK) != 0)
+	// 		{
+	// 			ft_perror("file not found");
+	// 			cmds->in_file = NULL;
+	// 			return ;
+	// 		}
+	// 		else if (current->next->next == NULL)
+	// 		{
+	// 			cmds->in_file = filein_name;
+	// 			fd = open(filein_name, O_RDONLY);
+	// 			if (fd == -1)
+	// 			{
+	// 				ft_perror("open");
+	// 				cmds->in_file = NULL;
+	// 				return ;
+	// 			}
+	// 			dup2(fd, STDIN_FILENO);
+	// 			close(fd);
+	// 		}
+	// 		current = current->next;
+	// 	}
+	// 	current = current->next;
+	// }
 }
 
