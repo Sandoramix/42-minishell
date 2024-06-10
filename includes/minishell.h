@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/10 09:22:15 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/10 18:12:57 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void	*freeallcmds(t_list *cmds, bool free_content);
 
 bool	ms_is_builtin(char *cmd);
 
-void	ms_heredoc(t_var *mshell, t_command *cmds);
+int		ms_heredoc(t_var *mshell, t_command *cmds);
 char	*heredoc_expand(t_var *mshell, char **arg);
 char	*gen_heredocs(int count);
 

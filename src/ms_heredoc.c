@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 20:32:32 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/07 17:44:20 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/10 18:26:12 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ TODO: refactor che così fa schif
 TODO: Leakssss
 */
 
-static char *heredoc_read(t_var *mshell, t_list *token, int count)
+static char	*heredoc_read(t_var *mshell, t_list *token, int count)
 {
 	char	*line;
-	int heredoc_fd;
-	char *heredoc_file;
-	char *temp;
+	int		heredoc_fd;
+	char	*heredoc_file;
+	char	*temp;
 
 	heredoc_file = gen_heredocs(count);
 	if (!heredoc_file)
@@ -57,22 +57,28 @@ static char *heredoc_read(t_var *mshell, t_list *token, int count)
 	return (heredoc_file);
 }
 
-void ms_heredoc(t_var *mshell, t_command *cmds)
+int	ms_heredoc(t_var *mshell, t_command *cmds)
 {
 	t_list	*current;
-	char *delimiter;
-	char *heredoc_name;
-	int count;
+	char	*heredoc_name;
+	char	*filein_name;
+	int		count;
+	int		fd;
 
 	count = 1;
 	heredoc_name = NULL;
-	current = cmds->args;
-	while (current)
+	filein_name = NULL;
+	current = cmds->in_redirects;
+	while (current != NULL)
 	{
 		if (str_cmp(current->val, "<<") == 0)
 		{
-			delimiter = current->next->val;
 			heredoc_name = heredoc_read(mshell, current, count++);
+			if (!heredoc_name)
+			{
+				cmds->in_file = NULL;
+				return (KO);
+			}
 			if (current->next->next != NULL)
 			{
 				unlink(heredoc_name);
@@ -84,81 +90,28 @@ void ms_heredoc(t_var *mshell, t_command *cmds)
 	}
 	if (heredoc_name != NULL)
 		cmds->in_file = heredoc_name;
+	current = cmds->in_redirects;
+	while (current != NULL)
+	{
+		if (str_equals(current->val, "<"))
+		{
+			filein_name = ft_free(filein_name);
+			filein_name = str_dup(current->next->val);
+			cmds->in_file = filein_name;
+			if (access(filein_name, F_OK) != 0)
+				return (ft_perror("minishell: %s: No such file or directory\n",
+						filein_name), KO);
+			else if (current->next->next == NULL)
+			{
+				fd = open(filein_name, O_RDONLY);
+				if (fd == -1)
+					return (ft_perror("open"), KO);
+				close(fd);
+			}
+			current = current->next;
+		}
+		current = current->next;
+	}
+	return (OK);
+	// printf("cmds->in_file: %s\n", cmds->in_file);
 }
-
-// char **ft_lst_to_cmd_array(t_list *cmd)
-// {
-//     int count;
-//     t_list *current; 
-//     int skip_next;
-
-// 	count = 0;
-// 	current = cmd;
-// 	skip_next = 0;
-//     while (current)
-//     {
-//         if (skip_next)
-//             skip_next = 0;
-//         else if (str_equals(current->val, "<<"))
-//             skip_next = 1;
-//         else
-//             count++;
-//         current = current->next;
-//     }
-
-//     char **argv = malloc((count + 1) * sizeof(char *));
-//     if (!argv)
-//         return NULL;
-
-//     current = cmd;
-//     int i = 0;
-//     skip_next = 0;
-//     while (current)
-//     {
-//         if (skip_next)
-//             skip_next = 0;
-//         else if (str_equals(current->val, "<<"))
-//             skip_next = 1;
-//         else
-//             argv[i++] = current->val;
-//         current = current->next;
-//     }
-//     argv[count] = NULL;
-//     return argv;
-// }
-
-// int exec_heredoc_cmd(t_var *mshell, t_list *args)
-// {
-// 	int fd;
-// 	pid_t pid;
-// 	char **cmd;
-// 	char *cmd_path;
-
-// 	fd = open(mshell->heredoc_file, O_RDONLY);
-// 	if (fd == -1)
-// 		return (pf_errcode(ERR_SYNTAX), KO);
-// 	pid = fork();
-// 	if (pid == -1)
-// 	{
-// 		close(fd);
-// 		return (pf_errcode(ERR_FORK), KO);
-// 	}
-// 	if (pid == 0)
-// 	{
-// 		dup2(fd, STDIN_FILENO);
-// 		close(fd);
-// 		cmd = ft_lst_to_cmd_array(args);
-// 		cmd_path = sys_findcmdpath(mshell->cmds_paths, cmd[0]);
-// 		if (!cmd_path)
-// 			return (ft_perror("Command not found"), KO);
-// 		execve(cmd_path, cmd, mshell->_main.envp);
-// 		ft_perror("execve");
-// 		exit(KO);
-// 	}
-// 	else
-// 	{
-// 		close(fd);
-// 		wait(NULL);
-// 	}
-// 	return (OK);
-// }
