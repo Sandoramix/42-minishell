@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_exec.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/09 15:28:54 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/10 17:45:31 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,13 @@ static int	ms_exec_command(t_var *mshell, t_command *command, bool tofork)
 {
 	pid_t	pid;
 
-	ms_heredoc(mshell, command);
+	if (ms_heredoc(mshell, command) == KO)
+	{
+		g_status = 1;
+		if (tofork && !command->args)
+			g_status = 0;
+		return (KO);
+	}
 	if (!command->args)
 	{
 		g_status = 0;

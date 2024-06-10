@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 10:36:40 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/09 14:24:41 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/10 17:11:23 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,9 @@ char	*gen_heredocs(int count)
 
 	suffix = ft_itoa(count);
 	heredoc_file = file_gen_name(".heredoc_", R_OK | W_OK);
-	prefixed_name = str_join(heredoc_file, suffix);
+	prefixed_name = str_freejoin(heredoc_file, suffix);
 	if (!prefixed_name)
 		return (ft_perror("file_gen_name"), NULL);
 	free(suffix);
-	free(heredoc_file);
 	return (prefixed_name);
 }
