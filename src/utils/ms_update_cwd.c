@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 09:15:20 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/10 18:55:41 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/11 23:47:13 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ void	*ms_update_cwd(t_var *mshell)
 	return (NULL);
 }
 
-void *ms_update_oldpwd(t_var *mshell)
-{
-	t_list *oldpwd;
+// void *ms_update_oldpwd(t_var *mshell)
+// {
+// 	t_list *oldpwd;
 
-	oldpwd = lst_findbykey_str(mshell->env, "PWD");
-	return NULL;
-}
+// 	oldpwd = lst_findbykey_str(mshell->env, "PWD");
+// 	return NULL;
+// }
