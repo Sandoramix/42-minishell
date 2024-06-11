@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/10 18:55:17 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/11 12:44:36 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,6 @@ bool	ms_is_builtin(char *cmd);
 int		ms_heredoc(t_var *mshell, t_command *cmds);
 char	*heredoc_expand(t_var *mshell, char **arg);
 char	*gen_heredocs(int count);
+void ms_rediout(t_command *cmds);
 
 #endif

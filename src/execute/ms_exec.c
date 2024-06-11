@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/10 18:29:21 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/11 12:44:24 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int	ms_exec_command(t_var *mshell, t_command *command, bool tofork)
 		g_status = 0;
 		return (OK);
 	}
-	//ms_rediout(mshell, command);
+	ms_rediout(command);
 	if (ms_is_builtin(command->args->val) && !tofork)
 		ms_run_builtin(mshell, command);
 	else if (ms_is_builtin(command->args->val) && tofork)
