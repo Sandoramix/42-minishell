@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/12 10:42:43 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/12 11:10:37 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	ms_exec_cmd(t_var *mshell, t_list *cmd)
 	if (!paths && lst_findbykey_str(mshell->env, "PATH"))
 		return (pf_errcode(E_MALLOC), cleanup(mshell, true, 1));
 	args = lst_to_strmtx(cmd);
-	env = lst_to_strmtx(mshell->env);
+	env = lst_env_to_mtx(mshell);
 	if (!args || (!env && mshell->env))
 		return (pf_errcode(E_MALLOC), str_freemtx(env), str_freemtx(args), KO);
 	abs_path = sys_findcmdpath(paths, cmd->val);

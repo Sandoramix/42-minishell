@@ -29,6 +29,7 @@ SRC = ./main.c \
 	./src/ms_heredoc.c \
 	./src/ms_init.c \
 	./src/ms_prompt.c \
+	./src/ms_redirect.c \
 	./src/parsing/args_expand_clear.c \
 	./src/parsing/cmd_parse.c \
 	./src/parsing/str_clearquotes.c \
@@ -36,9 +37,9 @@ SRC = ./main.c \
 	./src/utils/heredoc_utils.c \
 	./src/utils/history_utils.c \
 	./src/utils/ms_cleanup.c \
+	./src/utils/ms_convert_utils.c \
 	./src/utils/ms_update_cwd.c \
-	./src/utils/parsing_utils.c \
-	./src/ms_redirect.c
+	./src/utils/parsing_utils.c
 
 
 # ----RULES-----
