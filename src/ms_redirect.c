@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_redirect.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 12:33:44 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/12 10:11:45 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/12 12:01:54 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void ms_rediout(t_command *cmds)
 				fd = open(out_file, O_CREAT | O_RDWR | O_APPEND, 0660);
 			if (fd == -1)
 				ft_perror("open");
+			close(fd);
 		}
 		current = current->next->next;
 	}
