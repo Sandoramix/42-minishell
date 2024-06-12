@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/06/10 18:30:55 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/12 10:31:59 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,6 @@ char	*gen_heredocs(int count)
 	heredoc_file = file_gen_name(prefixed_name, R_OK | W_OK);
 	free(prefixed_name);
 	if (!heredoc_file)
-		return (pf_errcode(ERR_MALLOC), NULL);
+		return (pf_errcode(E_MALLOC), NULL);
 	return (heredoc_file);
 }

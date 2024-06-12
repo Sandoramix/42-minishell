@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:21:48 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/01 16:33:22 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/12 10:32:43 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	ms_exit(t_var *mshell, t_list *args)
 //	(void)ac;
 //	mshell = (t_var){0};
 	//if (ac != 1)
-	//	return (pf_errcode(ERR_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
+	//	return (pf_errcode(E_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
 	//mshell._main.envp = envp;
 	//ms_init(&mshell);
 	//ms_prompt(&mshell);

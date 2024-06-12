@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:44:22 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/08 17:53:40 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/12 10:44:30 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	ms_env(t_var *mshell, t_list *args)
 	while (args)
 	{
 		if (args->_hidden == false)
-			printf("%s=%s\n", (char *)args->key, (char *)args->val);
+			ft_printf("%s=%s\n", (char *)args->key, (char *)args->val);
 		args = args->next;
 	}
 }
@@ -40,7 +40,7 @@ void	ms_env(t_var *mshell, t_list *args)
 // 	(void)ac;
 // 	mshell = (t_var){0};
 // 	if (ac != 1)
-// 		return (pf_errcode(ERR_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
+// 		return (pf_errcode(E_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
 // 	mshell._main.envp = envp;
 // 	ms_init(&mshell);
 // 	args = cmd_parse(mshell, "env");

@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 13:55:21 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/09 13:56:21 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/12 10:31:59 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	**lst_to_strmtx(t_list *lst)
 		arr[i] = str_dup(lst->val);
 		if (!arr[i])
 		{
-			pf_errcode(ERR_MALLOC);
+			pf_errcode(E_MALLOC);
 			str_freemtx(arr);
 			return (NULL);
 		}

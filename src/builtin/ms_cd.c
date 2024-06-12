@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 17:37:44 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/11 23:47:28 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/12 10:32:43 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	ms_cd_home(t_var *mshell)
 		free(mshell->home_path);
 		mshell->home_path = str_dup(current_home->val);
 		if (!mshell->home_path)
-			return (pf_errcode(ERR_MALLOC), cleanup(mshell, true, 1));
+			return (pf_errcode(E_MALLOC), cleanup(mshell, true, 1));
 	}
 	if (!mshell->home_path)
 	{
@@ -75,7 +75,7 @@ int	ms_cd(t_var *mshell, t_list *args)
 // 	av = (char *[]){"cd", "test", NULL};
 // 	mshell = (t_var){0};
 // 	if (ac != 1)
-// 		return (pf_errcode(ERR_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
+// 		return (pf_errcode(E_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
 // 	mshell._main.envp = envp;
 // 	ms_init(&mshell);
 // 	args = lst_new(av, NULL);

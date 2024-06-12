@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 12:40:27 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/09 14:53:46 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/12 10:33:13 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	*ms_handleinput(t_var *mshell, char *input)
 	if (!cmd_list)
 		return (lst_free(&cmd_list, free), input);
 	if (!ms_closing_quotes_check(input) || !ms_token_syntax_check(cmd_list))
-		return (pf_errcode(ERR_SYNTAX), lst_free(&cmd_list, free), NULL);
+		return (pf_errcode(E_SYNTAX), lst_free(&cmd_list, free), NULL);
 	ms_exec_commands(mshell, cmd_list);
 	while (wait(&status_code) != -1)
 		*(mshell->status_code) = (t_uchar)status_code;

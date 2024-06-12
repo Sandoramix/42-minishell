@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 14:17:16 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/10 09:10:35 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/12 10:42:12 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,9 @@ bool	ms_wrap_commands(t_var *mshell)
 		cmds = cmds->next;
 		if (dbg_printf("") == -1)
 			continue ;
-		dbg_printf("Input redirects:\n");
+		dbg_printf(CBGRAY"Input redirects:\n");
 		lst_printstr(container->in_redirects);
-		dbg_printf("Output redirects:\n");
+		dbg_printf(CBGRAY"Output redirects:\n");
 		lst_printstr(container->out_redirects);
 	}
 	return (true);

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ms_exec.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/11 12:44:24 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/12 10:42:43 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	ms_run_builtin(t_var *mshell, t_command *command)
+int	ms_exec_builtin(t_var *mshell, t_command *command)
 {
 	t_list	*args;
 
@@ -36,11 +36,8 @@ int	ms_run_builtin(t_var *mshell, t_command *command)
 	return (KO);
 }
 
-/// TODO refactor: need to handle the redirects/heredocs
-static int	ms_exec_command(t_var *mshell, t_command *command, bool tofork)
+static int	ms_pre_exec(t_var *mshell, t_command *command, bool tofork)
 {
-	pid_t	pid;
-
 	if (ms_heredoc(mshell, command) == KO)
 	{
 		g_status = 1;
@@ -51,24 +48,60 @@ static int	ms_exec_command(t_var *mshell, t_command *command, bool tofork)
 	if (!command->args)
 	{
 		g_status = 0;
-		return (OK);
+		return (OK_EXIT);
 	}
 	ms_rediout(command);
-	if (ms_is_builtin(command->args->val) && !tofork)
-		ms_run_builtin(mshell, command);
-	else if (ms_is_builtin(command->args->val) && tofork)
+	return (OK);
+}
+
+int	ms_exec_cmd(t_var *mshell, t_list *cmd)
+{
+	char	**paths;
+	char	**args;
+	char	**env;
+	char	*abs_path;
+
+	paths = env_load_paths(mshell->env);
+	if (!paths && lst_findbykey_str(mshell->env, "PATH"))
+		return (pf_errcode(E_MALLOC), cleanup(mshell, true, 1));
+	args = lst_to_strmtx(cmd);
+	env = lst_to_strmtx(mshell->env);
+	if (!args || (!env && mshell->env))
+		return (pf_errcode(E_MALLOC), str_freemtx(env), str_freemtx(args), KO);
+	abs_path = sys_findcmdpath(paths, cmd->val);
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	execve(abs_path, args, env);
+	*mshell->status_code = 131;
+	ft_perror("%s: command not found\n", cmd->val);
+	return (str_freemtx(paths), str_freemtx(args), free(abs_path),
+		cleanup(mshell, true, *mshell->status_code), KO);
+}
+
+static int	ms_exec_command(t_var *mshell, t_command *command, bool tofork)
+{
+	int		status;
+	pid_t	pid;
+
+	status = ms_pre_exec(mshell, command, tofork);
+	if (status != OK)
+		return ((int [2]){OK, KO}[status == KO]);
+	if (tofork || !ms_is_builtin(command->args->val))
 	{
 		pid = fork();
 		if (pid < 0)
-			return (pf_errcode(ERR_FORK), KO);
+			return (pf_errcode(E_FORK), KO);
 		else if (!pid)
 		{
-			ms_run_builtin(mshell, command);
+			if (ms_is_builtin(command->args->val))
+				ms_exec_builtin(mshell, command);
+			else
+				ms_exec_cmd(mshell, command->args);
 			cleanup(mshell, true, *mshell->status_code);
 		}
 	}
 	else
-		ms_exec_cmd(mshell, command->args);
+		ms_exec_builtin(mshell, command);
 	return (OK);
 }
 
@@ -83,7 +116,7 @@ void	*ms_exec_commands(t_var *mshell, t_list *all)
 		return (NULL);
 	cmds_list = mshell->all_cmds;
 	size = lst_size(cmds_list);
-	dbg_printf(CCYAN"TOTAL COMMANDS TO EXECUTE: %d\n"CR, size);
+	dbg_printf(CBLUE"N. of commands to execute: [%d]\n"CR, size);
 	while (cmds_list)
 	{
 		command = cmds_list->val;

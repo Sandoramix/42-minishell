@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 20:32:32 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/10 18:56:43 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/12 10:24:23 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int	ms_heredoc(t_var *mshell, t_command *cmds)
 			filein_name = str_dup(current->next->val);
 			cmds->in_file = filein_name;
 			if (access(filein_name, F_OK) != 0)
-				return (ft_perror("minishell: %s: No such file or directory\n",
+				return (ft_perror(PROGNAME": %s: No such file or directory\n",
 						filein_name), KO);
 			else if (current->next->next == NULL)
 			{

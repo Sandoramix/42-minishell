@@ -6,13 +6,12 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:04:40 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/09 14:23:31 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/12 10:45:42 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-// TODO mshell->cmds_paths should update at every HOME env update
 static void	ms_export_print(t_var *mshell)
 {
 	t_list	*lst;
@@ -22,14 +21,14 @@ static void	ms_export_print(t_var *mshell)
 	lst = mshell->env;
 	while (lst)
 	{
-		printf("declare -x %s", (char *)lst->key);
+		ft_printf("declare -x %s", (char *)lst->key);
 		val = (char *)lst->val;
 		addquote = !val || !val[0] || str_includesset(val, "\" '\t\n\v\r*;$@");
 		if (!lst->_hidden && addquote)
-			printf("='%s'", val);
+			ft_printf("='%s'", val);
 		else if (!lst->_hidden && !addquote)
-			printf("=%s", val);
-		printf("\n");
+			ft_printf("=%s", val);
+		ft_printf("\n");
 		lst = lst->next;
 	}
 }
@@ -38,7 +37,7 @@ static int	ms_export_error(t_var *mshell, t_list *args, char **split)
 {
 	lst_free(&args, free);
 	str_freemtx(split);
-	pf_errcode(ERR_MALLOC);
+	pf_errcode(E_MALLOC);
 	cleanup(mshell, true, 1);
 	return (KO);
 }
@@ -134,7 +133,7 @@ int	ms_export(t_var *mshell, t_list *args)
 // 	(void)av;
 // 	mshell = (t_var){0};
 // 	if (ac != 1)
-// 		return (pf_errcode(ERR_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
+// 		return (pf_errcode(E_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
 // 	mshell._main.envp = envp;
 // 	ms_init(&mshell);
 

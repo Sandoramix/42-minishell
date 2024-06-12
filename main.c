@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:41:06 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/07 09:56:01 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/12 10:32:43 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	main(int ac, char **av, char **envp)
 	mshell = (t_var){0};
 	g_status = 0;
 	if (ac != 1)
-		return (pf_errcode(ERR_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
+		return (pf_errcode(E_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
 	mshell._main.envp = envp;
 	ms_init(&mshell);
 	signal(SIGINT, handle_sig);

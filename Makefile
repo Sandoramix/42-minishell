@@ -25,7 +25,6 @@ SRC = ./main.c \
 	./src/builtin/ms_pwd.c \
 	./src/builtin/ms_unset.c \
 	./src/execute/ms_exec.c \
-	./src/execute/ms_exec_cmd.c \
 	./src/execute/ms_wrap_commands.c \
 	./src/ms_heredoc.c \
 	./src/ms_init.c \
@@ -39,7 +38,7 @@ SRC = ./main.c \
 	./src/utils/ms_cleanup.c \
 	./src/utils/ms_update_cwd.c \
 	./src/utils/parsing_utils.c \
-	./src/ms_redirect.c  
+	./src/ms_redirect.c
 
 
 # ----RULES-----

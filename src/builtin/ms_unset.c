@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:25:21 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/29 15:19:36 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/12 10:32:43 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	ms_unset(t_var *mshell, t_list *args)
 	t_list	*tmp;
 
 	if (!args)
-		return (pf_errcode(ERR_INVALID_ARGC), KO);
+		return (pf_errcode(E_INVALID_ARGC), KO);
 	if (str_cmp(args->val, "unset"))
 		return (ft_perror("command not fount: %s\n"), KO);
 	tmp = args->next;
@@ -61,7 +61,7 @@ int	ms_unset(t_var *mshell, t_list *args)
 //	(void)av;
 //	mshell = (t_var){0};
 //	if (ac != 1)
-//		return (pf_errcode(ERR_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
+//		return (pf_errcode(E_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
 //	mshell._main.envp = envp;
 //	ms_init(&mshell);
 //	listargs = cmd_parse(mshell, "export");

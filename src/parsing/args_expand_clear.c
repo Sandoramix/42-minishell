@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:24:26 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/06 21:37:49 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/12 10:31:59 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*replace_empty(t_var *mshell, char **arg, int *d_idx, int *end)
 	(*arg) = str_replace_from_to((*arg), (*d_idx), (*end), "");
 	(*end) = (*d_idx);
 	if (!(*arg))
-		return (pf_errcode(ERR_MALLOC), NULL);
+		return (pf_errcode(E_MALLOC), NULL);
 	(*d_idx) = str_idxofchar((*arg), '$');
 	return (*arg);
 }
@@ -30,11 +30,11 @@ char	*replace_laststatus(t_var *mshell, char **arg, int *d_idx, int *end)
 
 	status = ft_itoa(*mshell->status_code);
 	if (!status)
-		return (pf_errcode(ERR_MALLOC), NULL);
+		return (pf_errcode(E_MALLOC), NULL);
 	(*arg) = str_replace_from_to((*arg), (*d_idx), (*end), status);
 	free(status);
 	if (!*arg)
-		return (pf_errcode(ERR_MALLOC), NULL);
+		return (pf_errcode(E_MALLOC), NULL);
 	(*d_idx) = str_idxofchar((*arg), '$');
 	return (*arg);
 }
@@ -46,7 +46,7 @@ char	*replace_variable(t_var *mshell, char **arg, int *d_idx, int *end)
 
 	variable = str_substr((*arg), (*d_idx) + 1, (*end));
 	if (!variable)
-		return (pf_errcode(ERR_MALLOC), NULL);
+		return (pf_errcode(E_MALLOC), NULL);
 	dbg_printf(CGRAY"\t\tVariable to search: [%s]\n", variable);
 	if (str_equals(variable, "?"))
 		return (free(variable), replace_laststatus(mshell, arg, d_idx, end));
@@ -57,7 +57,7 @@ char	*replace_variable(t_var *mshell, char **arg, int *d_idx, int *end)
 	dbg_printf(CGREEN"\tVariable found with value: [%s]\n", env->val);
 	(*arg) = str_replace_from_to((*arg), (*d_idx), (*end), env->val);
 	if (!(*arg))
-		return (pf_errcode(ERR_MALLOC), NULL);
+		return (pf_errcode(E_MALLOC), NULL);
 	(*d_idx) = str_idxofchar((*arg), '$');
 	return (*arg);
 }

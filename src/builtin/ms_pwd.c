@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 14:36:35 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/09 14:22:01 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/12 10:32:43 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	*ms_pwd(t_var *mshell, t_list *args)
 // 	mshell = (t_var){0};
 // 	args = cmd_parse(mshell, "pwd");
 // 	if (ac != 1)
-// 		return (pf_errcode(ERR_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
+// 		return (pf_errcode(E_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
 // 	mshell._main.envp = envp;
 // 	ms_init(&mshell);
 // 	ms_pwd(&mshell, args);
