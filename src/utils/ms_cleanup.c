@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ms_cleanup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/06/10 18:31:06 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/12 10:55:26 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include <minishell.h>
 
-// TODO refactor
 void	*freeallcmds(t_list *commands_wrapper, bool free_val)
 {
 	t_list		*next;
@@ -38,7 +37,6 @@ void	*freeallcmds(t_list *commands_wrapper, bool free_val)
 	return (NULL);
 }
 
-// TODO: Implement cleanup
 int	cleanup(t_var *g, bool shouldexit, int status)
 {
 	(void)g;

@@ -6,11 +6,13 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:24:26 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/12 10:31:59 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/12 10:54:24 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+// TODO: REFACTOR TIME
 
 char	*replace_empty(t_var *mshell, char **arg, int *d_idx, int *end)
 {

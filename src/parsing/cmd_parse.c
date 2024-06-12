@@ -12,7 +12,7 @@
 
 #include <minishell.h>
 
-// TODO: document this sh*t
+// TODO: REFACTOR TIME
 
 static void	cmd_dbgparse(t_cmdp_switch type, char *s, int i, int edge)
 {

@@ -6,11 +6,13 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:04:40 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/12 10:45:42 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/12 10:53:54 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+// TODO: REFACTOR TIME
 
 static void	ms_export_print(t_var *mshell)
 {
