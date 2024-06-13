@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 20:32:32 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/13 12:43:43 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/13 22:53:37 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,18 +88,15 @@ static int	ms_heredoc(t_var *mshell, t_command *cmd, int count, char *heredoc_na
 
 int	ms_inredir_handle(t_var *mshell, t_command *cmds)
 {
-	t_list	*current;
 	char	*heredoc_name;
 	int		count;
 
 	count = 1;
 	heredoc_name = NULL;
-	current = cmds->in_redirects;
 	if (ms_heredoc(mshell, cmds, count, heredoc_name) == KO)
 		return (KO);
 	if (heredoc_name != NULL)
 		cmds->in_file = heredoc_name;
-	current = cmds->in_redirects;
 	if (ms_in_redir(cmds) == KO)
 		return (KO);
 	return (OK);

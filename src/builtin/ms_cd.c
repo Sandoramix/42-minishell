@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 17:37:44 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/12 10:32:43 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/13 23:42:44 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static int	ms_cd_home(t_var *mshell)
 {
 	t_list		*current_home;
+	t_list 		*pwd;
 
 	current_home = lst_findbykey_str(mshell->env, "HOME");
 	if (current_home)
@@ -31,7 +32,9 @@ static int	ms_cd_home(t_var *mshell)
 	}
 	else
 	{
-		//ms_update_oldpwd(mshell);
+		pwd = lst_findbykey_str(mshell->env, "PWD");
+		if (pwd)
+			ms_update_env(mshell->env, "OLDPWD", pwd->val);
 		chdir(mshell->home_path);
 	}
 	ms_update_cwd(mshell);
@@ -42,6 +45,7 @@ int	ms_cd(t_var *mshell, t_list *args)
 {
 	int			len;
 	struct stat	buf;
+	t_list *pwd;
 
 	len = lst_size(args);
 	if (len > 2)
@@ -58,7 +62,9 @@ int	ms_cd(t_var *mshell, t_list *args)
 		*mshell->status_code = 1;
 		return (KO);
 	}
-	//ms_update_oldpwd(mshell);
+	pwd = lst_findbykey_str(mshell->env, "PWD");
+	if (pwd)
+		ms_update_env(mshell->env, "OLDPWD", pwd->val);
 	chdir(args->next->val);
 	ms_update_cwd(mshell);
 	dbg_printf(CCYAN"cd:[%s]->%s\n"CR, args->next->val, mshell->curr_path);

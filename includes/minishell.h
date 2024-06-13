@@ -6,7 +6,7 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/13 12:42:12 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/13 23:26:40 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void	add_cmd_history(t_var *mshell, char *cmd);
 void	print_history(t_list *history);
 //-----------------------------------------------------------------------------
 void	*ms_update_cwd(t_var *mshell);
-void	*ms_update_oldpwd(t_var *mshell);
+void ms_update_env(t_list *env, char *key, char *new_val);
 int		ms_exec_cmd(t_var *mshell, t_list *args);
 
 void	*freeallcmds(t_list *cmds, bool free_content);

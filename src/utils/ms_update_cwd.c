@@ -3,14 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   ms_update_cwd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 09:15:20 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/12 10:31:59 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/13 23:41:57 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+void ms_update_env(t_list *env, char *key, char *new_val)
+{
+	t_list *current;
+
+	current = env;
+	while (current)
+	{
+		if (str_equals(current->key, key))
+	{
+		free(current->val);
+		current->val = str_dup(new_val);
+		return ;
+	}
+		current = current->next;
+	}
+}
 
 void	*ms_update_cwd(t_var *mshell)
 {
@@ -26,13 +43,7 @@ void	*ms_update_cwd(t_var *mshell)
 			return (pf_errcode(E_MALLOC), cleanup(mshell, true, 1), NULL);
 		return (ms_update_cwd(mshell), NULL);
 	}
+	
+	ms_update_env(mshell->env, "PWD", mshell->curr_path);
 	return (NULL);
 }
-
-// void *ms_update_oldpwd(t_var *mshell)
-// {
-// 	t_list *oldpwd;
-
-// 	oldpwd = lst_findbykey_str(mshell->env, "PWD");
-// 	return NULL;
-// }
