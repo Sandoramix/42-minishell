@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_exec.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/12 11:10:37 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/13 11:33:19 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	ms_exec_builtin(t_var *mshell, t_command *command)
 
 static int	ms_pre_exec(t_var *mshell, t_command *command, bool tofork)
 {
-	if (ms_heredoc(mshell, command) == KO)
+	if (ms_inredir_handle(mshell, command) == KO)
 	{
 		g_status = 1;
 		if (tofork && !command->args)

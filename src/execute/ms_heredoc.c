@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 20:32:32 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/12 10:24:23 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/13 12:43:43 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,27 @@
 
 #define PIPPO " > "
 
-/*
-	<< EOF << lol
+static char	*hd_line_read(char *heredoc_file, t_list *token)
+{
+	char	*line;
+	char	*temp;
 
-TODO: refactor che così fa schif
-*/
+	temp = str_join(heredoc_file, PIPPO);
+	line = readline(temp);
+	free(temp);
+	if (!line || str_equals(line, token->next->val))
+	{
+		free(line);
+		return (NULL);
+	}
+	return (line);
+}
 
 static char	*heredoc_read(t_var *mshell, t_list *token, int count)
 {
 	char	*line;
 	int		heredoc_fd;
 	char	*heredoc_file;
-	char	*temp;
 
 	heredoc_file = gen_heredocs(count);
 	if (!heredoc_file)
@@ -35,14 +44,9 @@ static char	*heredoc_read(t_var *mshell, t_list *token, int count)
 		return (ft_perror("open"), free(heredoc_file), NULL);
 	while (42)
 	{
-		temp = str_join(heredoc_file, PIPPO);
-		line = readline(temp);
-		free(temp);
-		if (!line || str_equals(line, token->next->val))
-		{
-			free(line);
+		line = hd_line_read(heredoc_file, token);
+		if (!line)
 			break ;
-		}
 		if (token->_prevent_expansion == false)
 		{
 			line = heredoc_expand(mshell, &line);
@@ -52,22 +56,14 @@ static char	*heredoc_read(t_var *mshell, t_list *token, int count)
 		write(heredoc_fd, "\n", 1);
 		free(line);
 	}
-	close(heredoc_fd);
-	return (heredoc_file);
+	return (close(heredoc_fd), heredoc_file);
 }
 
-int	ms_heredoc(t_var *mshell, t_command *cmds)
+static int	ms_heredoc(t_var *mshell, t_command *cmd, int count, char *heredoc_name)
 {
 	t_list	*current;
-	char	*heredoc_name;
-	char	*filein_name;
-	int		count;
-	int		fd;
 
-	count = 1;
-	heredoc_name = NULL;
-	filein_name = NULL;
-	current = cmds->in_redirects;
+	current = cmd->in_redirects;
 	while (current != NULL)
 	{
 		if (str_equals(current->val, "<<"))
@@ -75,7 +71,7 @@ int	ms_heredoc(t_var *mshell, t_command *cmds)
 			heredoc_name = heredoc_read(mshell, current, count++);
 			if (!heredoc_name)
 			{
-				cmds->in_file = NULL;
+				cmd->in_file = NULL;
 				return (KO);
 			}
 			if (current->next->next != NULL)
@@ -87,29 +83,24 @@ int	ms_heredoc(t_var *mshell, t_command *cmds)
 		}
 		current = current->next;
 	}
+	return (OK);
+}
+
+int	ms_inredir_handle(t_var *mshell, t_command *cmds)
+{
+	t_list	*current;
+	char	*heredoc_name;
+	int		count;
+
+	count = 1;
+	heredoc_name = NULL;
+	current = cmds->in_redirects;
+	if (ms_heredoc(mshell, cmds, count, heredoc_name) == KO)
+		return (KO);
 	if (heredoc_name != NULL)
 		cmds->in_file = heredoc_name;
 	current = cmds->in_redirects;
-	while (current != NULL)
-	{
-		if (str_equals(current->val, "<"))
-		{
-			filein_name = ft_free(filein_name);
-			filein_name = str_dup(current->next->val);
-			cmds->in_file = filein_name;
-			if (access(filein_name, F_OK) != 0)
-				return (ft_perror(PROGNAME": %s: No such file or directory\n",
-						filein_name), KO);
-			else if (current->next->next == NULL)
-			{
-				fd = open(filein_name, O_RDONLY);
-				if (fd == -1)
-					return (ft_perror("open"), KO);
-				close(fd);
-			}
-			current = current->next;
-		}
-		current = current->next;
-	}
+	if (ms_in_redir(cmds) == KO)
+		return (KO);
 	return (OK);
 }
