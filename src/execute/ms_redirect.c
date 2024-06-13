@@ -6,11 +6,14 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 12:33:44 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/12 12:01:54 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/12 14:49:34 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+// TODO: refactor
+
 
 void ms_rediout(t_command *cmds)
 {

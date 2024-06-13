@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_parsing.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 15:46:30 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/31 15:00:00 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/13 09:48:02 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,13 @@ typedef enum e_argtype
  */
 t_list	*cmd_parse(t_var *mshell, char *command);
 t_list	*cmd_expand_clear(t_var *mshell, t_list *args);
+
+char	*replace_empty(t_var *mshell, char **arg, int *d_idx, int *end);
+char	*replace_laststatus(t_var *mshell, char **arg, int *d_idx, int *end);
+char	*replace_variable(t_var *mshell, char **arg, int *d_idx, int *end);
+
+bool	cmdp_append_last(t_list **res, char *append, char dbg_char);
+void	cmd_dbgparse(t_cmdp_switch type, char *s, int i, int edge);
 
 char	*str_clearquotes(char **str);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 14:56:28 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/31 15:16:33 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/13 09:47:27 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,51 @@ bool	ms_is_builtin(char *cmd)
 		if (str_equals(cmd, (char *)valid[i]))
 			return (true);
 	return (false);
+}
+
+bool	cmdp_append_last(t_list **res, char *append, char dbg_char)
+{
+	t_list	*last;
+
+	dbg_printf(CBGRAY"\tIt's near the char %c\n", dbg_char);
+	last = lst_gettail(*res);
+	if (!last && !lst_addnew_tail(res, append, NULL))
+		return (lst_free(res, free), free(append), false);
+	else
+	{
+		last->val = str_freejoin(last->val, append);
+		free(append);
+		if (!last->val)
+			return (lst_free(res, free), false);
+	}
+	return (true);
+}
+
+void	cmd_dbgparse(t_cmdp_switch type, char *s, int i, int edge)
+{
+	const bool	common_part = chr_isspace(s[i + 1])
+		|| !s[i + 1] || chr_isquote(s[i + 1]);
+
+	if (!DEBUG || dbg_printf("") == -1)
+		return ;
+	dbg_printf(CGRAY);
+	if (type == CMDP_QUOTE)
+		dbg_printf("Found a quote {%c} at:\t[%3d] - [%3d]:\t", s[i], i, edge);
+	else if (type == CMDP_TOKEN && chr_istoken(s[i])
+		&& (common_part || !chr_istoken(s[i + 1])))
+		dbg_printf("Found unquoted TOKEN at:\t[%3d] - [%3d]:\t", edge, i);
+	else if (type == CMDP_WORD && (common_part || chr_istoken(s[i + 1])))
+		dbg_printf("Found unquoted WORD at:\t[%3d] - [%3d]:\t", edge, i);
+	else
+	{
+		dbg_printf(CR);
+		return ;
+	}
+	write(1, "[", 1);
+	if (type == CMDP_QUOTE)
+		write(1, s + i, edge - i + 1);
+	else
+		write(1, s + edge, i - edge + 1);
+	write(1, "]\n", 2);
+	dbg_printf(CR);
 }
