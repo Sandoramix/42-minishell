@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/15 09:31:43 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/15 14:18:10 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,16 @@ extern t_uchar	g_status;
 #  define PROGNAME "minishell"
 # endif
 
+# ifndef PROG_PROMPT
+#  define PROG_PROMPT "minishell>"
+# endif
+
+# ifndef HEREDOC_PROMPT
+#  define HEREDOC_PROMPT "heredoc>"
+# endif
+
 # ifndef PROMPT
-#  define PROMPT "minishell>"
+#  define PROMPT "> "
 # endif
 
 # ifndef CWD_INITIAL_SIZE

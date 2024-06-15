@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 12:40:27 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/15 09:41:54 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/15 14:13:08 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	ms_prompt(t_var *mshell)
 
 	while (42)
 	{
-		input = readline(PROMPT " ");
+		input = readline(PROG_PROMPT " ");
 		if (!input)
 			break ;
 		if (str_ilen(input) > 0)

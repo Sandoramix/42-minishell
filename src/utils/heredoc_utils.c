@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/06/15 09:08:34 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/15 14:02:53 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,29 @@ char	*heredoc_expand(t_var *mshell, char **arg)
 	return (*arg);
 }
 
+static char	*gen_heredoc_prefix(t_var *mshell)
+{
+	char	*home_path;
+	char	*res;
+
+	home_path = NULL;
+	if (mshell->home_path)
+		home_path = str_dup(mshell->home_path);
+	if (home_path && !str_endswith(home_path, "/"))
+		home_path = str_freejoin(home_path, "/");
+	if (!home_path && mshell->home_path)
+		return (pf_errcode(E_MALLOC), NULL);
+	res = str_freejoin(home_path, FILE_HEREDOC_PREFIX);
+	return (res);
+}
+
 char	*gen_heredocs(t_var *mshell, int count)
 {
 	char	*suffix;
 	char	*prefixed_name;
 	char	*heredoc_file;
 
-	if (mshell->home_path)
-		prefixed_name = str_join(mshell->home_path, FILE_HEREDOC_PREFIX);
-	else
-		prefixed_name = str_dup(FILE_HEREDOC_PREFIX);
+	prefixed_name = gen_heredoc_prefix(mshell);
 	if (!prefixed_name)
 		return (NULL);
 	suffix = ft_itoa(count);

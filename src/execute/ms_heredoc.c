@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 20:32:32 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/15 09:45:02 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/15 14:21:18 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,20 @@ static char	*hd_line_read(char *heredoc_file, t_list *token)
 	char	*line;
 	char	*temp;
 
-	temp = str_join(heredoc_file, PIPPO);
-	line = readline(temp);
+	temp = NULL;
+	if (ft_isdebug())
+	{
+		temp = str_join(heredoc_file, PIPPO);
+		line = readline(temp);
+	}
+	else
+		line = readline(HEREDOC_PROMPT);
 	free(temp);
 	if (!line || str_equals(line, token->next->val))
 	{
-		free(line);
-		return (NULL);
+		if (!line)
+			ft_putstr_fd("\n", 2);
+		return (free(line), NULL);
 	}
 	return (line);
 }
@@ -38,10 +45,11 @@ static char	*heredoc_read(t_var *mshell, t_list *token, int count)
 
 	heredoc_file = gen_heredocs(mshell, count);
 	if (!heredoc_file)
-		return (ft_perror("gen_heredocs"), NULL);
-	heredoc_fd = open(heredoc_file, O_CREAT | O_RDWR | O_TRUNC, 0660);
+		return (ft_perror("Error: function gen_heredocs failed\n"), NULL);
+	heredoc_fd = file_open_or_create(heredoc_file, O_RDWR | O_TRUNC);
 	if (heredoc_fd == -1)
-		return (ft_perror("open"), free(heredoc_file), NULL);
+		return (free(heredoc_file), NULL);
+	dbg_printf(CGRAY"\nheredoc_name=[%s]\n"CR, heredoc_file);
 	while (42)
 	{
 		line = hd_line_read(heredoc_file, token);
@@ -70,14 +78,12 @@ static int	ms_heredoc(t_var *mshell, t_command *cmd, int *fd)
 			if (*fd > 2)
 				file_close(*fd);
 			name = heredoc_read(mshell, current, count++);
-			*fd = open(name, O_RDONLY);
 			if (!name)
 				return (KO);
+			*fd = open(name, O_RDONLY);
 			if (current->next->next != NULL)
-			{
 				unlink(name);
-				name = ft_free(name);
-			}
+			name = ft_free(name);
 		}
 		current = current->next;
 	}
