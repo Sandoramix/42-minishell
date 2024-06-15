@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 12:40:27 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/12 10:33:13 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/15 09:41:54 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,4 @@ void	ms_prompt(t_var *mshell)
 		mshell->last_input = NULL;
 		mshell->all_cmds = NULL;
 	}
-	cleanup(mshell, true, *mshell->status_code);
 }

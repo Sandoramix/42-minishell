@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:41:06 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/12 10:55:42 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/15 09:42:17 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,6 @@ int	main(int ac, char **av, char **envp)
 	signal(SIGINT, handle_sig);
 	signal(SIGQUIT, SIG_IGN);
 	ms_prompt(&mshell);
-	return (cleanup(&mshell, true, 0));
+	ft_fprintf(2, "exit\n");
+	return (cleanup(&mshell, true, *mshell.status_code));
 }
