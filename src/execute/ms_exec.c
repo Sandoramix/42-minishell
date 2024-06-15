@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/15 09:31:08 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/15 10:37:24 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ int	ms_exec_cmd(t_var *mshell, t_list *cmd)
 	execve(abs_path, args, env);
 	*mshell->status_code = 131;
 	ft_perror("%s: command not found\n", cmd->val);
-	return (str_freemtx(paths), str_freemtx(args), free(abs_path),
-		cleanup(mshell, true, *mshell->status_code), KO);
+	return (str_freemtx(paths), str_freemtx(args), str_freemtx(env),
+		free(abs_path), cleanup(mshell, true, *mshell->status_code), KO);
 }
 
 static int	ms_pre_exec(t_var *mshell, t_command *command, bool tofork)
@@ -79,6 +79,8 @@ static int	ms_pre_exec(t_var *mshell, t_command *command, bool tofork)
 		g_status = 1;
 		return (KO);
 	}
+	dbg_printf(CCYAN"Command's redirects:\tin[%d]\tout[%d]\n"CR,
+		command->in_fd, command->out_fd);
 	return (OK);
 }
 
