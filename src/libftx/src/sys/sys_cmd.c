@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 10:38:09 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/27 21:16:02 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/15 10:39:47 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@ char	*sys_findcmdpath(char **paths, char *cmd)
 	if (!paths || !cmd)
 		return (NULL);
 	i = -1;
+	if (str_startswith(cmd, "./") || str_startswith(cmd, "../")
+		|| str_startswith(cmd, "/"))
+		return (str_dup(cmd));
 	while (paths[++i])
 	{
 		if (!str_endswith(paths[i], "/"))
