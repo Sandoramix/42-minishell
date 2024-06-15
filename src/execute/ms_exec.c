@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_exec.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/13 11:33:19 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/15 09:31:08 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,24 +36,6 @@ int	ms_exec_builtin(t_var *mshell, t_command *command)
 	return (KO);
 }
 
-static int	ms_pre_exec(t_var *mshell, t_command *command, bool tofork)
-{
-	if (ms_inredir_handle(mshell, command) == KO)
-	{
-		g_status = 1;
-		if (tofork && !command->args)
-			g_status = 0;
-		return (KO);
-	}
-	if (!command->args)
-	{
-		g_status = 0;
-		return (OK_EXIT);
-	}
-	ms_rediout(command);
-	return (OK);
-}
-
 int	ms_exec_cmd(t_var *mshell, t_list *cmd)
 {
 	char	**paths;
@@ -76,6 +58,28 @@ int	ms_exec_cmd(t_var *mshell, t_list *cmd)
 	ft_perror("%s: command not found\n", cmd->val);
 	return (str_freemtx(paths), str_freemtx(args), free(abs_path),
 		cleanup(mshell, true, *mshell->status_code), KO);
+}
+
+static int	ms_pre_exec(t_var *mshell, t_command *command, bool tofork)
+{
+	if (ms_inredir_handle(mshell, command) == KO)
+	{
+		g_status = 1;
+		if (tofork && !command->args)
+			g_status = 0;
+		return (KO);
+	}
+	if (!command->args)
+	{
+		g_status = 0;
+		return (OK_EXIT);
+	}
+	if (ms_rediout(command) == KO)
+	{
+		g_status = 1;
+		return (KO);
+	}
+	return (OK);
 }
 
 static int	ms_exec_command(t_var *mshell, t_command *command, bool tofork)

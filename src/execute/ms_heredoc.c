@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ms_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 20:32:32 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/13 22:53:37 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/15 09:45:02 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-#define PIPPO " > "
+#define PIPPO "> "
 
 static char	*hd_line_read(char *heredoc_file, t_list *token)
 {
@@ -36,7 +36,7 @@ static char	*heredoc_read(t_var *mshell, t_list *token, int count)
 	int		heredoc_fd;
 	char	*heredoc_file;
 
-	heredoc_file = gen_heredocs(count);
+	heredoc_file = gen_heredocs(mshell, count);
 	if (!heredoc_file)
 		return (ft_perror("gen_heredocs"), NULL);
 	heredoc_fd = open(heredoc_file, O_CREAT | O_RDWR | O_TRUNC, 0660);
@@ -48,56 +48,54 @@ static char	*heredoc_read(t_var *mshell, t_list *token, int count)
 		if (!line)
 			break ;
 		if (token->_prevent_expansion == false)
-		{
 			line = heredoc_expand(mshell, &line);
-			token->_prevent_expansion = false;
-		}
-		write(heredoc_fd, line, str_ilen(line));
-		write(heredoc_fd, "\n", 1);
+		ft_putendl_fd(line, heredoc_fd);
 		free(line);
 	}
 	return (close(heredoc_fd), heredoc_file);
 }
 
-static int	ms_heredoc(t_var *mshell, t_command *cmd, int count, char *heredoc_name)
+static int	ms_heredoc(t_var *mshell, t_command *cmd, int *fd)
 {
-	t_list	*current;
+	t_list		*current;
+	char		*name;
+	int			count;
 
 	current = cmd->in_redirects;
+	count = 1;
 	while (current != NULL)
 	{
 		if (str_equals(current->val, "<<"))
 		{
-			heredoc_name = heredoc_read(mshell, current, count++);
-			if (!heredoc_name)
-			{
-				cmd->in_file = NULL;
+			if (*fd > 2)
+				file_close(*fd);
+			name = heredoc_read(mshell, current, count++);
+			*fd = open(name, O_RDONLY);
+			if (!name)
 				return (KO);
-			}
 			if (current->next->next != NULL)
 			{
-				unlink(heredoc_name);
-				heredoc_name = ft_free(heredoc_name);
+				unlink(name);
+				name = ft_free(name);
 			}
-			current = current->next;
 		}
 		current = current->next;
 	}
 	return (OK);
 }
 
-int	ms_inredir_handle(t_var *mshell, t_command *cmds)
+int	ms_inredir_handle(t_var *mshell, t_command *command)
 {
-	char	*heredoc_name;
+	int		input_fd;
 	int		count;
 
 	count = 1;
-	heredoc_name = NULL;
-	if (ms_heredoc(mshell, cmds, count, heredoc_name) == KO)
+	input_fd = -1;
+	if (ms_heredoc(mshell, command, &input_fd) == KO)
 		return (KO);
-	if (heredoc_name != NULL)
-		cmds->in_file = heredoc_name;
-	if (ms_in_redir(cmds) == KO)
+	if (ms_in_redir(command, &input_fd) == KO)
 		return (KO);
+	if (input_fd != -1)
+		command->in_fd = input_fd;
 	return (OK);
 }

@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 14:33:51 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/29 20:16:47 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/15 09:04:46 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,10 @@
 #  define FILE_HEREDOC ".heredoc"
 # endif
 
+# ifndef FILE_HEREDOC_PREFIX
+#  define FILE_HEREDOC_PREFIX ".heredoc_"
+# endif
+
 typedef struct s_var	t_var;
 
 /**
@@ -69,6 +73,12 @@ typedef struct s_var	t_var;
  * @param doexit if the function should use `exit` or not
  * @param statuscode status code of the `exit` call.
  */
-int	cleanup(t_var *var, bool doexit, int statuscode);
+int		cleanup(t_var *var, bool doexit, int statuscode);
+
+/**
+ * @brief Check whether libft was compiled in debug mode or not.
+ * @return `true` if it is, `false` otherwise.
+ */
+bool	ft_isdebug(void);
 
 #endif

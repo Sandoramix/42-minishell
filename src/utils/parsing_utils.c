@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 14:56:28 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/13 09:47:27 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/15 09:36:03 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	cmd_dbgparse(t_cmdp_switch type, char *s, int i, int edge)
 	const bool	common_part = chr_isspace(s[i + 1])
 		|| !s[i + 1] || chr_isquote(s[i + 1]);
 
-	if (!DEBUG || dbg_printf("") == -1)
+	if (!ft_isdebug())
 		return ;
 	dbg_printf(CGRAY);
 	if (type == CMDP_QUOTE)

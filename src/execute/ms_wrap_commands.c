@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 14:17:16 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/12 10:42:12 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/15 09:43:37 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,30 +73,39 @@ static t_list	*extract_redirs(t_list **args, t_list **res, const char **tkns)
 	return (*res);
 }
 
+static void	ms_wrapcmds_debug(t_command *cmd)
+{
+	if (!ft_isdebug())
+		return ;
+	dbg_printf(CBGRAY"Command + args:\n");
+	lst_printstr(cmd->args);
+	dbg_printf(CGRAY"Input redirects:\n");
+	lst_printstr(cmd->in_redirects);
+	dbg_printf(CGRAY"Output redirects:\n");
+	lst_printstr(cmd->out_redirects);
+}
+
 bool	ms_wrap_commands(t_var *mshell)
 {
 	const char	*in_redirs[] = {"<", "<<", NULL};
 	const char	*out_redirs[] = {">", ">>", NULL};
 	t_list		*cmds;
-	t_command	*container;
+	t_command	*command;
 
 	cmds = mshell->all_cmds;
 	while (cmds)
 	{
-		container = ft_calloc(1, sizeof(t_command));
-		if (!container)
+		command = ft_calloc(1, sizeof(t_command));
+		if (!command)
 			return (ms_wrap_cleanup(mshell, cmds), false);
-		container->args = cmds->val;
-		extract_redirs(&container->args, &container->in_redirects, in_redirs);
-		extract_redirs(&container->args, &container->out_redirects, out_redirs);
-		cmds->val = container;
+		command->in_fd = STDIN_FILENO;
+		command->out_fd = STDOUT_FILENO;
+		command->args = cmds->val;
+		extract_redirs(&command->args, &command->in_redirects, in_redirs);
+		extract_redirs(&command->args, &command->out_redirects, out_redirs);
+		cmds->val = command;
 		cmds = cmds->next;
-		if (dbg_printf("") == -1)
-			continue ;
-		dbg_printf(CBGRAY"Input redirects:\n");
-		lst_printstr(container->in_redirects);
-		dbg_printf(CBGRAY"Output redirects:\n");
-		lst_printstr(container->out_redirects);
+		ms_wrapcmds_debug(command);
 	}
 	return (true);
 }

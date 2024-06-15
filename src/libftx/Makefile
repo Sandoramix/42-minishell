@@ -37,6 +37,7 @@ SRC = ./src/char/chr_closequote_idx.c \
 	./src/files/file_gen.c \
 	./src/files/file_utils.c \
 	./src/files/ft_readfile.c \
+	./src/ft_isdebug.c \
 	./src/getnextline/get_next_line.c \
 	./src/getnextline/get_next_line_utils.c \
 	./src/lists/lst_count.c \
