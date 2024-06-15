@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/15 14:18:10 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/15 14:26:19 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ typedef struct s_command
 
 	int			in_fd;
 	int			out_fd;
+
+	char		*last_heredoc_file;
 }	t_command;
 
 /**

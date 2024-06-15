@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 20:32:32 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/15 14:21:18 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/15 14:26:54 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ static int	ms_heredoc(t_var *mshell, t_command *cmd, int *fd)
 			*fd = open(name, O_RDONLY);
 			if (current->next->next != NULL)
 				unlink(name);
+			else
+				cmd->last_heredoc_file = str_dup(name);
 			name = ft_free(name);
 		}
 		current = current->next;

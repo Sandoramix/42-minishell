@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/06/15 09:29:29 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/15 14:29:35 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ void	*freeallcmds(t_list *commands_wrapper, bool free_val)
 				file_close(command->in_fd);
 			if (command->out_fd > 2)
 				file_close(command->out_fd);
+			if (command->last_heredoc_file)
+				unlink(command->last_heredoc_file); // is it safe?
+			free(command->last_heredoc_file);
 			lst_free(&command->args, free);
 			lst_free(&command->in_redirects, free);
 			lst_free(&command->out_redirects, free);
