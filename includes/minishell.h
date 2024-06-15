@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/13 23:26:40 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/15 09:31:43 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,8 @@ typedef struct s_command
 	t_list		*in_redirects;
 	t_list		*out_redirects;
 
-	char		*in_file;
-	char		*out_file;
-
+	int			in_fd;
+	int			out_fd;
 }	t_command;
 
 /**
@@ -75,6 +74,7 @@ typedef struct s_var
 
 	// ----START----EXECUTION-------
 	t_list				*all_cmds;
+	int					pipes[2][2];
 	// ----END------EXECUTION-------
 
 	t_main				_main;
@@ -111,9 +111,9 @@ bool	ms_is_builtin(char *cmd);
 
 int		ms_inredir_handle(t_var *mshell, t_command *cmds);
 char	*heredoc_expand(t_var *mshell, char **arg);
-char	*gen_heredocs(int count);
-void	ms_rediout(t_command *cmds);
-int	ms_in_redir(t_command *cmd);
+char	*gen_heredocs(t_var *mshell, int count);
+int		ms_rediout(t_command *cmds);
+int		ms_in_redir(t_command *cmd, int *fd);
 
 char	**lst_env_to_mtx(t_var *mshell);
 
