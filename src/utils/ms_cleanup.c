@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/06/12 10:55:26 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/15 09:29:29 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,10 @@ void	*freeallcmds(t_list *commands_wrapper, bool free_val)
 		command = commands_wrapper->val;
 		if (free_val)
 		{
-			free(command->in_file);
-			free(command->out_file);
+			if (command->in_fd > 2)
+				file_close(command->in_fd);
+			if (command->out_fd > 2)
+				file_close(command->out_fd);
 			lst_free(&command->args, free);
 			lst_free(&command->in_redirects, free);
 			lst_free(&command->out_redirects, free);

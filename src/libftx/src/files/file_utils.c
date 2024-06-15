@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 17:39:55 by odudniak          #+#    #+#             */
-/*   Updated: 2024/03/02 10:31:31 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/15 09:27:48 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,17 @@ bool	file_exists(char *path)
 	return (!file_isdir(path) && access(path, F_OK) == 0);
 }
 
-int	file_close(int fds[], int n)
+void	file_close(int fd)
+{
+	struct stat	buffer;
+	int			status;
+
+	status = fstat(fd, &buffer);
+	if (status == 0)
+		close(fd);
+}
+
+int	files_close(int fds[], int n)
 {
 	int			res;
 	int			i;
