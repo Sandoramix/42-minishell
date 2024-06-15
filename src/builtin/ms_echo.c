@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:22:46 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/03 22:32:16 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/15 15:20:27 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static bool	skip_flags(t_list **args)
 	curr = *args;
 	if (curr && str_equals(curr->val, "echo"))
 		curr = curr->next;
-	while (curr && str_startswith(curr->val, "-"))
+	while (curr && str_startswith(curr->val, "-") && str_ilen(curr->val) > 1)
 	{
 		if (str_every(curr->val + 1, ms_valid_echo_flag))
 			result = false;
