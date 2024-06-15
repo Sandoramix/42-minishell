@@ -40,7 +40,7 @@ SRC = ./main.c \
 	./src/utils/ms_convert_utils.c \
 	./src/utils/ms_update_cwd.c \
 	./src/utils/parsing_utils.c \
-	./src/utils/expansion_utils.c 
+	./src/utils/expansion_utils.c
 
 
 # ----RULES-----
@@ -69,6 +69,7 @@ re-debug: fclean debug
 # ----UTILS-----
 
 VALGRIND=@valgrind --suppressions=src/readline.supp --leak-check=full --show-leak-kinds=all --track-origins=yes --quiet --tool=memcheck --keep-debuginfo=yes
+# FOR FD TRACKING: --track-fds=yes
 valgrind: debug
 	clear
 	$(VALGRIND) ./$(NAME)
