@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/19 22:06:31 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/20 00:23:16 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,13 +103,18 @@ int	ms_exec_cmd(t_var *mshell, t_list *cmd)
 		free(abs_path), cleanup(mshell, true, *mshell->status_code), KO);
 }
 
-static int	ms_pre_exec(t_var *mshell, t_command *command, bool tofork)
+static int	ms_pre_exec(t_var *mshell, t_command *command, bool to_fork)
 {
 	if (ms_inredir_handle(mshell, command) == KO)
 	{
 		g_status = 1;
-		if (tofork && !command->args)
+		if (to_fork && !command->args)
 			g_status = 0;
+		return (KO);
+	}
+	if (ms_rediout(command) == KO)
+	{
+		g_status = 1;
 		return (KO);
 	}
 	if (!command->args)
@@ -117,26 +122,21 @@ static int	ms_pre_exec(t_var *mshell, t_command *command, bool tofork)
 		g_status = 0;
 		return (OK_EXIT);
 	}
-	if (ms_rediout(command) == KO)
-	{
-		g_status = 1;
-		return (KO);
-	}
 	dbg_printf(CCYAN"Command's redirects:\tin[%d]\tout[%d]\n"CR,
 		command->in_fd, command->out_fd);
 	return (OK);
 }
 
 static int	ms_exec_command(t_var *mshell, t_command *command,
-		bool tofork, int idx)
+		int tot_cmds, int idx)
 {
 	int		status;
 	pid_t	pid;
 
-	status = ms_pre_exec(mshell, command, tofork);
+	status = ms_pre_exec(mshell, command, tot_cmds > 1);
 	if (status != OK)
 		return ((int [2]){OK, KO}[status == KO]);
-	if (tofork || !ms_is_builtin(command->args->val))
+	if (tot_cmds > 1 || !ms_is_builtin(command->args->val))
 	{
 		pid = fork();
 		if (pid < 0)
@@ -163,16 +163,16 @@ static int	ms_exec_command(t_var *mshell, t_command *command,
 
 void	*ms_exec_commands(t_var *mshell, t_list *all)
 {
-	t_list		*cmds_list;
 	t_command	*command;
-	int			size;
+	t_list		*cmds_list;
+	int			tot_cmds;
 	int			i;
 
 	mshell->all_cmds = lst_split_bystrval(all, "|");
 	if (!ms_wrap_commands(mshell) || !mshell->all_cmds)
 		return (NULL);
 	cmds_list = mshell->all_cmds;
-	size = lst_size(cmds_list);
+	tot_cmds = lst_size(cmds_list);
 	i = -1;
 	if (pipe(mshell->pipes[0]) == -1)
 		return (pf_errcode(E_PIPE), freeallcmds(mshell->all_cmds, true), NULL);
@@ -181,7 +181,7 @@ void	*ms_exec_commands(t_var *mshell, t_list *all)
 	while (cmds_list && ++i > -1)
 	{
 		command = cmds_list->val;
-		ms_exec_command(mshell, command, size > 1, i);
+		ms_exec_command(mshell, command, tot_cmds, i);
 		cmds_list = cmds_list->next;
 	}
 	files_close(mshell->pipes[0], 2);
