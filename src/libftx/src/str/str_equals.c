@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 18:26:29 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/19 21:07:28 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/19 22:24:54 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ bool	str_equals(void *a, void *b)
 	return (!str_cmp(a, b));
 }
 
-bool	str_includes(char **array, char *value)
+bool	str_array_includes(char **array, char *value)
 {
 	int	i;
 

@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/19 11:47:44 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/19 22:06:31 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,6 @@ void	*ms_exec_commands(t_var *mshell, t_list *all)
 		return (NULL);
 	cmds_list = mshell->all_cmds;
 	size = lst_size(cmds_list);
-	dbg_printf(CBLUE"N. of commands to execute: [%d]\n"CR, size);
 	i = -1;
 	if (pipe(mshell->pipes[0]) == -1)
 		return (pf_errcode(E_PIPE), freeallcmds(mshell->all_cmds, true), NULL);

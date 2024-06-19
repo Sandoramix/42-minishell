@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 10:59:26 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/12 11:09:03 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/19 20:32:24 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ static char	*recreate_env_string(t_list *variable)
 		return (pf_errcode(E_MALLOC), ft_free(res), NULL);
 	return (res);
 }
-
 
 char	**lst_env_to_mtx(t_var *mshell)
 {

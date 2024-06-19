@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 17:11:16 by marboccu          #+#    #+#             */
-/*   Updated: 2024/05/22 15:38:49 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/19 21:50:30 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ms_history(t_var *mshell, t_list *args)
 	}
 	while (current != NULL)
 	{
-		ft_printf("%5d %s\n", i, (char *)current->val);
+		ft_printf("%5d %s\n", i, current->val);
 		current = current->next;
 		i++;
 	}

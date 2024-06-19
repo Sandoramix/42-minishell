@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:22:46 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/15 15:20:27 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/19 21:56:06 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,7 @@ int	ms_echo(t_var *mshell, t_list *args)
 
 	current = args;
 	should_nl = skip_flags(&current);
-	dbg_printf(CGRAY"[ms_echo] should print \\n: %s\n"CR,
-		ft_boolstr(should_nl));
+	dbg_printf(CGRAY"[echo] should print \\n: %s\n"CR, ft_boolstr(should_nl));
 	while (current != NULL)
 	{
 		ft_printf("%s", (char *)current->val);

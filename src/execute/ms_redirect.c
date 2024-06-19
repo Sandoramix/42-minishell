@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 12:33:44 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/15 09:31:54 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/19 20:44:04 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,8 @@
 int	ms_rediout(t_command *command)
 {
 	t_list	*current;
-	char	*out_file;
 
 	current = command->out_redirects;
-	out_file = NULL;
 	while (current != NULL)
 	{
 		if (str_equals(current->val, ">") || str_equals(current->val, ">>"))

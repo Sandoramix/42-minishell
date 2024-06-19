@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 14:17:16 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/19 11:44:16 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/19 22:24:54 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,21 +30,6 @@ static void	ms_wrap_cleanup(t_var *mshell, t_list *cmds_without_command)
 	}
 }
 
-static bool	is_known_redir(t_list *node, const char **whitelist)
-{
-	int	i;
-
-	i = -1;
-	if (!node || node->type != A_TOKEN)
-		return (false);
-	while (whitelist && whitelist[++i])
-	{
-		if (str_equals(node->val, (char *)whitelist[i]))
-			return (true);
-	}
-	return (false);
-}
-
 static t_list	*extract_redirs(t_list **args, t_list **res, const char **tkns)
 {
 	t_list	*tmp;
@@ -53,7 +38,7 @@ static t_list	*extract_redirs(t_list **args, t_list **res, const char **tkns)
 	tmp = *args;
 	while (tmp)
 	{
-		if (is_known_redir(tmp, tkns))
+		if (tmp->type == A_TOKEN && str_array_includes((char **)tkns, tmp->val))
 		{
 			node = tmp;
 			if (!node->prev)

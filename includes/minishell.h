@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/15 14:46:06 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/19 21:30:52 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,12 +109,12 @@ int		ms_cd(t_var *mshell, t_list *args);
 int		ms_history(t_var *mshell, t_list *args);
 int		ms_echo(t_var *mshell, t_list *args);
 
-void	add_cmd_history(t_var *mshell, char *cmd);
+void	*add_cmd_history(t_var *mshell, char *cmd);
 
 void	print_history(t_list *history);
 //-----------------------------------------------------------------------------
 void	*ms_update_cwd(t_var *mshell);
-void ms_update_env(t_list *env, char *key, char *new_val);
+void	ms_update_env(t_list *env, char *key, char *new_val);
 int		ms_exec_cmd(t_var *mshell, t_list *args);
 
 void	*freeallcmds(t_list *cmds, bool free_content);

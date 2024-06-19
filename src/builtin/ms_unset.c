@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:25:21 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/12 10:32:43 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/19 21:55:08 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ static void	ms_unset_debug(t_var *mshell, t_list *args, char *stage)
 {
 	t_list	*node;
 
-	if (!DEBUG)
+	if (!ft_isdebug())
 		return ;
-	printf(CMAGENTA"[unset]\t%s\n"CR, stage);
+	dbg_printf(CMAGENTA"[unset]\t%s\n"CR, stage);
 	if (args)
 		args = args->next;
 	while (args)
@@ -26,7 +26,7 @@ static void	ms_unset_debug(t_var *mshell, t_list *args, char *stage)
 		node = lst_findbykey_str(mshell->env, args->val);
 		if (node)
 			dbg_printf("\t"CGREEN"%s"CYELLOW"="CR"%s\n"CR,
-				(char *)node->key, (char *)node->val);
+				node->key, node->val);
 		else
 			dbg_printf("\t%s "CRED"IS NULL\n"CR, args->val);
 		args = args->next;
@@ -45,7 +45,6 @@ int	ms_unset(t_var *mshell, t_list *args)
 	ms_unset_debug(mshell, args, "PRE UNSET");
 	while (tmp)
 	{
-		dbg_printf(CYELLOW"[unset]\tDeleting: %s\n"CR, tmp->val);
 		lst_delbykey(&mshell->env, tmp->val, (void *)str_equals, free);
 		tmp = tmp->next;
 	}

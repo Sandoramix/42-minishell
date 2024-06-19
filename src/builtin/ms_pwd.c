@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 14:36:35 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/12 10:32:43 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/19 21:53:29 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,7 @@ void	*ms_pwd(t_var *mshell, t_list *args)
 		return (NULL);
 	}
 	ms_update_cwd(mshell);
-	if (str_cmp((char *)args->val, "pwd") == 0)
-		printf("%s\n", mshell->curr_path);
-	else
-		ft_fprintf(2, "%s: command not found\n", (char *)args->val);
+	printf("%s\n", mshell->curr_path);
 	return (NULL);
 }
 

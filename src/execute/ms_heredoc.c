@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 20:32:32 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/15 14:26:54 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/19 20:44:16 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,7 @@ static int	ms_heredoc(t_var *mshell, t_command *cmd, int *fd)
 int	ms_inredir_handle(t_var *mshell, t_command *command)
 {
 	int		input_fd;
-	int		count;
 
-	count = 1;
 	input_fd = -1;
 	if (ms_heredoc(mshell, command, &input_fd) == KO)
 		return (KO);
