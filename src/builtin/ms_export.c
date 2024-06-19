@@ -6,15 +6,22 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:04:40 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/12 10:53:54 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/20 00:13:04 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-// TODO: REFACTOR TIME
+static bool	export_cleanup(t_var *mshell, t_list *args, char **split)
+{
+	lst_free(&args, free);
+	str_freemtx(split);
+	pf_errcode(E_MALLOC);
+	cleanup(mshell, true, 1);
+	return (false);
+}
 
-static void	ms_export_print(t_var *mshell)
+static void	export_print_everything(t_var *mshell)
 {
 	t_list	*lst;
 	char	*val;
@@ -35,94 +42,78 @@ static void	ms_export_print(t_var *mshell)
 	}
 }
 
-static int	ms_export_error(t_var *mshell, t_list *args, char **split)
+static bool	export_upsert_variable(t_var *mshell, char **split,
+	t_list *arg, t_list *variable)
 {
-	lst_free(&args, free);
-	str_freemtx(split);
-	pf_errcode(E_MALLOC);
-	cleanup(mshell, true, 1);
-	return (KO);
-}
+	const bool	new_declaration = variable == NULL;
 
-int	ms_export_checkarg(char *val)
-{
-	bool		valid;
-
-	valid = str_isvariable(val);
-	if (!valid)
-	{
-		ft_perror("export: `%s`: not a valid identifier\n", val);
-		return (KO);
-	}
-	return (OK);
-}
-
-int	ms_export_handler(t_var *mshell, char **split, t_list *args, t_list *arg)
-{
-	t_list		*found;
-	t_list		*node;
-	char		*val;
-
-	found = lst_findbykey_str(mshell->env, split[0]);
-	node = found;
-	if (!node)
-		node = lst_new(split[1], split[0]);
-	if (!node)
-		return (ms_export_error(mshell, args, split));
-	if (!split[1])
-		node->_hidden = true;
-	if (found)
+	if (!variable)
+		variable = lst_new(split[1], split[0]);
+	if (!variable)
+		return (false);
+	if (!split[1] && new_declaration)
+		variable->_hidden = true;
+	if (!new_declaration)
 		free(split[0]);
-	if (str_idxofstr((char *)arg->val, "+=") != -1 && found)
+	if (!new_declaration && str_idxofstr(arg->val, "+=") != -1)
 	{
-		node->val = str_freejoin(node->val, split[1]);
+		variable->val = str_freejoin(variable->val, split[1]);
+		variable->_hidden = false;
 		free(split[1]);
 	}
-	else if (str_idxofchar((char *)arg->val, '=') != -1 && found)
+	else if (!new_declaration && str_idxofchar(arg->val, '=') != -1)
 	{
-		val = node->val;
-		node->val = split[1];
-		free(val);
+		free(variable->val);
+		variable->val = split[1];
 	}
-	if (!found && !lst_addnode_tail(&mshell->env, node))
-		return (ms_export_error(mshell, args, split));
-	return (free(split), OK);
+	if (new_declaration && !lst_addnode_tail(&mshell->env, variable))
+		return (free(split), lst_free(&variable, free), false);
+	return (free(split), true);
+}
+
+static bool	export_handle_arg(t_var *mshell, t_list *arg, bool *status)
+{
+	const bool	append = str_idxofstr(arg->val, "+=") != -1;
+	t_list		*env_node;
+	char		**split;
+
+	if (append)
+		split = str_split_firststr(arg->val, "+=");
+	else
+		split = str_split_first(arg->val, '=');
+	if (!split)
+		return (KO);
+	if (!str_isvariable(split[0]))
+	{
+		*status = false;
+		return (ft_perror("export: `%s`: not a valid identifier\n", split[0]),
+			str_freemtx(split), false);
+	}
+	env_node = lst_findbykey_str(mshell->env, split[0]);
+	if (!export_upsert_variable(mshell, split, arg, env_node))
+		return (false);
+	return (true);
 }
 
 int	ms_export(t_var *mshell, t_list *args)
 {
-	char			**split;
-	t_list			*argsp;
-	const int		len = lst_size(args);
-	int				curr;
-	int				res;
+	t_list			*arg;
+	bool			res;
 
-	if (DEBUG)
+	if (ft_isdebug())
 	{
 		dbg_printf(CCYAN"[export]\tDEBUG:\n"CR);
 		lst_printstr(args);
 	}
-	if (!args)
-		return (KO);
-	res = OK;
-	if (len == 1)
-		return (ms_export_print(mshell), OK);
-	argsp = args->next;
-	while (argsp)
+	res = true;
+	if (lst_size(args) == 1)
+		return (export_print_everything(mshell), OK);
+	arg = args->next;
+	while (arg)
 	{
-		if (str_idxofstr((char *)argsp->val, "+=") != -1)
-			split = str_split_firststr((char *)argsp->val, "+=");
-		else
-			split = str_split_first((char *)argsp->val, '=');
-		if (!split)
-			return (ms_export_error(mshell, args, NULL));
-		curr = ms_export_checkarg(split[0]);
-		if (curr == KO)
-			str_freemtx(split);
-		else
-			ms_export_handler(mshell, split, args, argsp);
-		res = res || curr;
-		argsp = argsp->next;
+		if (!export_handle_arg(mshell, arg, &res))
+			return (export_cleanup(mshell, args, NULL), KO);
+		arg = arg->next;
 	}
 	return (res);
 }
