@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 12:33:15 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/12 10:32:58 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/19 11:35:31 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,18 @@ int	ms_loadenv(t_var *mshell)
 	return (OK);
 }
 
-void	ms_init(t_var *mshell)
+int	ms_init(t_var *mshell)
 {
 	ms_loadenv(mshell);
+	mshell->orig_stdout = dup(STDOUT_FILENO);
+	mshell->orig_stdin = dup(STDIN_FILENO);
+	if (mshell->orig_stdin == -1 || mshell->orig_stdin == -1)
+		return (pf_errcode(E_DUP), cleanup(mshell, true, 1));
 	mshell->status_code = &g_status;
 	mshell->curpath_len = CWD_INITIAL_SIZE;
 	mshell->curr_path = ft_calloc(CWD_INITIAL_SIZE, sizeof(char));
 	if (!mshell->curr_path)
-	{
-		pf_errcode(E_MALLOC);
-		cleanup(mshell, true, 1);
-	}
+		return (pf_errcode(E_MALLOC), cleanup(mshell, true, 1));
 	ms_update_cwd(mshell);
+	return (OK);
 }

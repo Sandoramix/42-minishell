@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 14:42:50 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/29 15:18:48 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/19 10:47:42 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	dbg_printf(const char *str, ...)
 		return (-1);
 	va_start(list, str);
 	res_len = str_ulen(str);
-	pf_parseargs(1, str, &list, &res_len);
+	pf_parseargs(2, str, &list, &res_len);
 	va_end(list);
 	return (res_len);
 }

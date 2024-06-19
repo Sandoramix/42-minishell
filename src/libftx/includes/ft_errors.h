@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 07:47:06 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/12 10:33:33 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/15 14:45:11 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
  * @param E_FORK Fork failure.
  * @param E_PIPE Pipe failure.
  * @param E_DUP2 Dup2 failure.
+ * @param E_DUP Dup failure.
  * @param E_EXECVE Execve failure.
  * @param E_SYNTAX Syntax error (minishell).
  */
@@ -40,6 +41,7 @@ typedef enum e_errorcode
 	E_FORK,
 	E_PIPE,
 	E_DUP2,
+	E_DUP,
 	E_EXECVE,
 	E_SYNTAX,
 }	t_errorcode;

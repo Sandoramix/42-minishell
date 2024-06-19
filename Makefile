@@ -69,7 +69,8 @@ re-debug: fclean debug
 # ----UTILS-----
 
 VALGRIND=@valgrind --suppressions=src/readline.supp --leak-check=full --show-leak-kinds=all --track-origins=yes --quiet --tool=memcheck --keep-debuginfo=yes
-# FOR FD TRACKING: --track-fds=yes
+# FOR FD 		TRACKING: --track-fds=yes
+# FOR CHILDREN	TRACKING: --trace-children=yes
 valgrind: debug
 	clear
 	$(VALGRIND) ./$(NAME)

@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/06/15 14:29:35 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/19 10:58:07 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,10 @@ int	cleanup(t_var *g, bool shouldexit, int status)
 	free(g->home_path);
 	lst_free(&g->env, free);
 	free(g->curr_path);
+	files_close((int [2]){g->orig_stdin, g->orig_stdout}, 2);
+	files_close((int [2]){STDIN_FILENO, STDOUT_FILENO}, 2);
+	files_close(g->pipes[0], 2);
+	files_close(g->pipes[1], 2);
 	freeallcmds(g->all_cmds, true);
 	if (shouldexit)
 		exit(status);

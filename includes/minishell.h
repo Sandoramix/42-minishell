@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/15 14:26:19 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/15 14:46:06 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,13 +85,15 @@ typedef struct s_var
 	// ----START----EXECUTION-------
 	t_list				*all_cmds;
 	int					pipes[2][2];
+	int					orig_stdin;
+	int					orig_stdout;
 	// ----END------EXECUTION-------
 
 	t_main				_main;
 }			t_var;
 
 int		ms_loadenv(t_var *mshell);
-void	ms_init(t_var *mshell);
+int		ms_init(t_var *mshell);
 void	ms_prompt(t_var *mshell);
 
 int		cleanup(t_var *g, bool shouldexit, int status);

@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 08:23:24 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/12 10:33:13 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/15 14:41:19 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@ static int	errswitch(t_errorcode code)
 		return (ft_perror("Fork failure."));
 	if (code == E_PIPE)
 		return (ft_perror("Pipe failure."));
-	if (code == E_DUP2)
-		return (ft_perror("Dup2 failure."));
+	if (code == E_DUP2 || code == E_DUP)
+		return (ft_perror("Dup%c failure.",
+				(char [2]){'2', '\0'}[code == E_DUP]));
 	if (code == E_EXECVE)
 		return (ft_perror("Execve failure."));
 	if (code == E_SYNTAX)

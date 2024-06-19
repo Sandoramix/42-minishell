@@ -6,11 +6,54 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/15 10:37:24 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/19 11:47:44 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+static void	ms_update_std(t_command *command)
+{
+	if (command->in_fd > 2)
+	{
+		dup2(command->in_fd, STDIN_FILENO);
+		close(command->in_fd);
+	}
+	if (command->out_fd > 2)
+	{
+		dup2(command->out_fd, STDOUT_FILENO);
+		close(command->out_fd);
+	}
+}
+
+static int	ms_std_update(t_var *mshell, t_command *command, int idx)
+{
+	const int	tot_cmds = lst_size(mshell->all_cmds);
+	const bool	should_pipe = tot_cmds > 1 && idx < tot_cmds - 1;
+	int			*curr_fds;
+	int			*prev_fds;
+
+	curr_fds = mshell->pipes[idx % 2];
+	prev_fds = mshell->pipes[1 - (idx % 2)];
+	if (idx > 0 && command->in_fd <= 2 && tot_cmds > 1 && idx > 0)
+		command->in_fd = prev_fds[0];
+	if (command->out_fd <= 2 && should_pipe)
+		command->out_fd = curr_fds[1];
+	close(curr_fds[0]);
+	close(prev_fds[1]);
+	dbg_printf(CGREEN"cmd[%s]\tidx[%d]\ttot_cmds[%d]\tin_fd[%d]\tout_fd[%d]\n\
+	\tcurr_fds_idx[%d]\tprev_fds_idx[%d]\n"CR, command->args->val,
+		idx, tot_cmds, command->in_fd, command->out_fd, idx % 2, 1 - (idx % 2));
+	ms_update_std(command);
+	return (OK);
+}
+
+static int	ms_reset_std(t_var *mshell)
+{
+	dup2(mshell->orig_stdin, STDIN_FILENO);
+	dup2(mshell->orig_stdout, STDOUT_FILENO);
+	return (OK);
+}
 
 int	ms_exec_builtin(t_var *mshell, t_command *command)
 {
@@ -84,7 +127,8 @@ static int	ms_pre_exec(t_var *mshell, t_command *command, bool tofork)
 	return (OK);
 }
 
-static int	ms_exec_command(t_var *mshell, t_command *command, bool tofork)
+static int	ms_exec_command(t_var *mshell, t_command *command,
+		bool tofork, int idx)
 {
 	int		status;
 	pid_t	pid;
@@ -99,23 +143,30 @@ static int	ms_exec_command(t_var *mshell, t_command *command, bool tofork)
 			return (pf_errcode(E_FORK), KO);
 		else if (!pid)
 		{
+			ms_std_update(mshell, command, idx);
 			if (ms_is_builtin(command->args->val))
 				ms_exec_builtin(mshell, command);
 			else
 				ms_exec_cmd(mshell, command->args);
+			ms_reset_std(mshell);
 			cleanup(mshell, true, *mshell->status_code);
 		}
 	}
 	else
+	{
+		ms_std_update(mshell, command, idx);
 		ms_exec_builtin(mshell, command);
+		ms_reset_std(mshell);
+	}
 	return (OK);
 }
 
 void	*ms_exec_commands(t_var *mshell, t_list *all)
 {
 	t_list		*cmds_list;
-	int			size;
 	t_command	*command;
+	int			size;
+	int			i;
 
 	mshell->all_cmds = lst_split_bystrval(all, "|");
 	if (!ms_wrap_commands(mshell) || !mshell->all_cmds)
@@ -123,11 +174,18 @@ void	*ms_exec_commands(t_var *mshell, t_list *all)
 	cmds_list = mshell->all_cmds;
 	size = lst_size(cmds_list);
 	dbg_printf(CBLUE"N. of commands to execute: [%d]\n"CR, size);
-	while (cmds_list)
+	i = -1;
+	if (pipe(mshell->pipes[0]) == -1)
+		return (pf_errcode(E_PIPE), freeallcmds(mshell->all_cmds, true), NULL);
+	if (pipe(mshell->pipes[1]) == -1)
+		return (pf_errcode(E_PIPE), freeallcmds(mshell->all_cmds, true), NULL);
+	while (cmds_list && ++i > -1)
 	{
 		command = cmds_list->val;
-		ms_exec_command(mshell, command, size > 1);
+		ms_exec_command(mshell, command, size > 1, i);
 		cmds_list = cmds_list->next;
 	}
+	files_close(mshell->pipes[0], 2);
+	files_close(mshell->pipes[1], 2);
 	return (freeallcmds(mshell->all_cmds, true), NULL);
 }
