@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:47:35 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/09 14:27:26 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/19 20:41:30 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,10 @@ int			lst_size(t_list *head);
  * @return a node or `NULL` if index is out of range.
  */
 t_list		*lst_getbyidx(t_list *head, int idx);
+
+//-----------------------------------------------------------------------------
+
+t_list		*lst_upsert_str(t_list **head, char *key, char *value);
 
 //-----------------------------------------------------------------------------
 

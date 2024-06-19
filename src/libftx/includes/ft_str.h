@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:36:51 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/27 21:32:36 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/19 21:09:31 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -364,6 +364,14 @@ void		str_iteri(char *s, void (*f)(unsigned int, char*));
  * @return `true` if every characters pass the function test, `false` otherwise
  */
 bool		str_every(char *str, bool(*check_fn)(char));
+/**
+ * @brief Check if the given `array` of strings contains a given `value` string.
+ * @param array `NULL` terminated array of strings
+ * (or matrix of chars) to loop over.
+ * @param value string to search inside `array`
+ * @return `true` if `value` is contained inside `array`, `false` otherwise.
+ */
+bool		str_includes(char **array, char *value);
 /**
  * @brief Check if the string `s` contains any character is `set` string.
  *

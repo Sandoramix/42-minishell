@@ -1,35 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   str_equals.c                                       :+:      :+:    :+:   */
+/*   lst_upsert.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/28 18:26:29 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/19 21:07:28 by odudniak         ###   ########.fr       */
+/*   Created: 2024/06/19 20:35:11 by odudniak          #+#    #+#             */
+/*   Updated: 2024/06/19 20:39:05 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 
-bool	str_equals(void *a, void *b)
+t_list	*lst_upsert_str(t_list **head, char *key, char *value)
 {
-	if (a == b)
-		return (true);
-	if (!a || !b)
-		return (false);
-	return (!str_cmp(a, b));
-}
+	t_list	*found;
 
-bool	str_includes(char **array, char *value)
-{
-	int	i;
-
-	i = -1;
-	while (array && array[++i])
+	if (!head)
+		return (NULL);
+	found = lst_findbykey_str(*head, key);
+	if (found)
 	{
-		if (str_equals(array[i], value))
-			return (true);
+		free(found->val);
+		found->val = str_dup(value);
+		if (!found->val)
+			return (NULL);
 	}
-	return (false);
+	else
+		*head = lst_addnew_tail(head, value, key);
+	return (*head);
 }
