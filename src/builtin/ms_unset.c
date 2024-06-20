@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:25:21 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/19 21:55:08 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/20 20:11:56 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,24 @@ static void	ms_unset_debug(t_var *mshell, t_list *args, char *stage)
 int	ms_unset(t_var *mshell, t_list *args)
 {
 	t_list	*tmp;
+	t_uchar status;
 
 	if (!args)
 		return (pf_errcode(E_INVALID_ARGC), KO);
-	if (str_cmp(args->val, "unset"))
-		return (ft_perror("command not fount: %s\n"), KO);
+	status = 0;
 	tmp = args->next;
 	ms_unset_debug(mshell, args, "PRE UNSET");
 	while (tmp)
 	{
+		if (!str_isvariable(tmp->val))
+		{
+			status = 1;
+			ft_perror("export: `%s`: not a valid identifier\n", tmp->val);
+		}
 		lst_delbykey(&mshell->env, tmp->val, (void *)str_equals, free);
 		tmp = tmp->next;
 	}
+	*mshell->status_code = status;
 	ms_unset_debug(mshell, args, "POST UNSET");
 	return (OK);
 }
