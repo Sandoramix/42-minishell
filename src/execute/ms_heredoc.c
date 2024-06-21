@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 20:32:32 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/19 20:44:16 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/21 16:12:09 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,11 @@ static char	*hd_line_read(char *heredoc_file, t_list *token)
 	else
 		line = readline(HEREDOC_PROMPT);
 	free(temp);
-	if (!line || str_equals(line, token->next->val))
+	if (!line || str_equals(line, token->next->val) || g_status == 130)
 	{
+		if (!line)
+			ft_perror(" "PROGNAME": warning: %s (wanted `%s`)",
+				"here-document delimited by end-of-file", token->next->val);
 		if (!line)
 			ft_putstr_fd("\n", 2);
 		return (free(line), NULL);
@@ -86,6 +89,8 @@ static int	ms_heredoc(t_var *mshell, t_command *cmd, int *fd)
 			else
 				cmd->last_heredoc_file = str_dup(name);
 			name = ft_free(name);
+			if (g_status == 130)
+				return (KO);
 		}
 		current = current->next;
 	}
@@ -97,6 +102,7 @@ int	ms_inredir_handle(t_var *mshell, t_command *command)
 	int		input_fd;
 
 	input_fd = -1;
+	g_status = 0;
 	if (ms_heredoc(mshell, command, &input_fd) == KO)
 		return (KO);
 	if (ms_in_redir(command, &input_fd) == KO)

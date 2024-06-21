@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_exec.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/20 00:23:16 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/21 16:02:45 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,9 @@ static int	ms_pre_exec(t_var *mshell, t_command *command, bool to_fork)
 {
 	if (ms_inredir_handle(mshell, command) == KO)
 	{
-		g_status = 1;
-		if (to_fork && !command->args)
+		if (g_status != 130)
+			g_status = 1;
+		if (g_status != 130 && to_fork && !command->args)
 			g_status = 0;
 		return (KO);
 	}

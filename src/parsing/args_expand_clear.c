@@ -6,20 +6,18 @@
 /*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:24:26 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/13 09:38:57 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/21 15:51:56 by marboccu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-// TODO: REFACTOR TIME
 
 char	*arg_update(t_var *mshell, char **arg, int *d_idx, bool in_heredoc)
 {
 	const int		len = str_ilen((*arg));
 	int				end;
 
-	if (*d_idx == -1) // EXTRA 2 lines; but need to be careful of it's usage if removed
+	if (*d_idx == -1)
 		return (*arg);
 	end = str_var_ending_idx((*arg), (*d_idx));
 	dbg_printf("\tFound a $ at [%3d] - [%3d]\n", (*d_idx), end, len);
@@ -38,7 +36,6 @@ char	*arg_update(t_var *mshell, char **arg, int *d_idx, bool in_heredoc)
 	else if (end == *d_idx)
 	{
 		(*d_idx) = str_idxofchar_from((*arg), (*d_idx) + 1, '$');
-		dbg_printf(CMAGENTA"\t\tIt has a bad ending idx\n");
 		return (*arg);
 	}
 	return (replace_variable(mshell, arg, d_idx, &end));
