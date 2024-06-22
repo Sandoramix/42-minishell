@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:16:45 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/29 15:29:11 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 19:59:57 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ di chiusura
   (`i` solo di 1 perche' c'e' un ++i nel while loop principale)
 - Altrimenti si va a prendere la sottostringa da `s`
 che esclude le quotes di chiusura
-  - Si aggiorna solo la `i` nella posizione della chiusura (o fine stringa)
-  perche `edge` viene modificato da altre parti.
+  - Si la `i` nella posizione della chiusura (o fine stringa)
+  e si incrementa `edge` di 1 per non lasciare l'indice su una possibile quote.
  */
 static char	*handle_quoted(char **str, char *final, int *i, int *edge)
 {
@@ -44,6 +44,7 @@ static char	*handle_quoted(char **str, char *final, int *i, int *edge)
 	*i = *edge;
 	if (*edge == str_ilen(s))
 		*i = *edge - 1;
+	(*edge)++;
 	return (free(tmp), final);
 }
 
