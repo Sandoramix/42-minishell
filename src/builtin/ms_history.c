@@ -6,13 +6,13 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 17:11:16 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/22 10:36:02 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 11:10:54 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	ms_history(t_var *mshell, t_list *args)
+t_state	ms_history(t_var *mshell, t_list *args)
 {
 	t_list		*current;
 	int			i;
@@ -29,6 +29,5 @@ int	ms_history(t_var *mshell, t_list *args)
 		current = current->next;
 		i++;
 	}
-	*(mshell->status_code) = 0;
-	return (OK);
+	return (g_set_status(0), OK);
 }

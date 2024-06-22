@@ -6,13 +6,20 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 10:37:00 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/22 10:37:06 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 11:12:54 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	*freeallcmds(t_list *commands_wrapper, bool free_val)
+int	reset_stds(t_var *mshell)
+{
+	dup2(mshell->orig_stdin, STDIN_FILENO);
+	dup2(mshell->orig_stdout, STDOUT_FILENO);
+	return (OK);
+}
+
+void	*clean_cmds(t_list *commands_wrapper, bool free_val)
 {
 	t_list		*next;
 	t_command	*command;
@@ -43,7 +50,6 @@ void	*freeallcmds(t_list *commands_wrapper, bool free_val)
 
 int	cleanup(t_var *g, bool shouldexit, int status)
 {
-	(void)g;
 	if (lst_size(g->history) > 0)
 		clear_history();
 	free(g->last_input);
@@ -55,7 +61,7 @@ int	cleanup(t_var *g, bool shouldexit, int status)
 	files_close((int [2]){STDIN_FILENO, STDOUT_FILENO}, 2);
 	files_close(g->pipes[0], 2);
 	files_close(g->pipes[1], 2);
-	freeallcmds(g->all_cmds, true);
+	clean_cmds(g->all_cmds, true);
 	if (shouldexit)
 		exit(status);
 	return (status);

@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 14:17:16 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/19 22:24:54 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 11:05:52 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	ms_wrap_cleanup(t_var *mshell, t_list *cmds_without_command)
 
 	if (cmds_without_command->prev)
 		cmds_without_command->prev->next = NULL;
-	freeallcmds(mshell->all_cmds, true);
+	clean_cmds(mshell->all_cmds, true);
 	while (cmds_without_command)
 	{
 		cmd = cmds_without_command->val;
@@ -70,7 +70,7 @@ static void	ms_wrapcmds_debug(t_command *cmd)
 	lst_printstr(cmd->out_redirects);
 }
 
-bool	ms_wrap_commands(t_var *mshell)
+t_state	ms_wrap_commands(t_var *mshell)
 {
 	const char	*in_redirs[] = {"<", "<<", NULL};
 	const char	*out_redirs[] = {">", ">>", NULL};
@@ -82,7 +82,7 @@ bool	ms_wrap_commands(t_var *mshell)
 	{
 		command = ft_calloc(1, sizeof(t_command));
 		if (!command)
-			return (ms_wrap_cleanup(mshell, cmds), false);
+			return (ms_wrap_cleanup(mshell, cmds), KO);
 		command->in_fd = STDIN_FILENO;
 		command->out_fd = STDOUT_FILENO;
 		command->args = cmds->val;
@@ -92,5 +92,5 @@ bool	ms_wrap_commands(t_var *mshell)
 		cmds = cmds->next;
 		ms_wrapcmds_debug(command);
 	}
-	return (true);
+	return (OK);
 }

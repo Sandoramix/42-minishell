@@ -6,13 +6,13 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 12:33:44 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/19 20:44:04 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 10:59:33 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	ms_rediout(t_command *command)
+t_state	ms_rediout(t_command *command)
 {
 	t_list	*current;
 
@@ -43,14 +43,14 @@ int	open_fd_in(char *filein_name, int *fd)
 
 	file_fd = open(filein_name, O_RDONLY);
 	if (file_fd == -1)
-		return (ft_perror("open"), KO);
+		return (KO);
 	if (*fd > 2)
 		close(*fd);
 	*fd = file_fd;
 	return (OK);
 }
 
-int	ms_in_redir(t_command *cmd, int *fd)
+t_state	ms_in_redir(t_command *cmd, int *fd)
 {
 	t_list	*current;
 

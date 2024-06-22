@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 15:46:30 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/19 22:11:58 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 11:23:39 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ t_list	*cmd_parse(t_var *mshell, char *command);
 t_list	*cmd_expand_clear(t_var *mshell, t_list *args);
 
 char	*expand_empty(char **arg, int *dollar_idx, int *end_idx);
-char	*expand_statuscode(t_var *mshell, char **arg, int *d_idx, int *end);
+char	*expand_statuscode(char **arg, int *d_idx, int *end);
 char	*replace_variable(t_var *mshell, char **arg, int *d_idx, int *end);
 
 bool	cmdp_append_last(t_list **res, char *append, char dbg_char);

@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 12:40:27 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/15 14:13:08 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 11:11:13 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	*ms_handleinput(t_var *mshell, char *input)
 		return (pf_errcode(E_SYNTAX), lst_free(&cmd_list, free), NULL);
 	ms_exec_commands(mshell, cmd_list);
 	while (wait(&status_code) != -1)
-		*(mshell->status_code) = (t_uchar)status_code;
+		g_status = (t_uchar)status_code;
 	return (input);
 }
 
@@ -44,7 +44,7 @@ void	ms_prompt(t_var *mshell)
 			free(mshell->last_input);
 			mshell->last_input = input;
 			add_history(input);
-			add_cmd_history(mshell, input);
+			add_history_line(mshell, input);
 			ms_handleinput(mshell, input);
 		}
 		else

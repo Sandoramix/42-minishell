@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:25:21 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/22 10:33:00 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 10:57:33 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	ms_unset_debug(t_var *mshell, t_list *args, char *stage)
 	}
 }
 
-int	ms_unset(t_var *mshell, t_list *args)
+t_state	ms_unset(t_var *mshell, t_list *args)
 {
 	t_list	*tmp;
 	t_uchar	final_status;

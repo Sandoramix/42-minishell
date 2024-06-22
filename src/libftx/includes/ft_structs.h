@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:53:30 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/12 10:16:32 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 11:03:37 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,11 +102,11 @@ typedef struct s_cmdparse
  * @param OK everything's ok.
  * @param KO an error occured.
  */
-typedef enum e_status
+typedef enum e_state
 {
-	OK,
 	KO,
+	OK,
 	OK_EXIT
-}	t_status;
+}	t_state;
 
 #endif

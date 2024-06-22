@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/22 10:33:00 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 11:10:29 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,10 @@ static int	ms_std_update(t_var *mshell, t_command *command, int idx)
 		command->out_fd = curr_fds[1];
 	close(curr_fds[0]);
 	close(prev_fds[1]);
-	dbg_printf(CGREEN"cmd[%s]\tidx[%d]\ttot_cmds[%d]\tin_fd[%d]\tout_fd[%d]\n\
-	\tcurr_fds_idx[%d]\tprev_fds_idx[%d]\n"CR, command->args->val,
-		idx, tot_cmds, command->in_fd, command->out_fd, idx % 2, 1 - (idx % 2));
+	dbg_printf(CGREEN"cmd[%s]\tidx[%d]\tin_fd[%d]\tout_fd[%d]\n"
+		CR, command->args->val, idx, command->in_fd, command->out_fd,
+		idx % 2, 1 - (idx % 2));
 	ms_update_std(command);
-	return (OK);
-}
-
-static int	ms_reset_std(t_var *mshell)
-{
-	dup2(mshell->orig_stdin, STDIN_FILENO);
-	dup2(mshell->orig_stdout, STDOUT_FILENO);
 	return (OK);
 }
 
@@ -79,7 +72,7 @@ int	ms_exec_builtin(t_var *mshell, t_command *command)
 	return (KO);
 }
 
-int	ms_exec_cmd(t_var *mshell, t_list *cmd)
+t_state	ms_exec_cmd(t_var *mshell, t_list *cmd)
 {
 	char	**paths;
 	char	**args;
@@ -88,7 +81,7 @@ int	ms_exec_cmd(t_var *mshell, t_list *cmd)
 
 	paths = env_load_paths(mshell->env);
 	if (!paths && lst_findbykey_str(mshell->env, "PATH"))
-		return (pf_errcode(E_MALLOC), cleanup(mshell, true, 1));
+		return (pf_errcode(E_MALLOC), cleanup(mshell, true, 1), KO);
 	args = lst_to_strmtx(cmd);
 	env = lst_env_to_mtx(mshell);
 	if (!args || (!env && mshell->env))
@@ -100,16 +93,16 @@ int	ms_exec_cmd(t_var *mshell, t_list *cmd)
 	g_set_status(131);
 	ft_perror("%s: command not found\n", cmd->val);
 	return (str_freemtx(paths), str_freemtx(args), str_freemtx(env),
-		free(abs_path), cleanup(mshell, true, *mshell->status_code), KO);
+		free(abs_path), cleanup(mshell, true, g_status), KO);
 }
 
 static int	ms_pre_exec(t_var *mshell, t_command *command, bool to_fork)
 {
 	if (ms_inredir_handle(mshell, command) == KO)
 	{
-		if ((*mshell->status_code) != 130)
+		if (g_status != 130)
 			g_set_status(1);
-		if ((*mshell->status_code) != 130 && to_fork && !command->args)
+		if (g_status != 130 && to_fork && !command->args)
 			g_set_status(0);
 		return (KO);
 	}
@@ -117,11 +110,9 @@ static int	ms_pre_exec(t_var *mshell, t_command *command, bool to_fork)
 		return (g_set_status(1), KO);
 	if (!command->args)
 		return (g_set_status(0), OK_EXIT);
-	dbg_printf(CCYAN"Command's redirects:\tin[%d]\tout[%d]\n"CR,
-		command->in_fd, command->out_fd);
 	return (OK);
 }
-
+// TODO norminette
 static int	ms_exec_command(t_var *mshell, t_command *command,
 		int tot_cmds, int idx)
 {
@@ -143,20 +134,20 @@ static int	ms_exec_command(t_var *mshell, t_command *command,
 				ms_exec_builtin(mshell, command);
 			else
 				ms_exec_cmd(mshell, command->args);
-			ms_reset_std(mshell);
-			cleanup(mshell, true, *mshell->status_code);
+			reset_stds(mshell);
+			cleanup(mshell, true, g_status);
 		}
 	}
 	else
 	{
 		ms_std_update(mshell, command, idx);
 		ms_exec_builtin(mshell, command);
-		ms_reset_std(mshell);
+		reset_stds(mshell);
 	}
 	return (OK);
 }
 
-void	*ms_exec_commands(t_var *mshell, t_list *all)
+t_state	ms_exec_commands(t_var *mshell, t_list *all)
 {
 	t_command	*command;
 	t_list		*cmds_list;
@@ -164,15 +155,15 @@ void	*ms_exec_commands(t_var *mshell, t_list *all)
 	int			i;
 
 	mshell->all_cmds = lst_split_bystrval(all, "|");
-	if (!ms_wrap_commands(mshell) || !mshell->all_cmds)
-		return (NULL);
+	if (!mshell->all_cmds || ms_wrap_commands(mshell) == KO)
+		return (KO);
 	cmds_list = mshell->all_cmds;
 	tot_cmds = lst_size(cmds_list);
 	i = -1;
 	if (pipe(mshell->pipes[0]) == -1)
-		return (pf_errcode(E_PIPE), freeallcmds(mshell->all_cmds, true), NULL);
+		return (pf_errcode(E_PIPE), clean_cmds(mshell->all_cmds, true), KO);
 	if (pipe(mshell->pipes[1]) == -1)
-		return (pf_errcode(E_PIPE), freeallcmds(mshell->all_cmds, true), NULL);
+		return (pf_errcode(E_PIPE), clean_cmds(mshell->all_cmds, true), KO);
 	while (cmds_list && ++i > -1)
 	{
 		command = cmds_list->val;
@@ -181,5 +172,5 @@ void	*ms_exec_commands(t_var *mshell, t_list *all)
 	}
 	files_close(mshell->pipes[0], 2);
 	files_close(mshell->pipes[1], 2);
-	return (freeallcmds(mshell->all_cmds, true), NULL);
+	return (clean_cmds(mshell->all_cmds, true), OK);
 }

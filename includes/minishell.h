@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/22 10:35:31 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 11:22:47 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define MINISHELL_H
 # include <libft.h>
 # include <ms_parsing.h>
-# include <ms_exec.h>
 
 # ifndef PROGNAME
 #  define PROGNAME "minishell"
@@ -41,6 +40,7 @@ extern t_uchar	g_status;
 typedef struct s_main
 {
 	char	**envp;
+	char	**argv;
 }			t_main;
 
 typedef struct s_command
@@ -64,8 +64,6 @@ typedef struct s_command
  */
 typedef struct s_var
 {
-	t_uchar				*status_code;
-
 	t_list				*env;
 	char				*home_path;
 
@@ -84,45 +82,48 @@ typedef struct s_var
 	t_main				_main;
 }			t_var;
 
+int		ms_init(t_var *mshell);
+
+void	ms_prompt(t_var *mshell);
+
+//-------------------------BUILTIN----------------------------------------------
+t_state	ms_unset(t_var *mshell, t_list *args);
+t_state	ms_exit(t_var *mshell, t_list *args);
+t_state	ms_pwd(t_var *mshell, t_list *args);
+t_state	ms_export(t_var *mshell, t_list *args);
+t_state	ms_env(t_var *mshell, t_list *args);
+t_state	ms_cd(t_var *mshell, t_list *args);
+t_state	ms_history(t_var *mshell, t_list *args);
+t_state	ms_echo(t_var *mshell, t_list *args);
+//-------------EXTRA-------------------
+void	print_history(t_list *history);
+//-----------------------------------------------------------------------------
+
+t_state	ms_exec_cmd(t_var *mshell, t_list *args);
+
+t_state	ms_in_redir(t_command *cmd, int *fd);
+t_state	ms_rediout(t_command *cmds);
+t_state	ms_inredir_handle(t_var *mshell, t_command *cmds);
+char	*heredoc_expand(t_var *mshell, char **arg);
+char	*gen_heredocs(t_var *mshell, int count);
+
+t_state	ms_wrap_commands(t_var *mshell);
+t_state	ms_exec_commands(t_var *mshell, t_list *all);
+
 //-------------------------UTILS------------------------------------------------
 t_uchar	g_set_status(t_uchar status);
-//------------------------------------------------------------------------------
-
-int		ms_loadenv(t_var *mshell);
-int		ms_init(t_var *mshell);
-void	ms_prompt(t_var *mshell);
 
 int		cleanup(t_var *g, bool shouldexit, int status);
 
-int		ms_unset(t_var *mshell, t_list *args);
-
-//-------------------------BUILTIN----------------------------------------------
-int		ms_exit(t_var *mshell, t_list *args);
-void	*ms_pwd(t_var *mshell, t_list *args);
-int		ms_export(t_var *mshell, t_list *args);
-void	ms_env(t_var *mshell, t_list *args);
-int		ms_cd(t_var *mshell, t_list *args);
-int		ms_history(t_var *mshell, t_list *args);
-int		ms_echo(t_var *mshell, t_list *args);
-
-void	*add_cmd_history(t_var *mshell, char *cmd);
-
-void	print_history(t_list *history);
-//-----------------------------------------------------------------------------
-void	*ms_update_cwd(t_var *mshell);
-void	ms_update_env(t_list *env, char *key, char *new_val);
-int		ms_exec_cmd(t_var *mshell, t_list *args);
-
-void	*freeallcmds(t_list *cmds, bool free_content);
-
+int		reset_stds(t_var *mshell);
+void	*clean_cmds(t_list *cmds, bool free_content);
+//-------------CHECKS------------------
 bool	ms_is_builtin(char *cmd);
-
-int		ms_inredir_handle(t_var *mshell, t_command *cmds);
-char	*heredoc_expand(t_var *mshell, char **arg);
-char	*gen_heredocs(t_var *mshell, int count);
-int		ms_rediout(t_command *cmds);
-int		ms_in_redir(t_command *cmd, int *fd);
-
+//-----------CONVERTERS----------------
 char	**lst_env_to_mtx(t_var *mshell);
+//-------------------------------------
+t_state	add_history_line(t_var *mshell, char *cmd);
+t_state	ms_update_cwd(t_var *mshell);
+//------------------------------------------------------------------------------
 
 #endif

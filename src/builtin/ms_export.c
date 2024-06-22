@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:04:40 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/20 00:13:04 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 10:54:32 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ static bool	export_handle_arg(t_var *mshell, t_list *arg, bool *status)
 	return (true);
 }
 
-int	ms_export(t_var *mshell, t_list *args)
+t_state	ms_export(t_var *mshell, t_list *args)
 {
 	t_list			*arg;
 	bool			res;

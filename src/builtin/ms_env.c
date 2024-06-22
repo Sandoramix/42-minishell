@@ -6,22 +6,17 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:44:22 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/22 10:33:00 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 10:54:38 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	ms_env(t_var *mshell, t_list *args)
+t_state	ms_env(t_var *mshell, t_list *args)
 {
-	if (!args)
-		return ;
 	if (lst_size(args) > 1)
-	{
-		g_set_status(1);
-		ft_perror("env: No arguments/options are allowed\n");
-		return ;
-	}
+		return (g_set_status(1),
+			ft_perror("env: No arguments/options are allowed\n"), KO);
 	args = mshell->env;
 	while (args)
 	{
@@ -29,6 +24,7 @@ void	ms_env(t_var *mshell, t_list *args)
 			ft_printf("%s=%s\n", (char *)args->key, (char *)args->val);
 		args = args->next;
 	}
+	return (OK);
 }
 
 // int main(int ac, char **av, char **envp)

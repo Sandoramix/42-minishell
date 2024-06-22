@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 20:32:32 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/22 10:33:00 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 11:11:02 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static char	*heredoc_read(t_var *mshell, t_list *token, int count)
 	while (42)
 	{
 		line = hd_line_read(heredoc_file, token);
-		if (!line && *mshell->status_code == 130)
+		if (!line && g_status == 130)
 			return (close(heredoc_fd), free(heredoc_file), NULL);
 		if (!line)
 			break ;
@@ -97,7 +97,7 @@ static int	ms_heredoc(t_var *mshell, t_command *cmd, int *fd)
 	return (OK);
 }
 
-int	ms_inredir_handle(t_var *mshell, t_command *command)
+t_state	ms_inredir_handle(t_var *mshell, t_command *command)
 {
 	int		input_fd;
 

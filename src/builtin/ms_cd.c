@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 17:37:44 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/22 10:33:00 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 10:54:44 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int	ms_cd_home(t_var *mshell)
 	return (OK);
 }
 
-int	ms_cd(t_var *mshell, t_list *args)
+t_state	ms_cd(t_var *mshell, t_list *args)
 {
 	int			len;
 	struct stat	buf;

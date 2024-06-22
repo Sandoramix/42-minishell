@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:21:48 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/22 10:33:00 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 11:09:45 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ static int	ms_exit_parsecode(t_var *mshell, t_list *args)
 	orig_code = strict_atol(args->next->val);
 	if (!orig_code)
 	{
-		*(mshell->status_code) = 2;
+		g_set_status(2);
 		ft_perror("exit: %s: numeric argument required\n", args->next->val);
-		cleanup(mshell, true, *(mshell->status_code));
+		cleanup(mshell, true, g_status);
 		return (KO);
 	}
 	else
@@ -29,7 +29,7 @@ static int	ms_exit_parsecode(t_var *mshell, t_list *args)
 	return (free(orig_code), OK);
 }
 
-int	ms_exit(t_var *mshell, t_list *args)
+t_state	ms_exit(t_var *mshell, t_list *args)
 {
 	const int	lst_len = lst_size(args);
 
@@ -39,7 +39,7 @@ int	ms_exit(t_var *mshell, t_list *args)
 		ms_exit_parsecode(mshell, args);
 	if (lst_len > 2)
 		return (g_set_status(1), ft_perror("exit: too many arguments\n"), KO);
-	cleanup(mshell, true, *mshell->status_code);
+	cleanup(mshell, true, g_status);
 	return (OK);
 }
 
