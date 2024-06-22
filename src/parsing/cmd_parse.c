@@ -67,13 +67,9 @@ static t_list	*cmdp_handlequote(t_cmdp_arg *var)
 	}
 	else if (!lst_addnew_tail(&var->res, var->tmp, NULL))
 		return (lst_free(&var->res, free), free(var->tmp), NULL);
-	if (var->edge - 1 == var->i)
-	{
-		var->i++;
-		var->edge++;
-	}
-	else
+	if (var->edge > var->i)
 		var->i = var->edge;
+	var->edge++;
 	return (var->res);
 }
 
