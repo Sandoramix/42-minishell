@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/22 11:10:29 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 21:56:34 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ t_state	ms_exec_commands(t_var *mshell, t_list *all)
 	int			tot_cmds;
 	int			i;
 
-	mshell->all_cmds = lst_split_bystrval(all, "|");
+	mshell->all_cmds = ms_split_pipelines(all);
 	if (!mshell->all_cmds || ms_wrap_commands(mshell) == KO)
 		return (KO);
 	cmds_list = mshell->all_cmds;

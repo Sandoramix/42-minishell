@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/22 16:08:24 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 21:54:53 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ void	*clean_cmds(t_list *cmds, bool free_content);
 bool	ms_is_builtin(char *cmd);
 //-----------CONVERTERS----------------
 char	**lst_env_to_mtx(t_var *mshell);
+t_list	*ms_split_pipelines(t_list *all);
 //-------------------------------------
 t_state	add_history_line(t_var *mshell, char *cmd);
 t_state	ms_update_cwd(t_var *mshell);
