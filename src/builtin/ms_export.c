@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:04:40 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/22 10:54:32 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 16:34:13 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,34 +117,3 @@ t_state	ms_export(t_var *mshell, t_list *args)
 	}
 	return (res);
 }
-
-// int	main(int ac, char **av, char **envp)
-// {
-// 	t_var		mshell;
-// 	t_list		*args;
-
-// 	(void)av;
-// 	mshell = (t_var){0};
-// 	if (ac != 1)
-// 		return (pf_errcode(E_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
-// 	mshell._main.envp = envp;
-// 	ms_init(&mshell);
-
-// 	//args = cmd_parse(mshell, "env bla");
-// 	//ms_env(&mshell, args);
-// 	//lst_free(&args, free);
-
-// 	//args = cmd_parse(mshell, "export c1= c_ _c");
-// 	//ms_export(&mshell, args);
-// 	//lst_free(&args, free);
-
-// 	//args = cmd_parse(mshell, "export 1c1= .c_ x55 !_c");
-// 	//ms_export(&mshell, args);
-// 	//lst_free(&args, free);
-
-// 	//args = cmd_parse(mshell, "export");
-// 	//ms_export(&mshell, args);
-// 	//lst_free(&args, free);
-
-// 	return (cleanup(&mshell, true, 0));
-// }

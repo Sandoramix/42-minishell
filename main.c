@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:41:06 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/22 12:00:35 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 16:08:27 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	main(int argc, char **argv, char **envp)
 
 	mshell = (t_var){0};
 	g_set_status(0);
+	mshell._main.argc = argc;
 	mshell._main.envp = envp;
 	mshell._main.argv = argv;
 	signal(SIGINT, handle_sig);

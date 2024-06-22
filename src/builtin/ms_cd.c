@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 17:37:44 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/22 10:54:44 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 16:33:57 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,23 +66,3 @@ t_state	ms_cd(t_var *mshell, t_list *args)
 	dbg_printf(CCYAN"[cd]:\t[%s]->%s\n"CR, args->next->val, mshell->curr_path);
 	return (g_set_status(0), OK);
 }
-
-// int main(int ac, char **av, char **envp)
-// {
-// 	t_var mshell;
-// 	t_list *args;
-// 	int len;
-
-// 	av = (char *[]){"cd", "test", NULL};
-// 	mshell = (t_var){0};
-// 	if (ac != 1)
-// 		return (pf_errcode(E_INVALID_ARGC), cleanup(&mshell, true, 1), 1);
-// 	mshell._main.envp = envp;
-// 	ms_init(&mshell);
-// 	args = lst_new(av, NULL);
-// 	len = lst_size(args);
-// 	ms_pwd(&mshell, args);
-// 	ms_cd(&mshell, args);
-// 	ms_pwd(&mshell, args);
-// 	return (cleanup(&mshell, true, 0));
-// }

@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/22 11:58:59 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 16:08:24 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ extern t_uchar	g_status;
 
 typedef struct s_main
 {
+	int		argc;
 	char	**envp;
 	char	**argv;
 }			t_main;
