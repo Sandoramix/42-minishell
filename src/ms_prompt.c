@@ -6,26 +6,51 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 12:40:27 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/22 11:11:13 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 11:58:47 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	*ms_handleinput(t_var *mshell, char *input)
+
+t_state	ms_handleinput(t_var *mshell, char *input)
 {
 	t_list	*cmd_list;
 	int		status_code;
 
 	cmd_list = cmd_parse(mshell, input);
 	if (!cmd_list)
-		return (lst_free(&cmd_list, free), input);
+		return (lst_free(&cmd_list, free), KO);
 	if (!ms_closing_quotes_check(input) || !ms_token_syntax_check(cmd_list))
-		return (pf_errcode(E_SYNTAX), lst_free(&cmd_list, free), NULL);
+		return (pf_errcode(E_SYNTAX), lst_free(&cmd_list, free), KO);
 	ms_exec_commands(mshell, cmd_list);
 	while (wait(&status_code) != -1)
 		g_status = (t_uchar)status_code;
-	return (input);
+	return (OK);
+}
+
+void	ms_exec_script(t_var *mshell)
+{
+	int			file_fd;
+	int			i;
+	char		*line;
+
+	i = -1;
+	file_fd = file_open(mshell->_main.argv[1], O_RDONLY);
+	if (file_fd == -1)
+		cleanup(mshell, true, 127);
+	mshell->script_content = ft_readfile(file_fd, false);
+	while (mshell->script_content && mshell->script_content[++i])
+	{
+		line = mshell->script_content[i];
+		if (!line || str_startswith(line, "#") || str_isblank(line))
+			continue ;
+		add_history(line);
+		add_history_line(mshell, line);
+		ms_handleinput(mshell, line);
+		mshell->all_cmds = NULL;
+	}
+	cleanup(mshell, true, g_status);
 }
 
 void	ms_prompt(t_var *mshell)
@@ -37,20 +62,13 @@ void	ms_prompt(t_var *mshell)
 		input = readline(PROG_PROMPT " ");
 		if (!input)
 			break ;
-		if (str_ilen(input) > 0)
-			mshell->last_input = str_trim(input, " \t\v\r\n");
-		if (str_ilen(mshell->last_input) > 0)
+		if (!str_isblank(input))
 		{
-			free(mshell->last_input);
-			mshell->last_input = input;
 			add_history(input);
 			add_history_line(mshell, input);
 			ms_handleinput(mshell, input);
 		}
-		else
-			free(mshell->last_input);
 		free(input);
-		mshell->last_input = NULL;
 		mshell->all_cmds = NULL;
 	}
 }

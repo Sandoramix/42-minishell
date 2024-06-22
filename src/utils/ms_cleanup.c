@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 10:37:00 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/22 11:12:54 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 11:59:21 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int	cleanup(t_var *g, bool shouldexit, int status)
 {
 	if (lst_size(g->history) > 0)
 		clear_history();
-	free(g->last_input);
 	lst_free(&g->history, free);
 	free(g->home_path);
 	lst_free(&g->env, free);
@@ -62,6 +61,7 @@ int	cleanup(t_var *g, bool shouldexit, int status)
 	files_close(g->pipes[0], 2);
 	files_close(g->pipes[1], 2);
 	clean_cmds(g->all_cmds, true);
+	str_freemtx(g->script_content);
 	if (shouldexit)
 		exit(status);
 	return (status);

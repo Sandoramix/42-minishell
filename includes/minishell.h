@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/22 11:22:47 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 11:58:59 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ typedef struct s_var
 	char				*curr_path;
 	uint64_t			curpath_len;
 	// -------------INPUT-----------
-	char				*last_input;
 	t_list				*history;
 	// -------------EXECUTION-------
 	t_list				*all_cmds;
@@ -79,12 +78,16 @@ typedef struct s_var
 	int					orig_stdin;
 	int					orig_stdout;
 	//------------------------------
+
+	char				**script_content;
+
 	t_main				_main;
 }			t_var;
 
 int		ms_init(t_var *mshell);
 
 void	ms_prompt(t_var *mshell);
+void	ms_exec_script(t_var *mshell);
 
 //-------------------------BUILTIN----------------------------------------------
 t_state	ms_unset(t_var *mshell, t_list *args);
