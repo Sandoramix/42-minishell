@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 17:39:55 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/15 09:27:48 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 10:32:37 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ bool	file_exists(char *path)
 void	file_close(int fd)
 {
 	struct stat	buffer;
-	int			status;
+	int			state;
 
-	status = fstat(fd, &buffer);
-	if (status == 0)
+	state = fstat(fd, &buffer);
+	if (state == 0)
 		close(fd);
 }
 

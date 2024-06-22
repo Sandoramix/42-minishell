@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:21:48 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/19 21:48:39 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 10:33:00 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	ms_exit_parsecode(t_var *mshell, t_list *args)
 		return (KO);
 	}
 	else
-		*(mshell->status_code) = (t_uchar)(*orig_code);
+		g_set_status(*orig_code);
 	return (free(orig_code), OK);
 }
 
@@ -38,11 +38,7 @@ int	ms_exit(t_var *mshell, t_list *args)
 	if (lst_len > 1)
 		ms_exit_parsecode(mshell, args);
 	if (lst_len > 2)
-	{
-		ft_perror("exit: too many arguments\n");
-		*mshell->status_code = 1;
-		return (OK);
-	}
+		return (g_set_status(1), ft_perror("exit: too many arguments\n"), KO);
 	cleanup(mshell, true, *mshell->status_code);
 	return (OK);
 }

@@ -5,11 +5,10 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/06/19 10:58:07 by odudniak         ###   ########.fr       */
+/*   Created: 2024/06/22 10:37:00 by odudniak          #+#    #+#             */
+/*   Updated: 2024/06/22 10:37:06 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include <minishell.h>
 
@@ -29,7 +28,7 @@ void	*freeallcmds(t_list *commands_wrapper, bool free_val)
 			if (command->out_fd > 2)
 				file_close(command->out_fd);
 			if (command->last_heredoc_file)
-				unlink(command->last_heredoc_file); // is it safe?
+				unlink(command->last_heredoc_file);
 			free(command->last_heredoc_file);
 			lst_free(&command->args, free);
 			lst_free(&command->in_redirects, free);

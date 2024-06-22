@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:22:46 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/19 21:56:06 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 10:33:00 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int	ms_echo(t_var *mshell, t_list *args)
 	t_list		*current;
 	bool		should_nl;
 
+	(void)mshell;
 	current = args;
 	should_nl = skip_flags(&current);
 	dbg_printf(CGRAY"[echo] should print \\n: %s\n"CR, ft_boolstr(should_nl));
@@ -77,6 +78,5 @@ int	ms_echo(t_var *mshell, t_list *args)
 	}
 	if (should_nl)
 		ft_printf("\n");
-	*mshell->status_code = 0;
-	return (OK);
+	return (g_set_status(0), OK);
 }

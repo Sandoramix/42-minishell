@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_exec.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/21 16:02:45 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/22 10:33:00 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int	ms_exec_cmd(t_var *mshell, t_list *cmd)
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	execve(abs_path, args, env);
-	*mshell->status_code = 131;
+	g_set_status(131);
 	ft_perror("%s: command not found\n", cmd->val);
 	return (str_freemtx(paths), str_freemtx(args), str_freemtx(env),
 		free(abs_path), cleanup(mshell, true, *mshell->status_code), KO);
@@ -107,22 +107,16 @@ static int	ms_pre_exec(t_var *mshell, t_command *command, bool to_fork)
 {
 	if (ms_inredir_handle(mshell, command) == KO)
 	{
-		if (g_status != 130)
-			g_status = 1;
-		if (g_status != 130 && to_fork && !command->args)
-			g_status = 0;
+		if ((*mshell->status_code) != 130)
+			g_set_status(1);
+		if ((*mshell->status_code) != 130 && to_fork && !command->args)
+			g_set_status(0);
 		return (KO);
 	}
 	if (ms_rediout(command) == KO)
-	{
-		g_status = 1;
-		return (KO);
-	}
+		return (g_set_status(1), KO);
 	if (!command->args)
-	{
-		g_status = 0;
-		return (OK_EXIT);
-	}
+		return (g_set_status(0), OK_EXIT);
 	dbg_printf(CCYAN"Command's redirects:\tin[%d]\tout[%d]\n"CR,
 		command->in_fd, command->out_fd);
 	return (OK);
@@ -131,12 +125,12 @@ static int	ms_pre_exec(t_var *mshell, t_command *command, bool to_fork)
 static int	ms_exec_command(t_var *mshell, t_command *command,
 		int tot_cmds, int idx)
 {
-	int		status;
+	int		state;
 	pid_t	pid;
 
-	status = ms_pre_exec(mshell, command, tot_cmds > 1);
-	if (status != OK)
-		return ((int [2]){OK, KO}[status == KO]);
+	state = ms_pre_exec(mshell, command, tot_cmds > 1);
+	if (state != OK)
+		return ((int [2]){OK, KO}[state == KO]);
 	if (tot_cmds > 1 || !ms_is_builtin(command->args->val))
 	{
 		pid = fork();

@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 14:36:35 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/19 21:53:29 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 10:33:00 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,9 @@
 void	*ms_pwd(t_var *mshell, t_list *args)
 {
 	if (!args || lst_size(args) > 1)
-	{
-		ft_fprintf(2, "pwd: too many arguments\n");
-		*mshell->status_code = 1;
-		return (NULL);
-	}
+		return (g_set_status(1), ft_perror("pwd: too many arguments\n"), NULL);
 	ms_update_cwd(mshell);
-	printf("%s\n", mshell->curr_path);
+	ft_printf("%s\n", mshell->curr_path);
 	return (NULL);
 }
 

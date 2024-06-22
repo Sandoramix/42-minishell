@@ -6,18 +6,15 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/19 21:30:52 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 10:35:31 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-
 # include <libft.h>
 # include <ms_parsing.h>
 # include <ms_exec.h>
-
-extern t_uchar	g_status;
 
 # ifndef PROGNAME
 #  define PROGNAME "minishell"
@@ -39,6 +36,7 @@ extern t_uchar	g_status;
 #  define CWD_INITIAL_SIZE 4096
 # endif
 
+extern t_uchar	g_status;
 
 typedef struct s_main
 {
@@ -71,26 +69,24 @@ typedef struct s_var
 	t_list				*env;
 	char				*home_path;
 
-	// ----START----PWD-------------
+	// -------------PWD-------------
 	char				*curr_path;
 	uint64_t			curpath_len;
-	// -----END-----PWD-------------
-
-
-	// ----START----INPUT-----------
+	// -------------INPUT-----------
 	char				*last_input;
 	t_list				*history;
-	// ----END------INPUT-----------
-
-	// ----START----EXECUTION-------
+	// -------------EXECUTION-------
 	t_list				*all_cmds;
 	int					pipes[2][2];
 	int					orig_stdin;
 	int					orig_stdout;
-	// ----END------EXECUTION-------
-
+	//------------------------------
 	t_main				_main;
 }			t_var;
+
+//-------------------------UTILS------------------------------------------------
+t_uchar	g_set_status(t_uchar status);
+//------------------------------------------------------------------------------
 
 int		ms_loadenv(t_var *mshell);
 int		ms_init(t_var *mshell);

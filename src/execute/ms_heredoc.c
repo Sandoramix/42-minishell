@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 20:32:32 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/21 16:12:09 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/22 10:33:00 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ static char	*heredoc_read(t_var *mshell, t_list *token, int count)
 	while (42)
 	{
 		line = hd_line_read(heredoc_file, token);
+		if (!line && *mshell->status_code == 130)
+			return (close(heredoc_fd), free(heredoc_file), NULL);
 		if (!line)
 			break ;
 		if (token->_prevent_expansion == false)
@@ -89,8 +91,6 @@ static int	ms_heredoc(t_var *mshell, t_command *cmd, int *fd)
 			else
 				cmd->last_heredoc_file = str_dup(name);
 			name = ft_free(name);
-			if (g_status == 130)
-				return (KO);
 		}
 		current = current->next;
 	}
@@ -102,7 +102,7 @@ int	ms_inredir_handle(t_var *mshell, t_command *command)
 	int		input_fd;
 
 	input_fd = -1;
-	g_status = 0;
+	g_set_status(0);
 	if (ms_heredoc(mshell, command, &input_fd) == KO)
 		return (KO);
 	if (ms_in_redir(command, &input_fd) == KO)

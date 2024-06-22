@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 17:11:16 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/19 21:50:30 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 10:36:02 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,8 @@ int	ms_history(t_var *mshell, t_list *args)
 	i = 1;
 	current = mshell->history;
 	if (len > 1)
-	{
-		ft_perror("history: too many arguments\n");
-		*(mshell->status_code) = 1;
-		return (KO);
-	}
+		return (g_set_status(1),
+			ft_perror("history: too many arguments\n"), KO);
 	while (current != NULL)
 	{
 		ft_printf("%5d %s\n", i, current->val);

@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 14:56:28 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/15 09:36:03 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 10:12:00 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,8 @@ bool	ms_is_builtin(char *cmd)
 {
 	const char	*valid[] = {"export", "unset", "echo", "cd", "pwd",
 		"env", "history", "exit", NULL};
-	int			i;
 
-	i = -1;
-	while (valid[++i])
-		if (str_equals(cmd, (char *)valid[i]))
-			return (true);
-	return (false);
+	return (str_array_includes((char **)valid, cmd));
 }
 
 bool	cmdp_append_last(t_list **res, char *append, char dbg_char)
