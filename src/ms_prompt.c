@@ -6,14 +6,14 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 12:40:27 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/22 11:58:47 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 17:12:45 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
 
-t_state	ms_handleinput(t_var *mshell, char *input)
+t_state	ms_handleinput(t_var *mshell, char **input)
 {
 	t_list	*cmd_list;
 	int		status_code;
@@ -21,7 +21,7 @@ t_state	ms_handleinput(t_var *mshell, char *input)
 	cmd_list = cmd_parse(mshell, input);
 	if (!cmd_list)
 		return (lst_free(&cmd_list, free), KO);
-	if (!ms_closing_quotes_check(input) || !ms_token_syntax_check(cmd_list))
+	if (!ms_closing_quotes_check(*input) || !ms_token_syntax_check(cmd_list))
 		return (pf_errcode(E_SYNTAX), lst_free(&cmd_list, free), KO);
 	ms_exec_commands(mshell, cmd_list);
 	while (wait(&status_code) != -1)
@@ -47,7 +47,7 @@ void	ms_exec_script(t_var *mshell)
 			continue ;
 		add_history(line);
 		add_history_line(mshell, line);
-		ms_handleinput(mshell, line);
+		ms_handleinput(mshell, &line);
 		mshell->all_cmds = NULL;
 	}
 	cleanup(mshell, true, g_status);
@@ -66,7 +66,7 @@ void	ms_prompt(t_var *mshell)
 		{
 			add_history(input);
 			add_history_line(mshell, input);
-			ms_handleinput(mshell, input);
+			ms_handleinput(mshell, &input);
 		}
 		free(input);
 		mshell->all_cmds = NULL;

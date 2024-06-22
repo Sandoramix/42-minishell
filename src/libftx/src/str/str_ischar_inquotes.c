@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 15:08:53 by odudniak          #+#    #+#             */
-/*   Updated: 2024/05/29 15:29:18 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 17:16:20 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	str_ischar_inquotes(char *str, int idx)
 	i = 0;
 	while (i < idx && str[i])
 	{
-		if (chr_isquote(str[i]))
+		if (chr_isquote(str[i]) && i != idx)
 		{
 			end = chr_quoteclose_idx(str, i);
 			if (end == -1)
