@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/22 21:03:03 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 22:22:30 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ typedef struct s_var
 	int					orig_stdin;
 	int					orig_stdout;
 	//------------------------------
-
 	char				**script_content;
 
 	t_main				_main;
@@ -103,8 +102,6 @@ t_state	ms_echo(t_var *mshell, t_list *args);
 void	print_history(t_list *history);
 //-----------------------------------------------------------------------------
 
-t_state	ms_exec_cmd(t_var *mshell, t_list *args);
-
 t_state	ms_in_redir(t_command *cmd, int *fd);
 t_state	ms_rediout(t_command *cmds);
 t_state	ms_inredir_handle(t_var *mshell, t_command *cmds);
@@ -113,6 +110,8 @@ char	*gen_heredocs(t_var *mshell, int count);
 
 t_state	ms_wrap_commands(t_var *mshell);
 t_state	ms_exec_commands(t_var *mshell, t_list *all);
+t_state	ms_exec_cmd(t_var *mshell, t_list *args);
+t_state	ms_exec_update_stds(t_var *mshell, t_command *command, int idx);
 
 //-------------------------UTILS------------------------------------------------
 t_uchar	g_set_status(t_uchar status);

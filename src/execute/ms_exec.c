@@ -6,49 +6,13 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/22 20:38:28 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 22:22:34 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void	ms_update_std(t_command *command)
-{
-	if (command->in_fd > 2)
-	{
-		dup2(command->in_fd, STDIN_FILENO);
-		close(command->in_fd);
-	}
-	if (command->out_fd > 2)
-	{
-		dup2(command->out_fd, STDOUT_FILENO);
-		close(command->out_fd);
-	}
-}
-
-static int	ms_std_update(t_var *mshell, t_command *command, int idx)
-{
-	const int	tot_cmds = lst_size(mshell->all_cmds);
-	const bool	should_pipe = tot_cmds > 1 && idx < tot_cmds - 1;
-	int			*curr_fds;
-	int			*prev_fds;
-
-	curr_fds = mshell->pipes[idx % 2];
-	prev_fds = mshell->pipes[1 - (idx % 2)];
-	if (idx > 0 && command->in_fd <= 2 && tot_cmds > 1 && idx > 0)
-		command->in_fd = prev_fds[0];
-	if (command->out_fd <= 2 && should_pipe)
-		command->out_fd = curr_fds[1];
-	close(curr_fds[0]);
-	close(prev_fds[1]);
-	dbg_printf(CGREEN"cmd[%s]\tidx[%d]\tin_fd[%d]\tout_fd[%d]\n"
-		CR, command->args->val, idx, command->in_fd, command->out_fd,
-		idx % 2, 1 - (idx % 2));
-	ms_update_std(command);
-	return (OK);
-}
-
-int	ms_exec_builtin(t_var *mshell, t_command *command)
+int	execute_builtin(t_var *mshell, t_command *command)
 {
 	t_list	*args;
 
@@ -112,7 +76,7 @@ static int	ms_pre_exec(t_var *mshell, t_command *command, bool to_fork)
 		return (g_set_status(0), OK_EXIT);
 	return (OK);
 }
-// TODO norminette
+
 static int	ms_exec_command(t_var *mshell, t_command *command,
 		int tot_cmds, int idx)
 {
@@ -129,22 +93,18 @@ static int	ms_exec_command(t_var *mshell, t_command *command,
 			return (pf_errcode(E_FORK), KO);
 		else if (!pid)
 		{
-			ms_std_update(mshell, command, idx);
+			ms_exec_update_stds(mshell, command, idx);
 			if (ms_is_builtin(command->args->val))
-				ms_exec_builtin(mshell, command);
+				execute_builtin(mshell, command);
 			else
 				ms_exec_cmd(mshell, command->args);
-			reset_stds(mshell);
-			cleanup(mshell, true, g_status);
+			return (reset_stds(mshell), cleanup(mshell, true, g_status), OK);
 		}
 	}
 	else
-	{
-		ms_std_update(mshell, command, idx);
-		ms_exec_builtin(mshell, command);
-		reset_stds(mshell);
-	}
-	return (OK);
+		return (ms_exec_update_stds(mshell, command, idx),
+			execute_builtin(mshell, command), reset_stds(mshell), OK);
+	return (reset_stds(mshell), OK);
 }
 
 t_state	ms_exec_commands(t_var *mshell, t_list *all)

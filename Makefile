@@ -38,7 +38,7 @@ SRC = ./main.c \
 	./src/parsing/cmd_pre_parse.c \
 	./src/parsing/str_clearquotes.c \
 	./src/parsing/str_env_variable.c \
-	./src/utils/command_split_utils.c \
+	./src/utils/exec_utils.c \
 	./src/utils/expansion_utils.c \
 	./src/utils/global_utils.c \
 	./src/utils/heredoc_utils.c \
