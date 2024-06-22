@@ -6,14 +6,13 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 12:40:27 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/22 20:03:11 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 22:20:45 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-
-t_state	ms_handleinput(t_var *mshell, char *input)
+static t_state	ms_handleinput(t_var *mshell, char *input)
 {
 	t_list	*cmd_list;
 	int		status_code;

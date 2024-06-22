@@ -1,16 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command_split_utils.c                              :+:      :+:    :+:   */
+/*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 20:35:27 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/22 20:37:10 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 22:19:07 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+t_state	ms_exec_update_stds(t_var *mshell, t_command *command, int idx)
+{
+	const int	tot_cmds = lst_size(mshell->all_cmds);
+	const bool	should_pipe = tot_cmds > 1 && idx < tot_cmds - 1;
+	int			*curr_fds;
+	int			*prev_fds;
+
+	curr_fds = mshell->pipes[idx % 2];
+	prev_fds = mshell->pipes[1 - (idx % 2)];
+	if (idx > 0 && command->in_fd <= 2 && tot_cmds > 1 && idx > 0)
+		command->in_fd = prev_fds[0];
+	if (command->out_fd <= 2 && should_pipe)
+		command->out_fd = curr_fds[1];
+	files_close((int [2]){curr_fds[0], prev_fds[1]}, 2);
+	dbg_printf(CGREEN"cmd[%s]\tin=%d\tout=%d\n"CR, command->args->val,
+		command->in_fd, command->out_fd, idx % 2, 1 - (idx % 2));
+	if (command->in_fd > 2)
+	{
+		dup2(command->in_fd, STDIN_FILENO);
+		close(command->in_fd);
+	}
+	if (command->out_fd > 2)
+	{
+		dup2(command->out_fd, STDOUT_FILENO);
+		close(command->out_fd);
+	}
+	return (OK);
+}
 
 t_list	*ms_split_pipelines(t_list *all)
 {
