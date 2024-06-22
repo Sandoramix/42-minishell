@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 15:46:30 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/22 17:12:16 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 21:01:47 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef enum e_argtype
  * @return List of args parsed.
  */
 t_list	*cmd_parse(t_var *mshell, char **command);
-t_list	*cmd_expand_clear(t_var *mshell, t_list *args);
+t_list	*args_clearquotes(t_var *mshell, t_list *args);
 
 char	*expand_empty(char **arg, int *dollar_idx, int *end_idx);
 char	*expand_statuscode(char **arg, int *d_idx, int *end);

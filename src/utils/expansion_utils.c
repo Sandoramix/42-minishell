@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 09:38:41 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/22 11:23:56 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/22 21:02:27 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,33 @@ char	*replace_variable(t_var *mshell,
 		return (pf_errcode(E_MALLOC), NULL);
 	*dollar_idx = str_idxofchar(*arg_p, '$');
 	return (*arg_p);
+}
+
+char	*arg_update(t_var *mshell, char **arg, int *d_idx, bool in_heredoc)
+{
+	const int		len = str_ilen((*arg));
+	int				end;
+
+	if (*d_idx == -1)
+		return (*arg);
+	end = str_var_ending_idx((*arg), (*d_idx));
+	dbg_printf("\tFound a $ at [%3d] - [%3d]\n", (*d_idx), end, len);
+	if (str_ischar_inquotes((*arg), (*d_idx)) == '\'')
+	{
+		(*d_idx) = str_idxofchar_from((*arg), (*d_idx) + 1, '$');
+		return (dbg_printf(CMAGENTA"\t\tIt's inside single quote.\n"), *arg);
+	}
+	if (end == *d_idx && chr_isquote(((*arg))[*d_idx + 1]))
+	{
+		if (!in_heredoc)
+			(*arg) = str_replace_from_to((*arg), (*d_idx), (end), "");
+		(*d_idx) = str_idxofchar_from((*arg), (*d_idx) + 1, '$');
+		return (*arg);
+	}
+	else if (end == *d_idx)
+	{
+		(*d_idx) = str_idxofchar_from((*arg), (*d_idx) + 1, '$');
+		return (*arg);
+	}
+	return (replace_variable(mshell, arg, d_idx, &end));
 }
