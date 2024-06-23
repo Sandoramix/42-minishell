@@ -6,11 +6,25 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 14:56:28 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/22 17:04:31 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/23 23:29:50 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+void	skip_closing_quotes(char *value, int *i)
+{
+	int	close_idx;
+
+	if (!value)
+		return ;
+	close_idx = chr_quoteclose_idx(value, *i);
+	while (value[*i] && chr_isquote(value[*i]) && close_idx != -1)
+	{
+		*i = close_idx + 1;
+		close_idx = chr_quoteclose_idx(value, *i);
+	}
+}
 
 bool	ms_closing_quotes_check(char *s)
 {
@@ -56,14 +70,6 @@ bool	ms_token_syntax_check(t_list *args)
 		args = args->next;
 	}
 	return (true);
-}
-
-bool	ms_is_builtin(char *cmd)
-{
-	const char	*valid[] = {"export", "unset", "echo", "cd", "pwd",
-		"env", "history", "exit", NULL};
-
-	return (str_array_includes((char **)valid, cmd));
 }
 
 bool	cmdp_append_last(t_list **res, char *append, char dbg_char)

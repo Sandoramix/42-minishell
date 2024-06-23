@@ -6,25 +6,11 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 20:53:10 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/23 17:48:28 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/23 23:28:56 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-void	skip_closing_quotes(char *value, int *i)
-{
-	int	close_idx;
-
-	if (!value)
-		return ;
-	close_idx = chr_quoteclose_idx(value, *i);
-	while (value[*i] && chr_isquote(value[*i]) && close_idx != -1)
-	{
-		*i = close_idx + 1;
-		close_idx = chr_quoteclose_idx(value, *i);
-	}
-}
 
 static char	*escape_special_chars(char *value)
 {
