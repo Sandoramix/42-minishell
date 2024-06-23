@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 10:38:09 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/15 10:39:47 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/23 22:52:25 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,5 @@ char	*sys_findcmdpath(char **paths, char *cmd)
 			return (res);
 		free(res);
 	}
-	return (str_dup(cmd));
+	return (NULL);
 }

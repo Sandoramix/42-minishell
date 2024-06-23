@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/23 22:26:42 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/23 23:04:49 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,13 @@ t_state	ms_exec_cmd(t_var *mshell, t_list *cmd)
 	abs_path = sys_findcmdpath(paths, cmd->val);
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
-	execve(abs_path, args, env);
-	g_set_status(127);
-	ft_perror("%s: command not found\n", cmd->val);
+	if (abs_path && execve(abs_path, args, env) == -1)
+		pf_errcode(E_EXECVE);
+	g_set_status(1);
+	if (!abs_path)
+		ft_perror("%s: command not found\n", cmd->val);
+	if (!abs_path)
+		g_set_status(127);
 	return (str_freemtx(paths), str_freemtx(args), str_freemtx(env),
 		free(abs_path), cleanup(mshell, true, g_status), KO);
 }

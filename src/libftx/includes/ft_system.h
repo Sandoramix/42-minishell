@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 15:46:10 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/22 11:03:43 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/23 22:52:48 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_list		*env_load(char **envp);
  * @brief Find the absolute path of a `cmd` command.
  * @param paths array of path where to lookup the given `cmd`
  * @param cmd the requested command
- * @return absolute path of the `cmd` or if it doesn't exist a copy of `cmd`
+ * @return absolute path of the `cmd` or if it doesn't exist a `NULL`
  * @attention Uses: `malloc`
  *  `free`
  */
