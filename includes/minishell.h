@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/22 22:22:30 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/23 12:32:18 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ int		ms_init(t_var *mshell);
 
 void	ms_prompt(t_var *mshell);
 void	ms_exec_script(t_var *mshell);
+void	handle_sig(int signal);
 
 //-------------------------BUILTIN----------------------------------------------
 t_state	ms_unset(t_var *mshell, t_list *args);

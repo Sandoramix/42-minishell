@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:41:06 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/22 16:08:27 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/23 12:36:35 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	handle_sig(int signal)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 	}
+	if (signal == SIGQUIT)
+		g_set_status(131);
 }
 
 int	main(int argc, char **argv, char **envp)

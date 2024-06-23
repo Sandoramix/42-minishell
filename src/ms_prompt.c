@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 12:40:27 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/22 22:23:36 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/23 12:41:07 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ t_state	ms_handleinput(t_var *mshell, char **input)
 	ms_exec_commands(mshell, cmd_list);
 	while (wait(&status_code) != -1)
 		g_status = (t_uchar)status_code;
+	if (g_status == 131)
+		ft_printf("Quit (core dumped)\n");
 	return (OK);
 }
 
