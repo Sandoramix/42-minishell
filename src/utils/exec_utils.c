@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 20:35:27 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/22 22:19:07 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/23 14:18:17 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,15 @@ t_state	ms_exec_update_stds(t_var *mshell, t_command *command, int idx)
 	if (command->out_fd <= 2 && should_pipe)
 		command->out_fd = curr_fds[1];
 	files_close((int [2]){curr_fds[0], prev_fds[1]}, 2);
+	if (idx % 2 == 0 && command->args)
+		close(prev_fds[0]);
 	dbg_printf(CGREEN"cmd[%s]\tin=%d\tout=%d\n"CR, command->args->val,
 		command->in_fd, command->out_fd, idx % 2, 1 - (idx % 2));
 	if (command->in_fd > 2)
-	{
 		dup2(command->in_fd, STDIN_FILENO);
-		close(command->in_fd);
-	}
 	if (command->out_fd > 2)
-	{
 		dup2(command->out_fd, STDOUT_FILENO);
-		close(command->out_fd);
-	}
+	files_close((int [2]){command->out_fd, command->in_fd}, 2);
 	return (OK);
 }
 

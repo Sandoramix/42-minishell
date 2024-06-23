@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 14:17:16 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/22 11:05:52 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/23 14:17:07 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,8 @@ t_state	ms_wrap_commands(t_var *mshell)
 		command = ft_calloc(1, sizeof(t_command));
 		if (!command)
 			return (ms_wrap_cleanup(mshell, cmds), KO);
-		command->in_fd = STDIN_FILENO;
-		command->out_fd = STDOUT_FILENO;
+		command->in_fd = -1;
+		command->out_fd = -1;
 		command->args = cmds->val;
 		extract_redirs(&command->args, &command->in_redirects, in_redirs);
 		extract_redirs(&command->args, &command->out_redirects, out_redirs);
