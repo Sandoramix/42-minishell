@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 12:40:27 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/23 21:20:59 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/23 21:35:17 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_state	ms_exec_script(t_var *mshell)
 			continue ;
 		line = str_dup(mshell->script_content[i]);
 		if (!line)
-			return (cleanup(mshell, true, g_status), KO);
+			return (KO);
 		add_history(line);
 		add_history_line(mshell, line);
 		ms_handleinput(mshell, &line);
@@ -63,7 +63,7 @@ t_state	ms_exec_script(t_var *mshell)
 		if (g_status != 0)
 			break ;
 	}
-	return (cleanup(mshell, true, g_status), OK);
+	return (OK);
 }
 
 t_state	ms_prompt(t_var *mshell)
@@ -83,5 +83,6 @@ t_state	ms_prompt(t_var *mshell)
 		}
 		mshell->all_cmds = NULL;
 	}
+	ft_fprintf(2, "exit\n");
 	return (OK);
 }

@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:41:06 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/23 13:03:29 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/23 21:34:30 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ void	handle_sig(int signal)
 	{
 		g_set_status(130);
 		ioctl(STDIN_FILENO, TIOCSTI, "\n");
-		rl_replace_line("", 0);
 		rl_on_new_line();
+		rl_replace_line("", 0);
 	}
 	if (signal == SIGQUIT)
 		g_set_status(131);
@@ -41,7 +41,7 @@ int	main(int argc, char **argv, char **envp)
 	ms_init(&mshell);
 	if (argc > 1)
 		return (ms_exec_script(&mshell), g_status);
-	ms_prompt(&mshell);
-	ft_fprintf(2, "exit\n");
+	else
+		ms_prompt(&mshell);
 	return (cleanup(&mshell, true, g_status));
 }
