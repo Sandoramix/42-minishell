@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 12:40:27 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/23 13:04:18 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/23 17:55:09 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@ t_state	ms_handleinput(t_var *mshell, char **input)
 	int		status_code;
 
 	if (!ms_closing_quotes_check(*input))
-		return (pf_errcode(E_SYNTAX), g_set_status(1), KO);
+		return (pf_errcode(E_SYNTAX), free(*input), g_set_status(1), KO);
 	cmd_list = cmd_parse(mshell, input);
+	free(*input);
 	if (!cmd_list)
 		return (lst_free(&cmd_list, free), KO);
 	if (!ms_token_syntax_check(cmd_list))
@@ -72,7 +73,6 @@ void	ms_prompt(t_var *mshell)
 			add_history_line(mshell, input);
 			ms_handleinput(mshell, &input);
 		}
-		free(input);
 		mshell->all_cmds = NULL;
 	}
 }

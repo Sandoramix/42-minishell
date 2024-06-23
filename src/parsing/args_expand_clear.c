@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:24:26 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/22 21:02:14 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/23 16:10:46 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,15 @@ t_list	*args_clearquotes(t_var *mshell, t_list *args)
 	t_list	*arg;
 
 	arg = args;
+
 	while (arg)
 	{
 		dbg_printf(CCYAN"[expand_clear]\t|%s|:\n"CR, arg->val);
+		if (arg->prev && arg->prev->type == A_TOKEN)
+		{
+			if (arg->val && str_includesset(arg->val, "'\""))
+				arg->prev->_prevent_expansion = true;
+		}
 		if (arg->val)
 		{
 			if (!str_clearquotes((char **)&arg->val))
