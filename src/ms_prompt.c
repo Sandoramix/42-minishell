@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 12:40:27 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/23 22:39:05 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/23 22:50:41 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_state	ms_exec_script(t_var *mshell)
 	if (file_fd == -1)
 		cleanup(mshell, true, 127);
 	mshell->script_file = ft_readfile(file_fd, false);
-	while (g_status != 0 && mshell->script_file && mshell->script_file[++i])
+	while (g_status == 0 && mshell->script_file && mshell->script_file[++i])
 	{
 		signal(SIGINT, handle_sig);
 		signal(SIGQUIT, SIG_IGN);
