@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 12:40:27 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/23 17:55:09 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/23 21:20:59 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,16 @@ t_state	ms_handleinput(t_var *mshell, char **input)
 			lst_free(&cmd_list, free), KO);
 	ms_exec_commands(mshell, cmd_list);
 	while (wait(&status_code) != -1)
+	{
+		status_code = WEXITSTATUS(status_code);
 		g_status = (t_uchar)status_code;
+	}
 	if (g_status == 131)
 		ft_printf("Quit (core dumped)\n");
 	return (OK);
 }
 
-void	ms_exec_script(t_var *mshell)
+t_state	ms_exec_script(t_var *mshell)
 {
 	int			file_fd;
 	int			i;
@@ -50,15 +53,20 @@ void	ms_exec_script(t_var *mshell)
 		line = mshell->script_content[i];
 		if (!line || str_startswith(line, "#") || str_isblank(line))
 			continue ;
+		line = str_dup(mshell->script_content[i]);
+		if (!line)
+			return (cleanup(mshell, true, g_status), KO);
 		add_history(line);
 		add_history_line(mshell, line);
 		ms_handleinput(mshell, &line);
 		mshell->all_cmds = NULL;
+		if (g_status != 0)
+			break ;
 	}
-	cleanup(mshell, true, g_status);
+	return (cleanup(mshell, true, g_status), OK);
 }
 
-void	ms_prompt(t_var *mshell)
+t_state	ms_prompt(t_var *mshell)
 {
 	char	*input;
 
@@ -75,4 +83,5 @@ void	ms_prompt(t_var *mshell)
 		}
 		mshell->all_cmds = NULL;
 	}
+	return (OK);
 }
