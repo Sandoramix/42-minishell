@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/23 17:28:26 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/23 22:26:42 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,10 +127,10 @@ t_state	ms_exec_commands(t_var *mshell, t_list *all)
 	while (cmds_list && ++i > -1)
 	{
 		command = cmds_list->val;
+		signal(SIGINT, handle_exec_sig);
 		ms_exec_command(mshell, command, tot_cmds, i);
 		cmds_list = cmds_list->next;
 	}
-	files_close(mshell->pipes[0], 2);
-	files_close(mshell->pipes[1], 2);
-	return (clean_cmds(mshell->all_cmds, true), OK);
+	return (files_close(mshell->pipes[0], 2), files_close(mshell->pipes[1], 2),
+		clean_cmds(mshell->all_cmds, true), OK);
 }

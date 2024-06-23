@@ -33,6 +33,7 @@ SRC = ./main.c \
 	./src/execute/ms_wrap_commands.c \
 	./src/ms_init.c \
 	./src/ms_prompt.c \
+	./src/ms_signal.c \
 	./src/parsing/args_expand_clear.c \
 	./src/parsing/cmd_parse.c \
 	./src/parsing/cmd_pre_parse.c \
@@ -47,7 +48,6 @@ SRC = ./main.c \
 	./src/utils/ms_convert_utils.c \
 	./src/utils/ms_update_cwd.c \
 	./src/utils/parsing_utils.c
-
 
 # ----RULES---------------------------------------------------------------------
 

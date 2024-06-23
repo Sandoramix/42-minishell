@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 12:40:27 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/23 21:35:17 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/23 22:39:05 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,13 @@ t_state	ms_handleinput(t_var *mshell, char **input)
 	ms_exec_commands(mshell, cmd_list);
 	while (wait(&status_code) != -1)
 	{
-		status_code = WEXITSTATUS(status_code);
-		g_status = (t_uchar)status_code;
+		if (WIFEXITED(status_code))
+			g_set_status(WEXITSTATUS(status_code));
+		else if (WIFSIGNALED(status_code))
+			handle_child_ret_sig(WTERMSIG(status_code));
 	}
 	if (g_status == 131)
-		ft_printf("Quit (core dumped)\n");
+		ft_printf("Quit\n");
 	return (OK);
 }
 
@@ -47,21 +49,21 @@ t_state	ms_exec_script(t_var *mshell)
 	file_fd = file_open(mshell->_main.argv[1], O_RDONLY);
 	if (file_fd == -1)
 		cleanup(mshell, true, 127);
-	mshell->script_content = ft_readfile(file_fd, false);
-	while (mshell->script_content && mshell->script_content[++i])
+	mshell->script_file = ft_readfile(file_fd, false);
+	while (g_status != 0 && mshell->script_file && mshell->script_file[++i])
 	{
-		line = mshell->script_content[i];
+		signal(SIGINT, handle_sig);
+		signal(SIGQUIT, SIG_IGN);
+		line = mshell->script_file[i];
 		if (!line || str_startswith(line, "#") || str_isblank(line))
 			continue ;
-		line = str_dup(mshell->script_content[i]);
+		line = str_dup(mshell->script_file[i]);
 		if (!line)
 			return (KO);
 		add_history(line);
 		add_history_line(mshell, line);
 		ms_handleinput(mshell, &line);
 		mshell->all_cmds = NULL;
-		if (g_status != 0)
-			break ;
 	}
 	return (OK);
 }
@@ -72,6 +74,8 @@ t_state	ms_prompt(t_var *mshell)
 
 	while (42)
 	{
+		signal(SIGINT, handle_sig);
+		signal(SIGQUIT, SIG_IGN);
 		input = readline(PROG_PROMPT " ");
 		if (!input)
 			break ;

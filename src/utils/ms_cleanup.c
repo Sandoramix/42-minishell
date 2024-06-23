@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 10:37:00 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/23 17:32:41 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/23 22:21:15 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	cleanup(t_var *g, bool shouldexit, int status)
 	files_close(g->pipes[0], 2);
 	files_close(g->pipes[1], 2);
 	clean_cmds(g->all_cmds, true);
-	str_freemtx(g->script_content);
+	str_freemtx(g->script_file);
 	if (shouldexit)
 		exit(status);
 	return (status);
