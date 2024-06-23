@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:04:40 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/22 16:34:13 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/23 22:43:16 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,14 @@ static bool	export_upsert_variable(t_var *mshell, char **split,
 	if (!new_declaration && str_idxofstr(arg->val, "+=") != -1)
 	{
 		variable->val = str_freejoin(variable->val, split[1]);
-		variable->_hidden = false;
 		free(split[1]);
+		variable->_hidden = false;
 	}
 	else if (!new_declaration && str_idxofchar(arg->val, '=') != -1)
 	{
 		free(variable->val);
 		variable->val = split[1];
+		variable->_hidden = false;
 	}
 	if (new_declaration && !lst_addnode_tail(&mshell->env, variable))
 		return (free(split), lst_free(&variable, free), false);
@@ -90,9 +91,7 @@ static bool	export_handle_arg(t_var *mshell, t_list *arg, bool *status)
 			str_freemtx(split), false);
 	}
 	env_node = lst_findbykey_str(mshell->env, split[0]);
-	if (!export_upsert_variable(mshell, split, arg, env_node))
-		return (false);
-	return (true);
+	return (export_upsert_variable(mshell, split, arg, env_node));
 }
 
 t_state	ms_export(t_var *mshell, t_list *args)
