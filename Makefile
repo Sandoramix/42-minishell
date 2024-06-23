@@ -35,6 +35,7 @@ SRC = ./main.c \
 	./src/ms_prompt.c \
 	./src/parsing/args_expand_clear.c \
 	./src/parsing/cmd_parse.c \
+	./src/parsing/cmd_pre_parse.c \
 	./src/parsing/str_clearquotes.c \
 	./src/parsing/str_env_variable.c \
 	./src/utils/exec_utils.c \
@@ -46,6 +47,7 @@ SRC = ./main.c \
 	./src/utils/ms_convert_utils.c \
 	./src/utils/ms_update_cwd.c \
 	./src/utils/parsing_utils.c
+
 
 # ----RULES---------------------------------------------------------------------
 

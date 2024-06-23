@@ -28,7 +28,7 @@ static bool	cmdp_switch(t_cmdp_switch type, t_cmdp_arg *var)
 	if (type == CMDP_WORD)
 		return ((!chr_isspace(var->str[i]) && !curr_token)
 			&& (next_space_or_end || next_quote || next_token));
-	dbg_printf("[cmd_switch]: Unknown TYPE [%d]!\n", type);
+	dbg_printf(CGRAY"[cmd_switch]: Unknown TYPE [%d]!\n", type);
 	return (false);
 }
 
@@ -84,17 +84,19 @@ static t_list	*cmdp_handletoken(t_cmdp_arg *var)
 	return (var->res);
 }
 
-t_list	*cmd_parse(t_var *mshell, char *s)
+t_list	*cmd_parse(t_var *mshell, char **s)
 {
 	t_cmdp_arg		var;
 
+	if (!pre_parse_expand(mshell, s))
+		return (NULL);
 	var = (t_cmdp_arg){0};
 	var.i = -1;
-	var.str = s;
-	dbg_printf(CBRED"[cmd_parse] input: `%s`\n"CR, s);
-	while (s && s[++var.i])
+	var.str = *s;
+	dbg_printf(CBYELLOW"[cmd_parse] input: `%s`\n"CR, *s);
+	while (s && *s && (*s)[++var.i])
 	{
-		if (chr_isspace(s[var.i]) && !chr_isspace(s[var.i + 1]))
+		if (chr_isspace((*s)[var.i]) && !chr_isspace((*s)[var.i + 1]))
 			var.edge = var.i + 1;
 		if (!cmdp_switch(CMDP_TOKEN, &var)
 			&& !cmdp_switch(CMDP_QUOTE, &var) && !cmdp_switch(CMDP_WORD, &var))
@@ -108,5 +110,5 @@ t_list	*cmd_parse(t_var *mshell, char *s)
 		if (!var.res)
 			return (NULL);
 	}
-	return (cmd_expand_clear(mshell, var.res));
+	return (args_clearquotes(mshell, var.res));
 }

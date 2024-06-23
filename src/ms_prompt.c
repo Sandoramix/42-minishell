@@ -6,18 +6,18 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 12:40:27 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/23 12:46:14 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/23 13:04:18 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static t_state	ms_handleinput(t_var *mshell, char *input)
+t_state	ms_handleinput(t_var *mshell, char **input)
 {
 	t_list	*cmd_list;
 	int		status_code;
 
-	if (!ms_closing_quotes_check(input))
+	if (!ms_closing_quotes_check(*input))
 		return (pf_errcode(E_SYNTAX), g_set_status(1), KO);
 	cmd_list = cmd_parse(mshell, input);
 	if (!cmd_list)
@@ -51,7 +51,7 @@ void	ms_exec_script(t_var *mshell)
 			continue ;
 		add_history(line);
 		add_history_line(mshell, line);
-		ms_handleinput(mshell, line);
+		ms_handleinput(mshell, &line);
 		mshell->all_cmds = NULL;
 	}
 	cleanup(mshell, true, g_status);
@@ -70,7 +70,7 @@ void	ms_prompt(t_var *mshell)
 		{
 			add_history(input);
 			add_history_line(mshell, input);
-			ms_handleinput(mshell, input);
+			ms_handleinput(mshell, &input);
 		}
 		free(input);
 		mshell->all_cmds = NULL;

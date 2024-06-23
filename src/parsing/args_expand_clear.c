@@ -3,71 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   args_expand_clear.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marboccu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:24:26 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/21 15:51:56 by marboccu         ###   ########.fr       */
+/*   Updated: 2024/06/22 21:02:14 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-char	*arg_update(t_var *mshell, char **arg, int *d_idx, bool in_heredoc)
-{
-	const int		len = str_ilen((*arg));
-	int				end;
-
-	if (*d_idx == -1)
-		return (*arg);
-	end = str_var_ending_idx((*arg), (*d_idx));
-	dbg_printf("\tFound a $ at [%3d] - [%3d]\n", (*d_idx), end, len);
-	if (str_ischar_inquotes((*arg), (*d_idx)) == '\'')
-	{
-		(*d_idx) = str_idxofchar_from((*arg), (*d_idx) + 1, '$');
-		return (dbg_printf(CMAGENTA"\t\tIt's inside single quote.\n"), *arg);
-	}
-	if (end == *d_idx && chr_isquote(((*arg))[*d_idx + 1]))
-	{
-		if (!in_heredoc)
-			(*arg) = str_replace_from_to((*arg), (*d_idx), (end), "");
-		(*d_idx) = str_idxofchar_from((*arg), (*d_idx) + 1, '$');
-		return (*arg);
-	}
-	else if (end == *d_idx)
-	{
-		(*d_idx) = str_idxofchar_from((*arg), (*d_idx) + 1, '$');
-		return (*arg);
-	}
-	return (replace_variable(mshell, arg, d_idx, &end));
-}
-
-t_list	*arg_expand(t_var *mshell, t_list *arg)
-{
-	int		dollar_idx;
-	char	*argument;
-	char	*res;
-
-	dollar_idx = str_idxofchar((char *)arg->val, '$');
-	argument = (char *)(arg->val);
-	dbg_printf(CYELLOW"[arg_expand] of [%s]\n", argument);
-	if (arg->prev && arg->prev->type == A_TOKEN)
-	{
-		if (argument && str_includesset(arg->val, "'\""))
-			arg->prev->_prevent_expansion = true;
-		if (str_equals(arg->val, "<<"))
-			return (arg);
-	}
-	while (dollar_idx != -1)
-	{
-		res = arg_update(mshell, &argument, &dollar_idx, false);
-		arg->val = argument;
-		if (!res)
-			return (NULL);
-	}
-	return (arg);
-}
-
-t_list	*cmd_expand_clear(t_var *mshell, t_list *args)
+t_list	*args_clearquotes(t_var *mshell, t_list *args)
 {
 	t_list	*arg;
 
@@ -77,8 +22,6 @@ t_list	*cmd_expand_clear(t_var *mshell, t_list *args)
 		dbg_printf(CCYAN"[expand_clear]\t|%s|:\n"CR, arg->val);
 		if (arg->val)
 		{
-			if (!arg_expand(mshell, arg))
-				return (lst_free(&args, free), cleanup(mshell, true, KO), NULL);
 			if (!str_clearquotes((char **)&arg->val))
 				return (lst_free(&args, free), cleanup(mshell, true, KO), NULL);
 		}
