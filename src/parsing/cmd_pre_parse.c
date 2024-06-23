@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 20:53:10 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/22 21:50:36 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/23 12:59:02 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ static char	*escape_special_chars(char *value)
 					&& chr_quoteclose_idx(value, i) == -1))
 				&& !str_ischar_inquotes(value, i))
 		{
-			dbg_printf("escaping: [%c] (i=%d; len=%d)\n", value[i], i, str_ilen(value));
 			tmp = ft_calloc(str_ilen(value) + 4, sizeof(char));
 			if (!tmp)
 				return (free(value), NULL);
@@ -48,7 +47,6 @@ static char	*escape_special_chars(char *value)
 			tmp[i] = (char [2]){'"', '\''}[value[i] == '"'];
 			tmp[i + 1] = value[i];
 			tmp[i + 2] = (char [2]){'"', '\''}[value[i] == '"'];
-			dbg_printf("escaped: [%s] saf[%s] stuff_after[%d]\n", tmp, value + i + 1, str_ilen(value + i + 1));
 			str_lcat(tmp, value + i + 1, str_ilen(value) + 4);
 			free(value);
 			value = tmp;
