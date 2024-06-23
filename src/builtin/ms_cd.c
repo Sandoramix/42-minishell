@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 17:37:44 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/22 16:33:57 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/23 22:48:16 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	ms_cd_home(t_var *mshell)
 			return (pf_errcode(E_MALLOC), cleanup(mshell, true, 1));
 	}
 	cd_update_oldpwd(mshell);
-	if (!mshell->home_path)
+	if (!current_home)
 	{
 		g_set_status(1);
 		ft_perror("cd: HOME is not set\n", mshell->curr_path);
