@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/22 22:19:54 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/23 12:46:02 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_state	ms_exec_cmd(t_var *mshell, t_list *cmd)
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	execve(abs_path, args, env);
-	g_set_status(131);
+	g_set_status(127);
 	ft_perror("%s: command not found\n", cmd->val);
 	return (str_freemtx(paths), str_freemtx(args), str_freemtx(env),
 		free(abs_path), cleanup(mshell, true, g_status), KO);
