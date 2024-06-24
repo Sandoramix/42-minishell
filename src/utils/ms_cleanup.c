@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 10:37:00 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/24 16:55:02 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/24 19:00:32 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	close_pipes(t_var *mshell)
 		files_close(mshell->pipes[i], 2);
 }
 
-void	*delete_pipes(t_var *mshell)
+void	*kill_pipes(t_var *mshell)
 {
 	int		i;
 
@@ -79,8 +79,7 @@ int	cleanup(t_var *g, bool shouldexit, int status)
 	lst_free(&g->env, free);
 	free(g->curr_path);
 	files_close((int [2]){g->orig_stdin, g->orig_stdout}, 2);
-	files_close((int [2]){STDIN_FILENO, STDOUT_FILENO}, 2);
-	delete_pipes(g);
+	kill_pipes(g);
 	clean_cmds(g->all_cmds, true);
 	str_freemtx(g->script_file);
 	if (shouldexit)

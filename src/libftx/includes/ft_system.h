@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 15:46:10 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/23 22:52:48 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/24 18:17:42 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,6 @@ char		**env_load_paths(t_list *env);
  * `NULL` if there's been an allocation error.
  */
 t_list		*env_load(char **envp);
-
-/**
- * @brief Find the absolute path of a `cmd` command.
- * @param paths array of path where to lookup the given `cmd`
- * @param cmd the requested command
- * @return absolute path of the `cmd` or if it doesn't exist a `NULL`
- * @attention Uses: `malloc`
- *  `free`
- */
-char		*sys_findcmdpath(char **paths, char *cmd);
 
 /**
  * @brief Get current timestamp

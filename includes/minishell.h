@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/24 18:08:28 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/24 18:34:43 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ typedef struct s_var
 
 int		ms_init(t_var *mshell);
 void	close_pipes(t_var *mshell);
-void	*delete_pipes(t_var *mshell);
+void	*kill_pipes(t_var *mshell);
 t_state	ms_prompt(t_var *mshell);
 t_state	ms_exec_script(t_var *mshell);
 
@@ -134,6 +134,16 @@ t_list	*ms_split_pipelines(t_list *all);
 //-------------------------------------
 t_state	add_history_line(t_var *mshell, char *cmd);
 t_state	ms_update_cwd(t_var *mshell);
+//-----------FILE-UTILS----------------
+/**
+ * @brief Find the absolute path of a `cmd` command.
+ * @param paths array of path where to lookup the given `cmd`
+ * @param cmd the requested command
+ * @return absolute path of the `cmd` or if it doesn't exist a `NULL`
+ * @attention Uses: `malloc`
+ *  `free`
+ */
+char	*sys_findcmdpath(char **paths, char *cmd);
 //------------------------------------------------------------------------------
 
 //-------------------------EXPERIMENTAL-----------------------------------------

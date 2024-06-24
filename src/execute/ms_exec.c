@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/24 18:08:28 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/24 19:12:58 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,8 @@ t_state	ms_exec_cmd(t_var *mshell, t_list *cmd)
 	abs_path = sys_findcmdpath(paths, cmd->val);
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
-	if (abs_path && execve(abs_path, args, env) == -1)
+	if (abs_path && g_status != 1 && execve(abs_path, args, env) == -1)
 		pf_errcode(E_EXECVE);
-	g_set_status(1);
-	if (!abs_path)
-		ft_perror("%s: command not found\n", cmd->val);
-	if (!abs_path)
-		g_set_status(127);
 	return (str_freemtx(paths), str_freemtx(args), str_freemtx(env),
 		free(abs_path), cleanup(mshell, true, g_status), KO);
 }
@@ -75,28 +70,27 @@ static int	ms_pre_exec(t_var *mshell, t_command *command, bool to_fork)
 		return (KO);
 	}
 	if (ms_rediout(command) == KO)
-		return (g_set_status(1), KO);
+		return (KO);
 	if (!command->args)
 		return (g_set_status(0), OK_EXIT);
 	return (OK);
 }
 
-static int	ms_exec_command(t_var *mshell, t_command *command,
+static t_state	ms_exec_command(t_var *mshell, t_command *command,
 		int tot_cmds, int idx)
 {
-	int		state;
-	pid_t	pid;
+	const t_state	state = ms_pre_exec(mshell, command, tot_cmds > 1);
+	pid_t			pid;
 
-	state = ms_pre_exec(mshell, command, tot_cmds > 1);
-	if (state != OK)
-		return ((int [2]){OK, KO}[state == KO]);
-	if (tot_cmds > 1 || !is_builtin(command->args->val))
+	if (tot_cmds > 1 || (command->args && !is_builtin(command->args->val)))
 	{
 		pid = fork();
 		if (pid < 0)
 			return (pf_errcode(E_FORK), KO);
 		else if (!pid)
 		{
+			if (state != OK)
+				return (reset_stds(mshell), cleanup(mshell, true, g_status));
 			ms_exec_update_stds(mshell, command, idx);
 			if (is_builtin(command->args->val))
 				execute_builtin(mshell, command);
@@ -104,11 +98,12 @@ static int	ms_exec_command(t_var *mshell, t_command *command,
 				ms_exec_cmd(mshell, command->args);
 			return (reset_stds(mshell), cleanup(mshell, true, g_status), OK);
 		}
+		return (OK);
 	}
-	else
-		return (ms_exec_update_stds(mshell, command, idx),
-			execute_builtin(mshell, command), reset_stds(mshell), OK);
-	return (reset_stds(mshell), OK);
+	if (state != OK)
+		return ((int [2]){OK, KO}[state == KO]);
+	return (ms_exec_update_stds(mshell, command, idx),
+		execute_builtin(mshell, command), reset_stds(mshell), OK);
 }
 
 t_state	ms_exec_commands(t_var *mshell, t_list *all)
@@ -131,11 +126,11 @@ t_state	ms_exec_commands(t_var *mshell, t_list *all)
 	{
 		mshell->pipes[i] = ft_calloc(2, sizeof(int));
 		if (!mshell->pipes[i] || pipe(mshell->pipes[i]) == -1)
-			return (clean_cmds(mshell->all_cmds, true), KO);
+			return (kill_pipes(mshell), clean_cmds(mshell->all_cmds, true), KO);
 		command = cmds_list->val;
 		signal(SIGINT, handle_exec_sig);
 		ms_exec_command(mshell, command, tot_cmds, i);
 		cmds_list = cmds_list->next;
 	}
-	return (delete_pipes(mshell), clean_cmds(mshell->all_cmds, true), OK);
+	return (kill_pipes(mshell), clean_cmds(mshell->all_cmds, true), OK);
 }

@@ -1,22 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sys_cmd.c                                          :+:      :+:    :+:   */
+/*   file_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/02 10:38:09 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/24 16:05:32 by odudniak         ###   ########.fr       */
+/*   Created: 2024/06/24 18:16:29 by odudniak          #+#    #+#             */
+/*   Updated: 2024/06/24 19:10:27 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
+#include <minishell.h>
 
 static char	*handle_relative_path(char *path)
 {
+	if (file_isdir(path))
+		return (g_set_status(126),
+			ft_perror("%s: permission denied\n", path), NULL);
+	if (!file_exists(path))
+		return (g_set_status(127),
+			ft_perror("%s: no such file or directory\n", path), NULL);
 	if (file_hasperm(path, X_OK))
 		return (str_dup(path));
-	return (NULL);
+	return (g_set_status(126),
+		ft_perror("%s: permission denied\n", path), NULL);
 }
 
 char	*sys_findcmdpath(char **paths, char *cmd)
@@ -43,5 +50,5 @@ char	*sys_findcmdpath(char **paths, char *cmd)
 			return (res);
 		free(res);
 	}
-	return (NULL);
+	return (g_set_status(127), ft_perror("%s: command not found\n", cmd), NULL);
 }

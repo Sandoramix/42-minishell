@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 12:33:44 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/24 14:21:28 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/24 19:16:42 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ int	open_fd_in(char *filein_name, int *fd)
 
 	file_fd = open(filein_name, O_RDONLY);
 	if (file_fd == -1)
-		return (g_set_status(1), KO);
+		return (g_set_status(1),
+			ft_perror("%s: No such file or directory\n", filein_name), KO);
 	if (*fd > 2)
 		close(*fd);
 	*fd = file_fd;
@@ -59,7 +60,7 @@ t_state	ms_in_redir(t_command *cmd, int *fd)
 	{
 		if (str_equals(current->val, "<"))
 		{
-			if (access(current->next->val, F_OK) != 0)
+			if (file_exists(current->next->val))
 				return (g_set_status(1),
 					ft_perror(PROGNAME": %s: No such file or directory\n",
 						current->next->val), KO);
