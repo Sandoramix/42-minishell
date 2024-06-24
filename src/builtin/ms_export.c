@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:04:40 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/23 22:43:16 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/24 14:16:48 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	export_print_everything(t_var *mshell)
 	}
 }
 
-static bool	export_upsert_variable(t_var *mshell, char **split,
+static t_state	export_upsert_variable(t_var *mshell, char **split,
 	t_list *arg, t_list *variable)
 {
 	const bool	new_declaration = variable == NULL;
@@ -50,7 +50,7 @@ static bool	export_upsert_variable(t_var *mshell, char **split,
 	if (!variable)
 		variable = lst_new(split[1], split[0]);
 	if (!variable)
-		return (false);
+		return (KO);
 	if (!split[1] && new_declaration)
 		variable->_hidden = true;
 	if (!new_declaration)
@@ -68,11 +68,11 @@ static bool	export_upsert_variable(t_var *mshell, char **split,
 		variable->_hidden = false;
 	}
 	if (new_declaration && !lst_addnode_tail(&mshell->env, variable))
-		return (free(split), lst_free(&variable, free), false);
-	return (free(split), true);
+		return (free(split), lst_free(&variable, free), KO);
+	return (free(split), OK);
 }
 
-static bool	export_handle_arg(t_var *mshell, t_list *arg, bool *status)
+static t_state	export_handle_arg(t_var *mshell, t_list *arg, bool *status)
 {
 	const bool	append = str_idxofstr(arg->val, "+=") != -1;
 	t_list		*env_node;
@@ -88,7 +88,7 @@ static bool	export_handle_arg(t_var *mshell, t_list *arg, bool *status)
 	{
 		*status = false;
 		return (ft_perror("export: `%s`: not a valid identifier\n", split[0]),
-			str_freemtx(split), false);
+			str_freemtx(split), OK);
 	}
 	env_node = lst_findbykey_str(mshell->env, split[0]);
 	return (export_upsert_variable(mshell, split, arg, env_node));
