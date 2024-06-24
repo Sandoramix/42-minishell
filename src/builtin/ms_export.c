@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:04:40 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/24 14:16:48 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/24 15:54:26 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,11 @@ static t_state	export_handle_arg(t_var *mshell, t_list *arg, bool *status)
 		split = str_split_first(arg->val, '=');
 	if (!split)
 		return (KO);
-	if (!str_isvariable(split[0]))
+	if (!str_isvariable(split[0]) || str_ilen(split[0]) == 0)
 	{
 		*status = false;
 		return (ft_perror("export: `%s`: not a valid identifier\n", split[0]),
-			str_freemtx(split), OK);
+			str_freemtx(split), g_set_status(1), OK);
 	}
 	env_node = lst_findbykey_str(mshell->env, split[0]);
 	return (export_upsert_variable(mshell, split, arg, env_node));
@@ -104,6 +104,7 @@ t_state	ms_export(t_var *mshell, t_list *args)
 		dbg_printf(CCYAN"[export]\tDEBUG:\n"CR);
 		lst_printstr(args);
 	}
+	g_set_status(0);
 	res = true;
 	if (lst_size(args) == 1)
 		return (export_print_everything(mshell), OK);

@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 14:56:28 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/23 23:29:50 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/24 18:09:57 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,25 +47,27 @@ bool	ms_closing_quotes_check(char *s)
 
 bool	ms_token_syntax_check(t_list *args)
 {
-	const char	*known_tokens[] = {"<", "<<", ">", ">>", "|", NULL};
-	int			i;
-
 	while (args)
 	{
 		if (args->type == A_TOKEN)
 		{
-			i = 0;
-			while (known_tokens[i] && str_cmp(args->val, known_tokens[i]) != 0)
-				i++;
-			if (i == 5)
+			if (!is_known_token(args->val))
 				return (false);
-			if ((args->prev && args->prev->type == A_TOKEN)
+			if ((!args->next))
+				return (dbg_printf("syntax error no neib.\n"), false);
+			if (str_equals(args->val, "|"))
+			{
+				if ((args->next && str_equals(args->next->val, "|"))
+					|| (args->prev && str_equals(args->prev->val, "|")))
+					return (false);
+			}
+			else if (!str_equals(args->val, "|")
+				&& ((args->next && str_equals(args->next->val, "|"))
+					|| (args->prev && str_equals(args->prev->val, "|"))))
+				;
+			else if ((args->prev && args->prev->type == A_TOKEN)
 				|| (args->next && args->next->type == A_TOKEN))
-				return (false);
-			if (!str_cmp("<<", args->val) && !args->next)
-				return (false);
-			if (str_equals(args->val, "|") && (!args->prev || !args->next))
-				return (false);
+				return (dbg_printf("syntax error n&p are token\n"), false);
 		}
 		args = args->next;
 	}

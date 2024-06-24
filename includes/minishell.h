@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/23 22:27:37 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/24 18:08:28 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ typedef struct s_var
 	t_list				*history;
 	// -------------EXECUTION-------
 	t_list				*all_cmds;
-	int					pipes[2][2];
+	int					**pipes;
 	int					orig_stdin;
 	int					orig_stdout;
 	//------------------------------
@@ -85,7 +85,8 @@ typedef struct s_var
 }			t_var;
 
 int		ms_init(t_var *mshell);
-
+void	close_pipes(t_var *mshell);
+void	*delete_pipes(t_var *mshell);
 t_state	ms_prompt(t_var *mshell);
 t_state	ms_exec_script(t_var *mshell);
 
@@ -125,7 +126,8 @@ int		cleanup(t_var *g, bool shouldexit, int status);
 int		reset_stds(t_var *mshell);
 void	*clean_cmds(t_list *cmds, bool free_content);
 //-------------CHECKS------------------
-bool	ms_is_builtin(char *cmd);
+bool	is_builtin(char *cmd);
+bool	is_known_token(char *value);
 //-----------CONVERTERS----------------
 char	**lst_env_to_mtx(t_var *mshell);
 t_list	*ms_split_pipelines(t_list *all);

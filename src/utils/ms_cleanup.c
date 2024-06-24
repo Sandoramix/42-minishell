@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 10:37:00 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/23 22:21:15 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/24 16:55:02 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,28 @@ int	reset_stds(t_var *mshell)
 	dup2(mshell->orig_stdin, STDIN_FILENO);
 	dup2(mshell->orig_stdout, STDOUT_FILENO);
 	return (OK);
+}
+
+void	close_pipes(t_var *mshell)
+{
+	int		i;
+
+	i = -1;
+	while (mshell->pipes && mshell->pipes[++i])
+		files_close(mshell->pipes[i], 2);
+}
+
+void	*delete_pipes(t_var *mshell)
+{
+	int		i;
+
+	close_pipes(mshell);
+	i = -1;
+	while (mshell->pipes && mshell->pipes[++i])
+		free(mshell->pipes[i]);
+	free(mshell->pipes);
+	mshell->pipes = NULL;
+	return (NULL);
 }
 
 void	*clean_cmds(t_list *commands_wrapper, bool free_val)
@@ -58,8 +80,7 @@ int	cleanup(t_var *g, bool shouldexit, int status)
 	free(g->curr_path);
 	files_close((int [2]){g->orig_stdin, g->orig_stdout}, 2);
 	files_close((int [2]){STDIN_FILENO, STDOUT_FILENO}, 2);
-	files_close(g->pipes[0], 2);
-	files_close(g->pipes[1], 2);
+	delete_pipes(g);
 	clean_cmds(g->all_cmds, true);
 	str_freemtx(g->script_file);
 	if (shouldexit)

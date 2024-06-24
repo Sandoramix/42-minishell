@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/23 23:04:49 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/24 18:08:28 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static int	ms_exec_command(t_var *mshell, t_command *command,
 	state = ms_pre_exec(mshell, command, tot_cmds > 1);
 	if (state != OK)
 		return ((int [2]){OK, KO}[state == KO]);
-	if (tot_cmds > 1 || !ms_is_builtin(command->args->val))
+	if (tot_cmds > 1 || !is_builtin(command->args->val))
 	{
 		pid = fork();
 		if (pid < 0)
@@ -98,7 +98,7 @@ static int	ms_exec_command(t_var *mshell, t_command *command,
 		else if (!pid)
 		{
 			ms_exec_update_stds(mshell, command, idx);
-			if (ms_is_builtin(command->args->val))
+			if (is_builtin(command->args->val))
 				execute_builtin(mshell, command);
 			else
 				ms_exec_cmd(mshell, command->args);
@@ -124,17 +124,18 @@ t_state	ms_exec_commands(t_var *mshell, t_list *all)
 	cmds_list = mshell->all_cmds;
 	tot_cmds = lst_size(cmds_list);
 	i = -1;
-	if (pipe(mshell->pipes[0]) == -1)
-		return (pf_errcode(E_PIPE), clean_cmds(mshell->all_cmds, true), KO);
-	if (pipe(mshell->pipes[1]) == -1)
-		return (pf_errcode(E_PIPE), clean_cmds(mshell->all_cmds, true), KO);
-	while (cmds_list && ++i > -1)
+	mshell->pipes = ft_calloc(tot_cmds + 1, sizeof(int *));
+	if (!mshell->pipes)
+		return (pf_errcode(E_MALLOC), clean_cmds(mshell->all_cmds, true), KO);
+	while (++i < tot_cmds)
 	{
+		mshell->pipes[i] = ft_calloc(2, sizeof(int));
+		if (!mshell->pipes[i] || pipe(mshell->pipes[i]) == -1)
+			return (clean_cmds(mshell->all_cmds, true), KO);
 		command = cmds_list->val;
 		signal(SIGINT, handle_exec_sig);
 		ms_exec_command(mshell, command, tot_cmds, i);
 		cmds_list = cmds_list->next;
 	}
-	return (files_close(mshell->pipes[0], 2), files_close(mshell->pipes[1], 2),
-		clean_cmds(mshell->all_cmds, true), OK);
+	return (delete_pipes(mshell), clean_cmds(mshell->all_cmds, true), OK);
 }

@@ -47,7 +47,8 @@ SRC = ./main.c \
 	./src/utils/ms_cleanup.c \
 	./src/utils/ms_convert_utils.c \
 	./src/utils/ms_update_cwd.c \
-	./src/utils/parsing_utils.c
+	./src/utils/parsing_utils.c \
+	./src/utils/validation_utils.c
 
 # ----RULES---------------------------------------------------------------------
 

@@ -24,7 +24,8 @@ static bool	cmdp_switch(t_cmdp_switch type, t_cmdp_arg *var)
 	if (type == CMDP_QUOTE)
 		return (chr_isquote(var->str[i]));
 	if (type == CMDP_TOKEN)
-		return (curr_token && (next_space_or_end || !next_token || next_quote));
+		return (curr_token && (next_space_or_end || !next_token || next_quote
+				|| (var->str[i] != var->str[i + 1])));
 	if (type == CMDP_WORD)
 		return ((!chr_isspace(var->str[i]) && !curr_token)
 			&& (next_space_or_end || next_quote || next_token));
