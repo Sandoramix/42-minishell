@@ -32,3 +32,14 @@ bool	is_builtin(char *cmd)
 
 	return (str_array_includes((char **)valid, cmd));
 }
+
+bool	is_node_token(t_list *node, char *expected)
+{
+	if (!node)
+		return (false);
+	if (node->type != A_TOKEN)
+		return (false);
+	if (!expected)
+		return (true);
+	return (str_equals(node->val, expected) && node->type == A_TOKEN);
+}

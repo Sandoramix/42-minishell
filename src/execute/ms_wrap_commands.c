@@ -44,10 +44,11 @@ static t_list	*extract_redirs(t_list **args, t_list **res, const char **tkns)
 			if (!node->prev)
 				*args = node->next->next;
 			if (node->prev)
+				node->prev->next = NULL;
+			if (node->next && node->prev)
 				node->prev->next = node->next->next;
-			if (node->next->next)
+			if (node->next && node->next->next)
 				node->next->next->prev = node->prev;
-			node->prev = lst_gettail(*res);
 			tmp = node->next->next;
 			node->next->next = NULL;
 			lst_addnode_tail(res, node);

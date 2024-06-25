@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:09:50 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/24 18:34:43 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/25 14:58:26 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ void	*clean_cmds(t_list *cmds, bool free_content);
 //-------------CHECKS------------------
 bool	is_builtin(char *cmd);
 bool	is_known_token(char *value);
+bool	is_node_token(t_list *node, char *expected);
 //-----------CONVERTERS----------------
 char	**lst_env_to_mtx(t_var *mshell);
 t_list	*ms_split_pipelines(t_list *all);

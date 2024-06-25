@@ -55,18 +55,18 @@ bool	ms_token_syntax_check(t_list *args)
 				return (false);
 			if ((!args->next))
 				return (dbg_printf("syntax error no neib.\n"), false);
-			if (str_equals(args->val, "|"))
+			if (is_node_token(args, "|"))
 			{
-				if ((args->next && str_equals(args->next->val, "|"))
-					|| (args->prev && str_equals(args->prev->val, "|")))
+				if ((!args->next || is_node_token(args->next, "|"))
+					|| (!args->prev || is_node_token(args->prev, NULL)))
 					return (false);
 			}
-			else if (!str_equals(args->val, "|")
-				&& ((args->next && str_equals(args->next->val, "|"))
-					|| (args->prev && str_equals(args->prev->val, "|"))))
+			else if (!is_node_token(args, "|")
+				&& (is_node_token(args->next, "|")
+					|| is_node_token(args->prev, "|")))
 				;
-			else if ((args->prev && args->prev->type == A_TOKEN)
-				|| (args->next && args->next->type == A_TOKEN))
+			else if (is_node_token(args->prev, NULL)
+				|| is_node_token(args->next, NULL))
 				return (dbg_printf("syntax error n&p are token\n"), false);
 		}
 		args = args->next;
