@@ -28,6 +28,7 @@ t_state	ms_update_cwd(t_var *mshell)
 	}
 	else if (!pwd)
 		return (pf_errcode(E_MALLOC), cleanup(mshell, true, 1), KO);
-	lst_upsert_str(&mshell->env, "PWD", mshell->curr_path);
+	if (!lst_upsert_str(&mshell->env, "PWD", mshell->curr_path))
+		return (pf_errcode(E_MALLOC), KO);
 	return (OK);
 }
