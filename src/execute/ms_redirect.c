@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 12:33:44 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/24 19:16:42 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/26 09:20:16 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ t_state	ms_in_redir(t_command *cmd, int *fd)
 	{
 		if (str_equals(current->val, "<"))
 		{
-			if (file_exists(current->next->val))
+			if (!file_exists(current->next->val))
 				return (g_set_status(1),
 					ft_perror(PROGNAME": %s: No such file or directory\n",
 						current->next->val), KO);

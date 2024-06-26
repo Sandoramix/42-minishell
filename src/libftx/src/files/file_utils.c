@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 17:39:55 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/22 10:32:37 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/06/26 09:23:19 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ bool	file_isdir(char *path)
 
 bool	file_exists(char *path)
 {
-	return (!file_isdir(path) && access(path, F_OK) == 0);
+	const bool	isdir = file_isdir(path);
+	const int	access_check = access(path, F_OK);
+
+	return (!isdir && access_check == 0);
 }
 
 void	file_close(int fd)
