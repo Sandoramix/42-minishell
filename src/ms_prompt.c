@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 12:40:27 by marboccu          #+#    #+#             */
-/*   Updated: 2024/08/10 09:27:12 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/08/10 09:37:07 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ static t_state	ms_handleinput(t_var *mshell, char **input)
 	int		status_code;
 
 	if (!ms_closing_quotes_check(*input))
-		return (pf_errcode(E_SYNTAX), free(*input), setstatus(mshell, 1), KO);
+		return (pf_errcode(E_SYNTAX), free(*input), setstatus(mshell, 2), KO);
 	cmd_list = cmd_parse(mshell, input);
 	free(*input);
 	if (!cmd_list)
 		return (lst_free(&cmd_list, free), KO);
 	if (!ms_token_syntax_check(cmd_list))
-		return (pf_errcode(E_SYNTAX), setstatus(mshell, 1),
+		return (pf_errcode(E_SYNTAX), setstatus(mshell, 2),
 			lst_free(&cmd_list, free), KO);
 	ms_exec_commands(mshell, cmd_list);
 	while (wait(&status_code) != -1)
