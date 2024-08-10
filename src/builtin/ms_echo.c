@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:22:46 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/22 11:25:23 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/08/10 08:54:51 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,5 @@ t_state	ms_echo(t_var *mshell, t_list *args)
 	}
 	if (should_nl)
 		ft_printf("\n");
-	return (g_set_status(0), OK);
+	return (setstatus(mshell, 0), OK);
 }

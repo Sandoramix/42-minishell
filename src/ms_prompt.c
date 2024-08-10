@@ -6,54 +6,62 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 12:40:27 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/24 19:24:03 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/08/10 09:27:12 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-t_state	ms_handleinput(t_var *mshell, char **input)
+static t_state	ms_handleinput(t_var *mshell, char **input)
 {
 	t_list	*cmd_list;
 	int		status_code;
 
 	if (!ms_closing_quotes_check(*input))
-		return (pf_errcode(E_SYNTAX), free(*input), g_set_status(1), KO);
+		return (pf_errcode(E_SYNTAX), free(*input), setstatus(mshell, 1), KO);
 	cmd_list = cmd_parse(mshell, input);
 	free(*input);
 	if (!cmd_list)
 		return (lst_free(&cmd_list, free), KO);
 	if (!ms_token_syntax_check(cmd_list))
-		return (pf_errcode(E_SYNTAX), g_set_status(1),
+		return (pf_errcode(E_SYNTAX), setstatus(mshell, 1),
 			lst_free(&cmd_list, free), KO);
 	ms_exec_commands(mshell, cmd_list);
 	while (wait(&status_code) != -1)
 	{
 		if (WIFEXITED(status_code))
-			g_set_status(WEXITSTATUS(status_code));
+			setstatus(mshell, WEXITSTATUS(status_code));
 		else if (WIFSIGNALED(status_code))
-			handle_child_ret_sig(WTERMSIG(status_code));
+			g_setlastsig(WTERMSIG(status_code));
 	}
-	if (g_status == 131)
+	track_lastsig(mshell);
+	if (mshell->statuscode == 131)
 		ft_printf("Quit\n");
 	return (OK);
 }
 
+static void	ms_resetsignals(void)
+{
+	g_setlastsig(INT_MIN);
+	signal(SIGINT, handle_sig);
+	signal(SIGQUIT, SIG_IGN);
+}
+
 t_state	ms_exec_script(t_var *mshell)
 {
-	int			file_fd;
+	const int	file_fd = file_open(mshell->_main.argv[1], O_RDONLY);
 	int			i;
 	char		*line;
 
 	i = -1;
-	file_fd = file_open(mshell->_main.argv[1], O_RDONLY);
 	if (file_fd == -1)
 		cleanup(mshell, true, 127);
 	mshell->script_file = ft_readfile(file_fd, false);
-	while (g_status == 0 && mshell->script_file && mshell->script_file[++i])
+	track_lastsig(mshell);
+	while (mshell->statuscode == 0
+		&& mshell->script_file && mshell->script_file[++i])
 	{
-		signal(SIGINT, handle_sig);
-		signal(SIGQUIT, SIG_IGN);
+		ms_resetsignals();
 		line = mshell->script_file[i];
 		if (!line || str_startswith(line, "#") || str_isblank(line))
 			continue ;
@@ -74,8 +82,7 @@ t_state	ms_prompt(t_var *mshell)
 
 	while (42)
 	{
-		signal(SIGINT, handle_sig);
-		signal(SIGQUIT, SIG_IGN);
+		ms_resetsignals();
 		input = readline(PROG_PROMPT " ");
 		if (!input)
 			break ;

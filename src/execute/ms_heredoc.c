@@ -6,29 +6,26 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 20:32:32 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/22 11:11:02 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/08/10 09:22:57 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-#define PIPPO "> "
-
-static char	*hd_line_read(char *heredoc_file, t_list *token)
+static char	*hd_line_read(t_var *mshell, char *heredoc_file, t_list *token)
 {
 	char	*line;
 	char	*temp;
 
-	temp = NULL;
+	temp = PROG_PROMPT;
 	if (ft_isdebug())
-	{
-		temp = str_join(heredoc_file, PIPPO);
-		line = readline(temp);
-	}
-	else
-		line = readline(HEREDOC_PROMPT);
-	free(temp);
-	if (!line || str_equals(line, token->next->val) || g_status == 130)
+		temp = str_join(heredoc_file, PROMPT);
+	line = readline(temp);
+	if (ft_isdebug())
+		free(temp);
+	track_lastsig(mshell);
+	if (!line || str_equals(line, token->next->val)
+		|| mshell->statuscode == 130)
 	{
 		if (!line)
 			ft_perror(" "PROGNAME": warning: %s (wanted `%s`)",
@@ -55,8 +52,8 @@ static char	*heredoc_read(t_var *mshell, t_list *token, int count)
 	dbg_printf(CGRAY"\nheredoc_name=[%s]\n"CR, heredoc_file);
 	while (42)
 	{
-		line = hd_line_read(heredoc_file, token);
-		if (!line && g_status == 130)
+		line = hd_line_read(mshell, heredoc_file, token);
+		if (!line && mshell->statuscode == 130)
 			return (close(heredoc_fd), free(heredoc_file), NULL);
 		if (!line)
 			break ;
@@ -102,10 +99,10 @@ t_state	ms_inredir_handle(t_var *mshell, t_command *command)
 	int		input_fd;
 
 	input_fd = -1;
-	g_set_status(0);
+	setstatus(mshell, 0);
 	if (ms_heredoc(mshell, command, &input_fd) == KO)
 		return (KO);
-	if (ms_in_redir(command, &input_fd) == KO)
+	if (ms_in_redir(mshell, command, &input_fd) == KO)
 		return (KO);
 	if (input_fd != -1)
 		command->in_fd = input_fd;

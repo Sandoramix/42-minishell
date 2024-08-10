@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 09:52:54 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/24 19:12:58 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/08/10 09:22:45 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,29 +50,32 @@ t_state	ms_exec_cmd(t_var *mshell, t_list *cmd)
 	env = lst_env_to_mtx(mshell);
 	if (!args || (!env && mshell->env))
 		return (pf_errcode(E_MALLOC), str_freemtx(env), str_freemtx(args), KO);
-	abs_path = sys_findcmdpath(paths, cmd->val);
+	abs_path = sys_findcmdpath(mshell, paths, cmd->val);
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
-	if (abs_path && g_status != 1 && execve(abs_path, args, env) == -1)
+	track_lastsig(mshell);
+	if (abs_path && mshell->statuscode != 1
+		&& execve(abs_path, args, env) == -1)
 		pf_errcode(E_EXECVE);
 	return (str_freemtx(paths), str_freemtx(args), str_freemtx(env),
-		free(abs_path), cleanup(mshell, true, g_status), KO);
+		free(abs_path), cleanup(mshell, true, mshell->statuscode), KO);
 }
 
 static int	ms_pre_exec(t_var *mshell, t_command *command, bool to_fork)
 {
 	if (ms_inredir_handle(mshell, command) == KO)
 	{
-		if (g_status != 130)
-			g_set_status(1);
-		if (g_status != 130 && to_fork && !command->args)
-			g_set_status(0);
+		track_lastsig(mshell);
+		if (mshell->statuscode != 130)
+			setstatus(mshell, 1);
+		if (mshell->statuscode != 130 && to_fork && !command->args)
+			setstatus(mshell, 0);
 		return (KO);
 	}
-	if (ms_rediout(command) == KO)
+	if (ms_rediout(mshell, command) == KO)
 		return (KO);
 	if (!command->args)
-		return (g_set_status(0), OK_EXIT);
+		return (setstatus(mshell, 0), OK_EXIT);
 	return (OK);
 }
 
@@ -90,13 +93,13 @@ static t_state	ms_exec_command(t_var *mshell, t_command *command,
 		else if (!pid)
 		{
 			if (state != OK)
-				return (reset_stds(mshell), cleanup(mshell, true, g_status));
+				return (cleanup(mshell, true, mshell->statuscode));
 			ms_exec_update_stds(mshell, command, idx);
 			if (is_builtin(command->args->val))
 				execute_builtin(mshell, command);
 			else
 				ms_exec_cmd(mshell, command->args);
-			return (reset_stds(mshell), cleanup(mshell, true, g_status), OK);
+			return (cleanup(mshell, true, mshell->statuscode), OK);
 		}
 		return (OK);
 	}

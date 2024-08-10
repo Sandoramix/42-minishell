@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 22:23:20 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/23 23:30:05 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/08/10 09:11:48 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,11 @@ void	handle_sig(int signal)
 {
 	if (signal == SIGINT)
 	{
-		g_set_status(130);
+		g_setlastsig(SIGINT);
 		ioctl(STDIN_FILENO, TIOCSTI, "\n");
 		rl_replace_line("", 0);
 		rl_on_new_line();
 	}
-}
-
-void	handle_child_ret_sig(int signal)
-{
-	if (signal == SIGINT)
-		g_set_status(130);
-	else if (signal == SIGQUIT)
-		g_set_status(131);
 }
 
 void	handle_exec_sig(int signal)
@@ -36,6 +28,6 @@ void	handle_exec_sig(int signal)
 	if (signal == SIGINT)
 	{
 		ft_fprintf(2, "\n");
-		g_set_status(130);
+		g_setlastsig(SIGINT);
 	}
 }

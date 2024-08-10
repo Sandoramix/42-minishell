@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:44:22 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/22 16:34:05 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/08/10 08:55:04 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_state	ms_env(t_var *mshell, t_list *args)
 {
 	if (lst_size(args) > 1)
-		return (g_set_status(1),
+		return (setstatus(mshell, 1),
 			ft_perror("env: No arguments/options are allowed\n"), KO);
 	args = mshell->env;
 	while (args)

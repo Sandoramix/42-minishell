@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 20:53:10 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/23 23:28:56 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/08/10 09:20:28 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static char	*replace_variable_w_value(t_var *mshell,
 	if (!variable)
 		return (pf_errcode(E_MALLOC), NULL);
 	if (str_equals(variable, "?"))
-		return (free(variable), expand_statuscode(arg_p, dollar_idx, end_idx));
+		return (free(variable), exp_stcode(mshell, arg_p, dollar_idx, end_idx));
 	env = lst_findbykey_str(mshell->env, variable);
 	free(variable);
 	if (!env)

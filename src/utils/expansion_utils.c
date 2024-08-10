@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 09:38:41 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/22 21:02:27 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/08/10 09:20:42 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ char	*expand_empty(char **arg, int *dollar_idx, int *end_idx)
 	return (*arg);
 }
 
-char	*expand_statuscode(char **arg, int *dollar_idx, int *end_idx)
+char	*exp_stcode(t_var *m, char **arg, int *dollar_idx, int *end_idx)
 {
 	char	*status_code;
 
-	status_code = ft_itoa(g_status);
+	status_code = ft_itoa(m->statuscode);
 	if (!status_code)
 		return (pf_errcode(E_MALLOC), NULL);
 	*arg = str_replace_from_to(*arg, *dollar_idx, *end_idx, status_code);
@@ -49,7 +49,7 @@ char	*replace_variable(t_var *mshell,
 		return (pf_errcode(E_MALLOC), NULL);
 	dbg_printf(CGRAY"\t\tVariable to search: [%s]\n"CR, variable);
 	if (str_equals(variable, "?"))
-		return (free(variable), expand_statuscode(arg_p, dollar_idx, end_idx));
+		return (free(variable), exp_stcode(mshell, arg_p, dollar_idx, end_idx));
 	env = lst_findbykey_str(mshell->env, variable);
 	free(variable);
 	if (!env)

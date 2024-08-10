@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:25:21 by odudniak          #+#    #+#             */
-/*   Updated: 2024/06/22 10:57:33 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/08/10 08:57:21 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_state	ms_unset(t_var *mshell, t_list *args)
 		lst_delbykey(&mshell->env, tmp->val, (void *)str_equals, free);
 		tmp = tmp->next;
 	}
-	g_set_status(final_status);
+	setstatus(mshell, final_status);
 	ms_unset_debug(mshell, args, "POST UNSET");
 	return (OK);
 }

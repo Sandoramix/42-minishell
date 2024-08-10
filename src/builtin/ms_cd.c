@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 17:37:44 by marboccu          #+#    #+#             */
-/*   Updated: 2024/06/23 22:48:16 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/08/10 08:54:30 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	ms_cd_home(t_var *mshell)
 	cd_update_oldpwd(mshell);
 	if (!current_home)
 	{
-		g_set_status(1);
+		setstatus(mshell, 1);
 		ft_perror("cd: HOME is not set\n", mshell->curr_path);
 	}
 	else
@@ -53,16 +53,17 @@ t_state	ms_cd(t_var *mshell, t_list *args)
 
 	len = lst_size(args);
 	if (len > 2)
-		return (g_set_status(1), ft_perror("cd: too many arguments\n"), KO);
+		return (setstatus(mshell, 1),
+			ft_perror("cd: too many arguments\n"), KO);
 	else if (len == 1)
 		return (ms_cd_home(mshell));
 	if (stat(args->next->val, &buf) != 0)
-		return (g_set_status(1),
+		return (setstatus(mshell, 1),
 			ft_perror("cd: %s: no such file or directory\n", args->next->val),
 			KO);
 	cd_update_oldpwd(mshell);
 	chdir(args->next->val);
 	ms_update_cwd(mshell);
 	dbg_printf(CCYAN"[cd]:\t[%s]->%s\n"CR, args->next->val, mshell->curr_path);
-	return (g_set_status(0), OK);
+	return (setstatus(mshell, 0), OK);
 }
