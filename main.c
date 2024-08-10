@@ -25,8 +25,8 @@ int	main(int argc, char **argv, char **envp)
 	mshell._main.argv = argv;
 	ms_init(&mshell);
 	if (argc > 1)
-		return (ms_exec_script(&mshell), g_lastsig);
+		return (ms_exec_script(&mshell), mshell.statuscode);
 	else
 		ms_prompt(&mshell);
-	return (cleanup(&mshell, true, g_lastsig));
+	return (cleanup(&mshell, true, mshell.statuscode));
 }
