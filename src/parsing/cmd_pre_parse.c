@@ -6,7 +6,7 @@
 /*   By: odudniak <odudniak@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 20:53:10 by odudniak          #+#    #+#             */
-/*   Updated: 2024/08/10 09:20:28 by odudniak         ###   ########.fr       */
+/*   Updated: 2024/09/25 12:05:50 by odudniak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,20 +52,21 @@ static char	*replace_variable_w_value(t_var *mshell,
 	if (str_equals(variable, "?"))
 		return (free(variable), exp_stcode(mshell, arg_p, dollar_idx, end_idx));
 	env = lst_findbykey_str(mshell->env, variable);
-	free(variable);
 	if (!env)
-		return (expand_empty(arg_p, dollar_idx, end_idx));
+		return (free(variable), expand_empty(arg_p, dollar_idx, end_idx));
 	dbg_printf(CGREEN"\tVariable found with value: `%s`\n"CR, env->val);
 	dbg_printf(CGRAY"Escaping special chars (tokens/quotes)...\n"CR);
-	val = escape_special_chars(str_dup(env->val));
+	val = str_dup(env->val);
+	if (!str_ischar_inquotes(*arg_p, *dollar_idx))
+		val = escape_special_chars(val);
 	if (!val)
-		return (pf_errcode(E_MALLOC), NULL);
+		return (free(variable), pf_errcode(E_MALLOC), NULL);
 	*arg_p = str_replace_from_to(*arg_p, *dollar_idx, *end_idx, val);
 	free(val);
 	if (!*arg_p)
-		return (pf_errcode(E_MALLOC), NULL);
+		return (free(variable), pf_errcode(E_MALLOC), NULL);
 	*dollar_idx = str_idxofchar(*arg_p, '$');
-	return (*arg_p);
+	return (free(variable), *arg_p);
 }
 
 static char	*expand_variable(t_var *mshell, char **arg, int *d_idx)
