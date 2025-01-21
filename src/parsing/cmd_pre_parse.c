@@ -65,7 +65,7 @@ static char	*replace_variable_w_value(t_var *mshell,
 	free(val);
 	if (!*arg_p)
 		return (free(variable), pf_errcode(E_MALLOC), NULL);
-	*dollar_idx = str_idxofchar(*arg_p, '$');
+	*dollar_idx = str_idxofchar_from(*arg_p, *dollar_idx + 1, '$');
 	return (free(variable), *arg_p);
 }
 
@@ -93,7 +93,7 @@ static char	*expand_variable(t_var *mshell, char **arg, int *d_idx)
 	else if (end == *d_idx)
 	{
 		(*d_idx) = str_idxofchar_from((*arg), (*d_idx) + 1, '$');
-		return (*arg);
+		return (dbg_printf(CMAGENTA"\t\tIt's without a valid name.\n"), *arg);
 	}
 	return (replace_variable_w_value(mshell, arg, d_idx, &end));
 }
