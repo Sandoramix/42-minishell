@@ -19,7 +19,7 @@ char	*expand_empty(char **arg, int *dollar_idx, int *end_idx)
 	*end_idx = *dollar_idx;
 	if (!(*arg))
 		return (pf_errcode(E_MALLOC), NULL);
-	*dollar_idx = str_idxofchar_from((*arg), *end_idx + 1, '$');
+	*dollar_idx = str_idxofchar_from((*arg), *end_idx, '$');
 	return (*arg);
 }
 
@@ -31,10 +31,11 @@ char	*exp_stcode(t_var *m, char **arg, int *dollar_idx, int *end_idx)
 	if (!status_code)
 		return (pf_errcode(E_MALLOC), NULL);
 	*arg = str_replace_from_to(*arg, *dollar_idx, *end_idx, status_code);
+	*end_idx = *dollar_idx + str_ilen(status_code);
 	free(status_code);
 	if (!*arg)
 		return (pf_errcode(E_MALLOC), NULL);
-	*dollar_idx = str_idxofchar_from(*arg, *end_idx + 1, '$');
+	*dollar_idx = str_idxofchar_from(*arg, *end_idx, '$');
 	return (*arg);
 }
 
@@ -58,7 +59,7 @@ char	*replace_variable(t_var *mshell,
 	*arg_p = str_replace_from_to(*arg_p, *dollar_idx, *end_idx, env->val);
 	if (!(*arg_p))
 		return (pf_errcode(E_MALLOC), NULL);
-	*dollar_idx = str_idxofchar_from(*arg_p, *end_idx + 1, '$');
+	*dollar_idx = str_idxofchar_from(*arg_p, *end_idx, '$');
 	return (*arg_p);
 }
 

@@ -51,8 +51,10 @@ t_state	ms_exec_cmd(t_var *mshell, t_list *cmd)
 	if (!args || (!env && mshell->env))
 		return (pf_errcode(E_MALLOC), str_freemtx(env), str_freemtx(args), KO);
 	abs_path = sys_findcmdpath(mshell, paths, cmd->val);
-	free(args[0]);
-	args[0] = abs_path;
+	if (abs_path)
+		free(args[0]);
+	if (abs_path)
+		args[0] = abs_path;
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	track_lastsig(mshell);
