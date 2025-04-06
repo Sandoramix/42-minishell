@@ -7,6 +7,9 @@ PNAME = $(shell echo -n ${NAME} | tr 'a-z' 'A-Z')
 # -----VARIABLES-DECLARATIONS-+-OVVERRIDES--------------------------------------
 
 DEBUG_VALUE=0
+debug: DEBUG_VALUE=1
+re-debug: DEBUG_VALUE=1
+
 
 LIBFTX_DIR=src/libftx
 
@@ -55,11 +58,10 @@ SRC = ./main.c \
 
 all: $(NAME)
 
-debug:
-	$(MAKE) DEBUG_VALUE=1
+debug: $(NAME)
 
 $(NAME): $(SRC)
-	$(MAKE) -C $(LIBFTX_DIR)
+	$(MAKE) -C $(LIBFTX_DIR) DEBUG_VALUE=$(DEBUG_VALUE)
 	$(CC) $(CFLAGS) $(SRC) -o $(NAME) -L$(LIBFTX_DIR) -lft -lreadline -pthread
 	@echo "$(GREEN)[$(PNAME)]:\tPROGRAM CREATED$(R)"
 	[ "$(strip $(DEBUG_VALUE))" = "0" ] || echo "$(RED)[$(PNAME)]:\tDEBUG MODE ENABLED$(R)"
@@ -87,7 +89,7 @@ valgrind: debug
 # ------------------------------------------------------------------------------
 
 .PHONY: all clean fclean re re-debug debug
-.SILENT:
+# .SILENT:
 
 # ----COLORS--------------------------------------------------------------------
 GREEN=\033[0;32m

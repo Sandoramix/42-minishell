@@ -17,7 +17,7 @@ static char	*hd_line_read(t_var *mshell, char *heredoc_file, t_list *token)
 	char	*line;
 	char	*temp;
 
-	temp = PROG_PROMPT;
+	temp = HEREDOC_PROMPT;
 	if (ft_isdebug())
 		temp = str_join(heredoc_file, PROMPT);
 	line = readline(temp);

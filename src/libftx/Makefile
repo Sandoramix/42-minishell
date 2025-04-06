@@ -3,6 +3,8 @@ PNAME = [LIBFTX]
 
 # -----VARIABLES-DECLARATIONS-+-OVVERRIDES-----
 DEBUG_VALUE=0
+debug: DEBUG_VALUE=1
+re-debug: DEBUG_VALUE=1
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g -DDEBUG=$(DEBUG_VALUE)
@@ -123,9 +125,7 @@ OBJ = ${SRC:.c=.o}
 # ----RULES-----
 
 all: $(NAME)
-
-debug:
-	$(MAKE) DEBUGFLAGS="-DDEBUG=1"
+debug: $(NAME)
 
 $(NAME): $(OBJ)
 	@$(ARCHIVE) $(OBJ)
