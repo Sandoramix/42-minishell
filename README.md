@@ -7,6 +7,25 @@
 * [**odudniak**](https://github.com/Sandoramix)
 * [**marboccu**](https://github.com/Martybb01)
 
+
+## Prerequisites
+
+* C compiler
+* make
+* valgrind
+* readline
+* patience
+
+### Installing dependencies
+
+#### Ubuntu/Debian (apt)
+
+```bash
+sudo apt install -y build-essential valgrind libreadline-dev libpcre3-dev
+```
+
+
+
 ### Getting started
 
 ```bash

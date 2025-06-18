@@ -64,7 +64,7 @@ $(NAME): $(SRC)
 	$(MAKE) -C $(LIBFTX_DIR) DEBUG_VALUE=$(DEBUG_VALUE)
 	$(CC) $(CFLAGS) $(SRC) -o $(NAME) -L$(LIBFTX_DIR) -lft -lreadline -pthread
 	@echo "$(GREEN)[$(PNAME)]:\tPROGRAM CREATED$(R)"
-	[ "$(strip $(DEBUG_VALUE))" = "0" ] || echo "$(RED)[$(PNAME)]:\tDEBUG MODE ENABLED$(R)"
+	@[ "$(strip $(DEBUG_VALUE))" = "0" ] || echo "$(RED)[$(PNAME)]:\tDEBUG MODE ENABLED$(R)"
 
 clean:
 	$(MAKE) -C $(LIBFTX_DIR) clean
@@ -89,7 +89,7 @@ valgrind: debug
 # ------------------------------------------------------------------------------
 
 .PHONY: all clean fclean re re-debug debug
-# .SILENT:
+.SILENT:
 
 # ----COLORS--------------------------------------------------------------------
 GREEN=\033[0;32m
