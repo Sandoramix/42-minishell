@@ -105,7 +105,7 @@ static t_state	ms_exec_command(t_var *mshell, t_command *command,
 				ms_exec_cmd(mshell, command->args);
 			return (cleanup(mshell, true, mshell->statuscode), OK);
 		}
-		return (OK);
+		return (pid);
 	}
 	if (state != OK)
 		return ((int [2]){OK, KO}[state == KO]);
@@ -136,7 +136,7 @@ t_state	ms_exec_commands(t_var *mshell, t_list *all)
 			return (kill_pipes(mshell), clean_cmds(mshell->all_cmds, true), KO);
 		command = cmds_list->val;
 		signal(SIGINT, handle_exec_sig);
-		ms_exec_command(mshell, command, tot_cmds, i);
+		mshell->last_cmd_pid = ms_exec_command(mshell, command, tot_cmds, i);
 		cmds_list = cmds_list->next;
 	}
 	return (kill_pipes(mshell), clean_cmds(mshell->all_cmds, true), OK);

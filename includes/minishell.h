@@ -76,6 +76,7 @@ typedef struct s_var
 	// -------------EXECUTION-------
 	t_list				*all_cmds;
 	int					**pipes;
+	pid_t				last_cmd_pid;
 	int					orig_stdin;
 	int					orig_stdout;
 	//------------------------------

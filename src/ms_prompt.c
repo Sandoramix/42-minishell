@@ -12,10 +12,25 @@
 
 #include <minishell.h>
 
+static void	wait_for_all_cmds(t_var *mshell)
+{
+	int		status_code;
+
+	if (waitpid(mshell->last_cmd_pid, &status_code, 0) != -1)
+	{
+		if (WIFEXITED(status_code))
+			setstatus(mshell, WEXITSTATUS(status_code));
+		else if (WIFSIGNALED(status_code))
+			g_setlastsig(WTERMSIG(status_code));
+	}
+	track_lastsig(mshell);
+	while (wait(&status_code) != -1)
+		;
+}
+
 static t_state	ms_handleinput(t_var *mshell, char **input)
 {
 	t_list	*cmd_list;
-	int		status_code;
 
 	if (!ms_closing_quotes_check(*input))
 		return (pf_errcode(E_SYNTAX), free(*input), setstatus(mshell, 2), KO);
@@ -27,14 +42,7 @@ static t_state	ms_handleinput(t_var *mshell, char **input)
 		return (pf_errcode(E_SYNTAX), setstatus(mshell, 2),
 			lst_free(&cmd_list, free), KO);
 	ms_exec_commands(mshell, cmd_list);
-	while (wait(&status_code) != -1)
-	{
-		if (WIFEXITED(status_code))
-			setstatus(mshell, WEXITSTATUS(status_code));
-		else if (WIFSIGNALED(status_code))
-			g_setlastsig(WTERMSIG(status_code));
-	}
-	track_lastsig(mshell);
+	wait_for_all_cmds(mshell);
 	if (mshell->statuscode == 131)
 		ft_printf("Quit\n");
 	return (OK);
